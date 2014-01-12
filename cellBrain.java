@@ -276,12 +276,12 @@ class cellBrain  implements Runnable{
 			boolean[] wolfhood = new boolean[3];
 			andromeda.locate(x,y);
 			andromeda.setOrientation(o);
-			for(int v = 0; v < 3; v++){
+			for(int v = 0; v <= 2; v++){
 				int tempx = andromeda.getNextX();
 				int tempy = andromeda.getNextY();
 				if(tempx == -1 || tempy == -1){wolfhood[v] = false;}
-				else{wolfhood[v] = current[tempx][tempy];
-				}} 
+				else{wolfhood[v] = current[tempx][tempy];}
+				} 
 				return wolfhood;
 			}
 		
