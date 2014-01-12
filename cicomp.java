@@ -110,8 +110,7 @@ public void setCell(cell xerxes){
 	if(xerxes.getControls("Survives")){fields[7].setVisible(true);String sstr = ""; for(int v = 0; v < 9; v++){String[] sss = new String[]{"S0","S1","S2","S3","S4","S5","S6","S7","S8"};
 	if(xerxes.getOption(sss[v])){sstr = sstr+ Integer.toString(v);}}sLabel.setText(sstr);sLabel.setVisible(true); }
 	else{fields[7].setVisible(false);sLabel.setVisible(false);}
-	if(xerxes.getControls("WolfRule")){fields[5].setVisible(true);int wnum = 0;for(int j = 0; j < 8; j++){String[] wnam = new String[]{"WR7","WR6","WR5","WR4","WR3","WR2","WR1","WR0"}; int[] wnim = new int[]{1,2,4,8,16,32,64,128};
-	if(xerxes.getOption(wnam[j])){wnum += wnim[j];}}wrLabel.setText(Integer.toString(wnum));wrLabel.setVisible(true);}
+	if(xerxes.getControls("WolfRule")){fields[5].setVisible(true);wrLabel.setText(Integer.toString(xerxes.getParameter("WolfRule")));wrLabel.setVisible(true);}
 	else{fields[5].setVisible(false);wrLabel.setVisible(false);}
 	
 	}
