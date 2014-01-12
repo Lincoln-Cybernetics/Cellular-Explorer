@@ -208,7 +208,7 @@ class spinbrush extends brush{
 		int x = xloc;
 		switch(xcount){
 			case 1: if(orientation == 0){x = xloc;}else{x = xloc-1;} break;
-			case 2: x = xloc;
+			case 2: x = xloc; break;
 			case 3: if(orientation == 0){x = xloc;}else{x = xloc+1;} break;
 			default: x = xloc;}
 			return x;}
