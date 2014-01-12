@@ -124,6 +124,8 @@ public class wolfram extends cell{
 			if(paramname == "Dir"){ return direction;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
+			if(paramname == "WolfRule"){int wn = 0; if(rule[7]){wn += 128;} if(rule[6]){wn += 64;} if(rule[5]){wn += 32;} if(rule[4]){wn += 16;}
+				if(rule[3]){wn += 8;} if(rule[2]){wn += 4;} if(rule[1]){wn += 2;} if(rule[0]){wn += 1;} return wn;}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
@@ -151,8 +153,8 @@ public class wolfram extends cell{
 			
 			}
 		
-		private void calculate(){int cellstate = 0; if(neighbors[2]){cellstate += 4;} 
-					if(neighbors[1]){cellstate += 2;} if(neighbors[0]){cellstate ++;}
+		private void calculate(){int cellstate = 0; if(neighbors[2]){cellstate ++;}else{} 
+					if(neighbors[1]){cellstate += 2;}else{}  if(neighbors[0]){cellstate += 4;}else{} 
 					active = rule[cellstate];
 					
 				}
