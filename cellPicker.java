@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Random"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -50,6 +50,7 @@ int command = 0;
  * 0 = cell
  * 1 = wolfram
  * 2 = MBOT
+ * 3 = randCell
  */
 int ct = 0;
 
@@ -59,14 +60,14 @@ public cellPicker(){
 	jack = new JLabel("Born");
 	jill = new JLabel("Survives");
 	//labels for wolfram rules
-	wlab[0] = new JLabel("000");
-	wlab[1] = new JLabel("001");
-	wlab[2] = new JLabel("010");
-	wlab[3] = new JLabel("011");
-	wlab[4] = new JLabel("100");
-	wlab[5] = new JLabel("101");
-	wlab[6] = new JLabel("110");
-	wlab[7] = new JLabel("111");
+	wlab[0] = new JLabel("111");
+	wlab[1] = new JLabel("110");
+	wlab[2] = new JLabel("101");
+	wlab[3] = new JLabel("100");
+	wlab[4] = new JLabel("011");
+	wlab[5] = new JLabel("010");
+	wlab[6] = new JLabel("001");
+	wlab[7] = new JLabel("000");
 	//wolfram directions
 	orlabel = new JLabel("Direction:");
 	wdirs[0] = new JRadioButton("|"); wdirs[1] = new JRadioButton("/");
@@ -112,15 +113,6 @@ public cellPicker(){
 				.addComponent(opts[9])
 				.addComponent(opts[10]))
 			.addGroup(cpLayout.createSequentialGroup()
-				.addComponent(wlab[0])
-				.addComponent(wlab[1])
-				.addComponent(wlab[2])
-				.addComponent(wlab[3])
-				.addComponent(wlab[4])
-				.addComponent(wlab[5])
-				.addComponent(wlab[6])
-				.addComponent(wlab[7]))
-			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(jill)
 				.addComponent(opts[11])
 				.addComponent(opts[12])
@@ -132,14 +124,31 @@ public cellPicker(){
 				.addComponent(opts[18])
 				.addComponent(opts[19]))
 			.addGroup(cpLayout.createSequentialGroup()
-				.addComponent(opts[20])
-				.addComponent(opts[21])
-				.addComponent(opts[22])
-				.addComponent(opts[23])
-				.addComponent(opts[24])
-				.addComponent(opts[25])
-				.addComponent(opts[26])
-				.addComponent(opts[27]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[0])
+					.addComponent(opts[20]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[1])
+					.addComponent(opts[21]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[2])
+					.addComponent(opts[22]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[3])
+					.addComponent(opts[23]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[4])
+					.addComponent(opts[24]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[5])
+					.addComponent(opts[25]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[6])
+					.addComponent(opts[26]))
+				.addGroup(cpLayout.createParallelGroup()
+					.addComponent(wlab[7])
+					.addComponent(opts[27]))
+					)
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(orlabel)
 				.addComponent(wdirs[0])
@@ -167,15 +176,6 @@ public cellPicker(){
 				.addComponent(opts[9])
 				.addComponent(opts[10]))
 			.addGroup(cpLayout.createParallelGroup()
-				.addComponent(wlab[0])
-				.addComponent(wlab[1])
-				.addComponent(wlab[2])
-				.addComponent(wlab[3])
-				.addComponent(wlab[4])
-				.addComponent(wlab[5])
-				.addComponent(wlab[6])
-				.addComponent(wlab[7]))
-			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(jill)
 				.addComponent(opts[11])
 				.addComponent(opts[12])
@@ -187,14 +187,31 @@ public cellPicker(){
 				.addComponent(opts[18])
 				.addComponent(opts[19]))
 			.addGroup(cpLayout.createParallelGroup()
-				.addComponent(opts[20])
-				.addComponent(opts[21])
-				.addComponent(opts[22])
-				.addComponent(opts[23])
-				.addComponent(opts[24])
-				.addComponent(opts[25])
-				.addComponent(opts[26])
-				.addComponent(opts[27]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[0])
+					.addComponent(opts[20]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[1])
+					.addComponent(opts[21]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[2])
+					.addComponent(opts[22]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[3])
+					.addComponent(opts[23]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[4])
+					.addComponent(opts[24]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[5])
+					.addComponent(opts[25]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[6])
+					.addComponent(opts[26]))
+				.addGroup(cpLayout.createSequentialGroup()
+					.addComponent(wlab[7])
+					.addComponent(opts[27]))
+				)
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(orlabel)
 				.addComponent(wdirs[0])
@@ -238,7 +255,10 @@ public void setCOH(cellOptionHandler ned){
 public void actionPerformed(ActionEvent e){
 	if(e.getSource() == cellpick){command = 1; setCell(); fireucEvent();}
 	if(e.getSource() == MBOTPick){command = 2; MBOTtype = MBOTPick.getSelectedItem().toString(); setCell(); fireucEvent();}
-	for( int u = 0; u < wdirs.length; u++){ if(e.getSource() == wdirs[u]){gate.setInt("Dir", u);}}
+	if(e.getSource() == wdirs[0]){gate.setInt("Dir", 0);}
+	if(e.getSource() == wdirs[1]){gate.setInt("Dir", 1);}
+	if(e.getSource() == wdirs[2]){gate.setInt("Dir", 2);}
+	if(e.getSource() == wdirs[3]){gate.setInt("Dir", 3);}
 	}
 
 public void itemStateChanged(ItemEvent e){//age, fade, born, survives
@@ -266,14 +286,14 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 17: gate.setBool("S6", opts[i].getState());break;
 			case 18: gate.setBool("S7", opts[i].getState());break;
 			case 19: gate.setBool("S8", opts[i].getState());break;
-			case 20: gate.setBool("W0", opts[i].getState());break;
-			case 21: gate.setBool("W1", opts[i].getState());break;
-			case 22: gate.setBool("W2", opts[i].getState());break;
-			case 23: gate.setBool("W3", opts[i].getState());break;
-			case 24: gate.setBool("W4", opts[i].getState());break;
-			case 25: gate.setBool("W5", opts[i].getState());break;
-			case 26: gate.setBool("W6", opts[i].getState());break;
-			case 27: gate.setBool("W7", opts[i].getState());break;
+			case 20: gate.setBool("W7", opts[i].getState());break;
+			case 21: gate.setBool("W6", opts[i].getState());break;
+			case 22: gate.setBool("W5", opts[i].getState());break;
+			case 23: gate.setBool("W4", opts[i].getState());break;
+			case 24: gate.setBool("W3", opts[i].getState());break;
+			case 25: gate.setBool("W2", opts[i].getState());break;
+			case 26: gate.setBool("W1", opts[i].getState());break;
+			case 27: gate.setBool("W0", opts[i].getState());break;
 			}
 		}
 	}
