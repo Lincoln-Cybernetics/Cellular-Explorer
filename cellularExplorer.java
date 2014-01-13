@@ -72,8 +72,8 @@ public class cellularExplorer implements ucListener{
 					case 7: if(Hank == null){makeWin(6);} else{sBox.setVisible(true);}break;// selection tools
 					case 8: if(Inez == null){makeWin(7);} else{brushCup.setVisible(true);}break;// brushes
 					case 9: v1.setMasterSpeed(Alice.getZTime()); break;// speed setting
-					case 10: v1.setDisplayMode(Alice.getDispType());if(v1.getMode() == 2 || v1.getMode() == 3){}else{v1.setMode(0);}//Set Display Type
-					case 11: v1.setWrap(Alice.getWrapType());//set edge wrapping
+					case 10: v1.setDisplayMode(Alice.getDispType());if(v1.getMode() == 2 || v1.getMode() == 3){}else{v1.setMode(0);}break;//Set Display Type
+					case 11: v1.setWrap(Alice.getWrapType());break;//set edge wrapping
 					case 12: v1.showCI(); break; //shows cell info
 					default: break;
 				}
