@@ -192,7 +192,7 @@ public void paintComponent( Graphics g){
 									case 0: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 1: g.setColor(Color.red);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 2: g.setColor(Color.green);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);break;
-									case 3: g.setColor(Color.red);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 3: g.setColor(Color.orange);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 4: g.setColor(Color.blue);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 5: g.setColor(Color.orange);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 6: g.setColor(Color.green);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
