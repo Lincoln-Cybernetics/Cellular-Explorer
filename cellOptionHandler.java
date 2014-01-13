@@ -104,6 +104,7 @@ public cell generateCell(){
 		case 0: tiamat = new cell();break;
 		case 1: tiamat =new wolfram(); tiamat = setRules(tiamat); break;
 		case 2:	if(mbotname == "Custom"){tiamat = new mbot(); tiamat = setRules(tiamat);}else{tiamat = new mbot(mbotname);}break;
+		case 3: tiamat = new randCell(); break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
@@ -180,6 +181,8 @@ class randcellOptionHandler extends cellOptionHandler{
 				for(int ace = 0; ace <= 9; ace++){// String berling = "B"+ace; String sevino = "S"+ace; 
 				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}
 				break;
+		case 3: tiamat = new randCell();
+				break;
 
 		default: tiamat = new cell();break;}
 		tiamat.setParameter("Mat", shovel.nextInt(256)); tiamat.setParameter("Dir", shovel.nextInt(8)); 
@@ -192,7 +195,7 @@ class randcellOptionHandler extends cellOptionHandler{
 		
 	public int getCT(){ return celltype;}
 	
-	public cell getCell(){celltype = shovel.nextInt(256);if(celltype <= 16){celltype = 0;}else{if(celltype <= 64){celltype = 1;}else{celltype = 2;}}
+	public cell getCell(){celltype = shovel.nextInt(256);if(celltype <= 16){celltype = 0;}else{if(celltype <= 64){celltype = 1;}else{if(celltype <= 128){celltype = 3;}else{celltype = 2;}}}
 	// mbotname = MBOTCell[shovel.nextInt(MBOTCell.length)];
 		cell marduk = generateCell(); return marduk;}
 	
