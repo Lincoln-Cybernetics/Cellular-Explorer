@@ -23,19 +23,26 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class cellPicker extends JComponent implements ActionListener, ItemListener{
+public class cellPicker extends JComponent implements ActionListener, ItemListener, ChangeListener{
 	
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Random"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
 "Dry Life", "Fredkin", "Gnarl", "High Life", "Life", "Life without Death", "Live Free or Die", "Long Life", "Maze", "Mazectric",
 "Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
 String MBOTtype = "Custom";
+
 Checkbox[] opts = new Checkbox[28];
+
+JSlider matslider;
+JLabel matlabel;
+JSlider fadeslider;
+JLabel fadelabel;
+
 JLabel jack;
 JLabel jill;
 JLabel[] wlab = new JLabel[8];
@@ -44,6 +51,7 @@ JLabel orlabel;
 
 
 // relate to sending command events
+int ct = 0; //cell-type
 private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
 int command = 0;
 /* ct = cell type:
@@ -52,7 +60,7 @@ int command = 0;
  * 2 = MBOT
  * 3 = randCell
  */
-int ct = 0;
+
 
 public cellPicker(){
 	cellpick = new JComboBox(Cells);
@@ -75,9 +83,16 @@ public cellPicker(){
 	ButtonGroup orients = new ButtonGroup(); orients.add(wdirs[0]); orients.add(wdirs[1]);
 	orients.add(wdirs[2]); orients.add(wdirs[3]);wdirs[0].setSelected(true);
 	
-	
+	// age and fade options
 	opts[0] = new Checkbox("Ages"); 
 	opts[1] = new Checkbox("Fades");
+	fadeslider = new JSlider(1,512);
+	fadelabel = new JLabel();
+	
+	//maturity option
+	matslider = new JSlider(1,512);
+	matlabel = new JLabel();
+	
 	// born
 	opts[2] = new Checkbox("0"); opts[3] = new Checkbox("1"); opts[4] = new Checkbox("2"); 
 	opts[5] = new Checkbox("3"); opts[6] = new Checkbox("4"); opts[7] = new Checkbox("5"); 
@@ -100,7 +115,12 @@ public cellPicker(){
 			.addComponent(MBOTPick)
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(opts[0])
-				.addComponent(opts[1]))
+				.addComponent(opts[1])
+				.addComponent(fadeslider)
+				.addComponent(fadelabel))
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(matslider)
+				.addComponent(matlabel))
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(jack)
 				.addComponent(opts[2])
@@ -163,7 +183,12 @@ public cellPicker(){
 			.addComponent(MBOTPick)
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(opts[0])
-				.addComponent(opts[1]))
+				.addComponent(opts[1])
+				.addComponent(fadeslider)
+				.addComponent(fadelabel))
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(matslider)
+				.addComponent(matlabel))
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(jack)
 				.addComponent(opts[2])
@@ -233,12 +258,20 @@ public cellPicker(){
 		//init opts	
 		for (int ab = 0; ab < opts.length; ab++){
 			opts[ab].setMaximumSize(new Dimension(10,10));opts[ab].setVisible(false);
-			 opts[ab].setEnabled(false); opts[ab].addItemListener(this);}
+			 opts[ab].addItemListener(this);}
 		jack.setVisible(false); jill.setVisible(false);
+		//init fade components
+		fadeslider.setVisible(false); fadeslider.setEnabled(false);fadeslider.setValue(256);
+		fadeslider.addChangeListener(this);
+		fadelabel.setVisible(false);fadelabel.setText(Integer.toString(fadeslider.getValue()));
+		//set maturity components
+		matslider.setVisible(false); matslider.setEnabled(false); matslider.setValue(1);
+		matslider.addChangeListener(this);
+		matlabel.setVisible(false); matlabel.setText("Maturity: "+Integer.toString(matslider.getValue()));
 		
-	
+	//init MBOT picker
 	MBOTPick.setVisible(false);
-	MBOTPick.setEnabled(false);
+	if(ct == 2){MBOTPick.setVisible(true); } else{MBOTPick.setVisible(false); }
 	
 	cellpick.addActionListener(this);
 	MBOTPick.addActionListener(this);
@@ -253,7 +286,7 @@ public void setCOH(cellOptionHandler ned){
 				}
 
 public void actionPerformed(ActionEvent e){
-	if(e.getSource() == cellpick){command = 1; setCell(); fireucEvent();}
+	if(e.getSource() == cellpick){command = 1; setCType(); fireucEvent(); setCell();}
 	if(e.getSource() == MBOTPick){command = 2; MBOTtype = MBOTPick.getSelectedItem().toString(); setCell(); fireucEvent();}
 	if(e.getSource() == wdirs[0]){gate.setInt("Dir", 0);}
 	if(e.getSource() == wdirs[1]){gate.setInt("Dir", 1);}
@@ -268,6 +301,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 		switch(i){
 			case 0: gate.setBool("Ages", opts[i].getState()); break;
 			case 1: gate.setBool("Fades", opts[i].getState()); break;
+			// Born on for MBOT
 			case 2: gate.setBool("B0", opts[i].getState()); break;
 			case 3: gate.setBool("B1", opts[i].getState()); break;
 			case 4: gate.setBool("B2", opts[i].getState()); break;
@@ -277,6 +311,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 8: gate.setBool("B6", opts[i].getState()); break;
 			case 9: gate.setBool("B7", opts[i].getState()); break;
 			case 10: gate.setBool("B8", opts[i].getState());break;
+			// Survives for MBOT
 			case 11: gate.setBool("S0", opts[i].getState());break; 
 			case 12: gate.setBool("S1", opts[i].getState());break;
 			case 13: gate.setBool("S2", opts[i].getState());break;
@@ -286,6 +321,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 17: gate.setBool("S6", opts[i].getState());break;
 			case 18: gate.setBool("S7", opts[i].getState());break;
 			case 19: gate.setBool("S8", opts[i].getState());break;
+			// Wolfram rules
 			case 20: gate.setBool("W7", opts[i].getState());break;
 			case 21: gate.setBool("W6", opts[i].getState());break;
 			case 22: gate.setBool("W5", opts[i].getState());break;
@@ -299,39 +335,53 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 	}
 }
 
-private void setCell(){
-	for(int cn = 0; cn < Cells.length; cn++){
-		if(cellpick.getSelectedItem() == Cells[cn]){ ct = cn;}
-		setOpts(gate.generateCell());
+public void stateChanged(ChangeEvent e){
+	// set fade rule maximum age
+	if(e.getSource() == fadeslider){gate.setInt("Fade", fadeslider.getValue()); fadelabel.setText(Integer.toString(fadeslider.getValue()));}
+	//set maturity setting
+	if(e.getSource() == matslider){gate.setInt("Mat", matslider.getValue()); matlabel.setText("Maturity: "+Integer.toString(matslider.getValue()));}
 	}
-	if(ct == 2){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);}
+
+private void setCType(){
+	for(int cn = 0; cn < Cells.length; cn++){
+		if(cellpick.getSelectedItem() == Cells[cn]){ ct = cn;  }
+	}
+}
+
+private void setCell(){
+	
+		setOpts(gate.generateCell());
+		if(ct == 2){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);}
 }
 
 private void setOpts(cell darwin){
 	boolean visifier = false;
 	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient"};
 	for(int concount = 0; concount< names.length; concount++){
+		 visifier =  darwin.getControls(names[concount]); 
 		switch(concount){
 			case 3: if(darwin.getControls(names[concount]) && MBOTtype == "Custom"){visifier = true;} else{visifier = false;} break;
 			case 4: if(darwin.getControls(names[concount]) && MBOTtype == "Custom"){visifier = true;} else{visifier = false;} break;
-			
-			default: visifier =  darwin.getControls(names[concount]);  break;
+			default: break;
 		}
 		toggleControl(concount, visifier);
 	}
 }
 
 private void toggleControl(int a, boolean b){
+	
 	switch(a){
 		case 0: opts[0].setVisible(b); opts[0].setEnabled(b); break;
-		case 1: opts[1].setVisible(b); opts[1].setEnabled(b); break;
-		case 2: break;
+		case 1: opts[1].setVisible(b); opts[1].setEnabled(b); fadeslider.setVisible(b); fadeslider.setEnabled(b);if(b){ fadeslider.setValue(256); gate.setInt("Fade", fadeslider.getValue());} fadelabel.setVisible(b);if(b){fadelabel.setText(Integer.toString(fadeslider.getValue()));} break;
+		case 2: matslider.setVisible(b); matslider.setEnabled(b); matlabel.setVisible(b); if(b){matslider.setValue(1);gate.setInt("Mat", matslider.getValue());matlabel.setText("Maturity: "+ Integer.toString(matslider.getValue()));} break;
 		case 3: for(int c = 0; c < 9; c++){opts[c+2].setLabel(String.valueOf(c)); opts[c+2].setVisible(b); opts[c+2].setEnabled(b);} jack.setVisible(b); break;
 		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); break;
 		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b);} break;
 		case 6: for(int c = 0; c < 4; c++){wdirs[c].setVisible(b); wdirs[c].setEnabled(b);}orlabel.setVisible(b); break;
 	}
 }
+
+
 
 //event generation
 //adds listeners for command events
