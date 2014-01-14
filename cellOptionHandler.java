@@ -50,7 +50,9 @@ public void handleControl( ucEvent e){
 
 //option setting methods
 private void setCT(int a){
-	celltype = a;}
+	celltype = a;
+	//if(a == 0 || a == 1){source.opts[0].setVisible(true);}
+	}
 	
 private void setMBOT(String nameo){ mbotname = nameo;}	
 	
@@ -60,6 +62,8 @@ public void setInt(String a, int b){
 	if(a == "MirrX"){ mirrorx = b;}
 	if(a == "MirrY"){ mirrory = b;}
 	if(a == "Dir"){dir = b;}
+	if(a == "Fade"){fadenum = b;}
+	if(a == "Mat"){maturity = b;}
 }
 
 public void setBool(String a, boolean b){
@@ -109,6 +113,7 @@ public cell generateCell(){
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
 		if(tiamat.getControls("Fade")){ tiamat.setOption("Fades", doesfade); tiamat.setParameter("Fade", fadenum);}
+		if(tiamat.getControls("Mat")){ tiamat.setParameter("Mat", maturity);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
  return tiamat;
 }
