@@ -195,7 +195,7 @@ public class cellularExplorer implements ucListener{
 						  cPick.getContentPane().add(Fred);
 						  cPick.getContentPane().add(Gwen);
 						  cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  cPick.setSize(675,165);
+						  cPick.setSize(775,200);
 						  cPick.setLocation(0,665);
 						  cPick.setResizable(false);
 						  cPick.setVisible(true);
@@ -221,8 +221,8 @@ public class cellularExplorer implements ucListener{
 						  Inez = new brushControl(); 
 						  brushCup.getContentPane().add(Inez);
 						  brushCup.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  brushCup.setSize(725,165);
-						  brushCup.setLocation(675,665);
+						  brushCup.setSize(625,200);
+						  brushCup.setLocation(775,665);
 						  brushCup.setResizable(false);
 						  brushCup.setVisible(true);
 						  Inez.setVisible(true);
