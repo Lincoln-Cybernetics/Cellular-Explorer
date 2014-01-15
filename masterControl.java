@@ -150,8 +150,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
-		String noticea = "Cellular Explorer Prototype v. 0.0.2\nPowered by Lincoln Cybernetics.\nLincolnCybernetics.com\n";
-  String noticeb ="Copyright(C) 02013 Matt Ahlschwede\n\n";
+		String noticea = "Cellular Explorer Prototype v. 0.0.3 (Winter 02014)\nPowered by Lincoln Cybernetics.\nLincolnCybernetics.com\n";
+  String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
   String noticee=  "the Free Software Foundation,\neither version 3 of the License, or";
