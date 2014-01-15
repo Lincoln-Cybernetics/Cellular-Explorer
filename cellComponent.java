@@ -127,14 +127,14 @@ public class cellComponent extends JComponent
 	public void setAge(int x, int y, int a){
 		age[x][y] = a;
 		if(mode == 4){
-		if (age[x][y] == 0){ageclass[x][y] = 0;}
-		if (age[x][y] == 1){ageclass[x][y] = 1;}
-		if (age[x][y] == 2){ageclass[x][y] = 2;}
-		if (age[x][y] == 4){ageclass[x][y] = 3;}
-		if (age[x][y] == 8){ageclass[x][y] = 4;}
-		if(age[x][y] == 16){ageclass[x][y] = 5;}
-		if(age[x][y] == 32){ageclass[x][y] = 6;}
-		if(age[x][y] == 64){ageclass[x][y] = 7;}
+		if (age[x][y] >= 0){ageclass[x][y] = 0;}
+		if (age[x][y] >= 1){ageclass[x][y] = 1;}
+		if (age[x][y] >= 2){ageclass[x][y] = 2;}
+		if (age[x][y] >= 4){ageclass[x][y] = 3;}
+		if (age[x][y] >= 8){ageclass[x][y] = 4;}
+		if(age[x][y] >= 16){ageclass[x][y] = 5;}
+		if(age[x][y] >= 32){ageclass[x][y] = 6;}
+		if(age[x][y] >= 64){ageclass[x][y] = 7;}
 	}
 	}
 	
