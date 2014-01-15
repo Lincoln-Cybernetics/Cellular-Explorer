@@ -11,6 +11,7 @@ JLabel mtLabel;
 JLabel wrLabel;
 JLabel bLabel;
 JLabel sLabel;
+cell xerxes;
 
 public cicomp(){
 	fields[0] = new JLabel("Cell Type: ");
@@ -30,7 +31,7 @@ public cicomp(){
 	wrLabel = new JLabel();
 	bLabel = new JLabel();
 	sLabel = new JLabel();
-	
+	xerxes = new cell();
 	
 	GroupLayout ccl = new GroupLayout(this);
 	ccl.setAutoCreateGaps(false);
@@ -93,8 +94,11 @@ public cicomp(){
 				);
 	setLayout(ccl);
 	}
-public void setCell(cell xerxes){
+public void setCell(cell hammurabi){
+	xerxes = hammurabi;
+	refCell();}
 	
+public void refCell(){
 	moniker.setText(xerxes.getName());
 	if(xerxes.getOption("Ages")){fields[1].setVisible(true); aLabel.setText(Integer.toString(xerxes.getParameter("Age"))); aLabel.setVisible(true);}
 	else{fields[1].setVisible(false); aLabel.setVisible(false);}
