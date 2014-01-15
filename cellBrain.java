@@ -64,7 +64,7 @@ class cellBrain  implements Runnable{
 	
 	//state editing flags
 	boolean editflag = false;
-	boolean sfflag = false;
+	boolean iiflag = false;
 	int sfopt = 0;
 	int sdopt = 0;
 	boolean rcflag = false;
@@ -172,6 +172,11 @@ class cellBrain  implements Runnable{
 			
 			public boolean getFirst(){
 				return firstflag;}
+				
+			// sets iterate interrupt
+			public void setII(){
+				iiflag = true;
+			}
 				
 				// mode setting methods
 				
@@ -292,8 +297,8 @@ class cellBrain  implements Runnable{
 		public void iterate(){
 			if(mayIterate()){
 			int x; int y;
-			 if (sfflag){ controller.iterateInterrupt(myopt);
-				  sfflag = false;}
+			 if (iiflag){ controller.iterateInterrupt(myopt);
+				  iiflag = false;}
 				   
 					//gets new values from the cells
 					for(y=0;y<=ysiz-1;y++){
@@ -307,6 +312,7 @@ class cellBrain  implements Runnable{
 								culture[x][y].iterate();
 								// gets the binary stateof each cell
 								newstate[x][y] = culture[x][y].getActive();
+							
 					}}
 					
 					
@@ -318,7 +324,7 @@ class cellBrain  implements Runnable{
 						current[x][y] = newstate[x][y]; 
 						}}
 					display.setState(current);	
-				
+					controller.iterateNotify();
 				}}
 			
 			// runs the main thread
