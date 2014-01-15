@@ -152,8 +152,8 @@ public void handleControl(ucEvent e){}
 	 public void showCI(){
 		// barnabus.setVisible(false);
 		 if(barnabus == null){
-		 barnabus = new JFrame("Cell Info");
 		 mercury = new cicomp();
+		 barnabus = new JFrame("Cell Info");
 		 barnabus.getContentPane().add(mercury);
 		 barnabus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		 barnabus.setSize(200,150);
@@ -164,6 +164,10 @@ public void handleControl(ucEvent e){}
 		 else{barnabus.setVisible(true);}
 		 
 		 }
+		 
+	public void iterateNotify(){ 
+		if(mercury != null){mercury.refCell();}
+	}
 	
 	//general mode setting for display and automaton
 	public void setMode(int m){
@@ -432,7 +436,7 @@ public void handleControl(ucEvent e){}
 				//gateway method
 				public void fillState(){
 					if(pistons[0][0].paused){stateFillSelect();}
-					else{pistons[0][0].myopt = 1; pistons[0][0].sfflag = true;}
+					else{pistons[0][0].myopt = 1; pistons[0][0].setII();}
 					}
 				
 					
