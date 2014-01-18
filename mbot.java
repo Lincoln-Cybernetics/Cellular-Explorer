@@ -128,6 +128,9 @@ public class mbot extends cell{
 		if( type == "Vote"){ if(n > 4){born[n] = true;} if(n >3){survives[n] = true;}}
 		if( type == "Vote 4/5"){ if(n ==4 || n == 6 || n == 7|| n ==8){born[n] = true;} if( n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
 		if( type == "Walled Cities"){ if(n > 3){born[n] = true;} if( n == 2|| n == 3|| n == 4|| n == 5){survives[n] = true;}}
+		if( type == "OnCell"){born[n] = true; survives[n] = true;}
+		if( type == "OffCell"){born[n] = false; survives[n] = false;}
+		if( type == "BlinkCell"){born[n] = true; survives[n] = false;}
 		}
 		
 	}
@@ -137,11 +140,11 @@ public class mbot extends cell{
 		public String getName(){ return name;}
 		
 		@Override public boolean getControls(String control){
-			if(control == "Age"){ return true;}
-			if(control == "Fade"){ return true;}
-			if(control == "Mat"){return true;}
-			if(control == "Born"){ return true;}
-			if(control == "Survives"){return true;}
+			if(control == "Age"){ if(name == "OffCell"){return false;} return true;}
+			if(control == "Fade"){ if(name == "OffCell" || name == "BlinkCell"){return false;} return true;}
+			if(control == "Mat"){if(name == "OffCell" || name =="OnCell"){return false;}return true;}
+			if(control == "Born"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
+			if(control == "Survives"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
