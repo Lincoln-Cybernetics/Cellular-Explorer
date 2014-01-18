@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -46,6 +46,7 @@ JLabel fadelabel;
 JLabel jack;
 JLabel jill;
 JLabel[] wlab = new JLabel[8];
+JLabel wrlab;
 JRadioButton[] wdirs = new JRadioButton[4];
 JLabel orlabel;
 
@@ -76,6 +77,7 @@ public cellPicker(){
 	wlab[5] = new JLabel("010");
 	wlab[6] = new JLabel("001");
 	wlab[7] = new JLabel("000");
+	wrlab = new JLabel("Wolfram Rule: 0");
 	//wolfram directions
 	orlabel = new JLabel("Direction:");
 	wdirs[0] = new JRadioButton("|"); wdirs[1] = new JRadioButton("/");
@@ -113,14 +115,17 @@ public cellPicker(){
 		cpLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(cellpick)
 			.addComponent(MBOTPick)
+			// ages/fades
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(opts[0])
 				.addComponent(opts[1])
 				.addComponent(fadeslider)
 				.addComponent(fadelabel))
+				//maturity
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(matslider)
 				.addComponent(matlabel))
+				//MBOT born
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(jack)
 				.addComponent(opts[2])
@@ -132,6 +137,7 @@ public cellPicker(){
 				.addComponent(opts[8])
 				.addComponent(opts[9])
 				.addComponent(opts[10]))
+				//MBOT survives
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(jill)
 				.addComponent(opts[11])
@@ -143,6 +149,10 @@ public cellPicker(){
 				.addComponent(opts[17])
 				.addComponent(opts[18])
 				.addComponent(opts[19]))
+				// Wolfram rule number
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(wrlab))
+				// Wolfram rules
 			.addGroup(cpLayout.createSequentialGroup()
 				.addGroup(cpLayout.createParallelGroup()
 					.addComponent(wlab[0])
@@ -169,6 +179,7 @@ public cellPicker(){
 					.addComponent(wlab[7])
 					.addComponent(opts[27]))
 					)
+					// 4 orientations
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(orlabel)
 				.addComponent(wdirs[0])
@@ -181,14 +192,17 @@ public cellPicker(){
 		cpLayout.createSequentialGroup()
 			.addComponent(cellpick)
 			.addComponent(MBOTPick)
+			// ages/ fades
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(opts[0])
 				.addComponent(opts[1])
 				.addComponent(fadeslider)
 				.addComponent(fadelabel))
+				// maturity
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(matslider)
 				.addComponent(matlabel))
+				//MBOT born
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(jack)
 				.addComponent(opts[2])
@@ -200,6 +214,7 @@ public cellPicker(){
 				.addComponent(opts[8])
 				.addComponent(opts[9])
 				.addComponent(opts[10]))
+				// MBOT survives
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(jill)
 				.addComponent(opts[11])
@@ -211,6 +226,10 @@ public cellPicker(){
 				.addComponent(opts[17])
 				.addComponent(opts[18])
 				.addComponent(opts[19]))
+				//Wolfram rule number
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(wrlab))
+				// Wolfram rules
 			.addGroup(cpLayout.createParallelGroup()
 				.addGroup(cpLayout.createSequentialGroup()
 					.addComponent(wlab[0])
@@ -237,6 +256,7 @@ public cellPicker(){
 					.addComponent(wlab[7])
 					.addComponent(opts[27]))
 				)
+				// 4 orientations
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(orlabel)
 				.addComponent(wdirs[0])
@@ -251,6 +271,7 @@ public cellPicker(){
 		//init wolfram labels
 		for (int aa = 0; aa < wlab.length; aa++){
 			wlab[aa].setVisible(false);}
+			wrlab.setVisible(false);
 		//wolfram direction
 		for(int ac = 0; ac < wdirs.length; ac++){
 			wdirs[ac].setVisible(false); wdirs[ac].addActionListener(this);}
@@ -299,8 +320,8 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 	for(int i = 0; i< opts.length; i++){
 		if(e.getItemSelectable() == opts[i]){
 		switch(i){
-			case 0: gate.setBool("Ages", opts[i].getState()); break;
-			case 1: gate.setBool("Fades", opts[i].getState()); break;
+			case 0: gate.setBool("Ages", opts[i].getState()); if(!opts[0].getState() && opts[1].getState()){opts[1].setState(false);} break;
+			case 1: gate.setBool("Fades", opts[i].getState());if(opts[1].getState() && !opts[0].getState()){opts[0].setState(true);} break;
 			// Born on for MBOT
 			case 2: gate.setBool("B0", opts[i].getState()); break;
 			case 3: gate.setBool("B1", opts[i].getState()); break;
@@ -331,6 +352,9 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 26: gate.setBool("W1", opts[i].getState());break;
 			case 27: gate.setBool("W0", opts[i].getState());break;
 			}
+			// set Wolfram rule#
+			if(i > 19 && i < 28){ wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));}
+			
 		}
 	}
 }
@@ -376,7 +400,7 @@ private void toggleControl(int a, boolean b){
 		case 2: matslider.setVisible(b); matslider.setEnabled(b); matlabel.setVisible(b); if(b){matslider.setValue(1);gate.setInt("Mat", matslider.getValue());matlabel.setText("Maturity: "+ Integer.toString(matslider.getValue()));} break;
 		case 3: for(int c = 0; c < 9; c++){opts[c+2].setLabel(String.valueOf(c)); opts[c+2].setVisible(b); opts[c+2].setEnabled(b);} jack.setVisible(b); break;
 		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); break;
-		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b);} break;
+		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b); wrlab.setVisible(b); wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));} break;
 		case 6: for(int c = 0; c < 4; c++){wdirs[c].setVisible(b); wdirs[c].setEnabled(b);}orlabel.setVisible(b); break;
 	}
 }
