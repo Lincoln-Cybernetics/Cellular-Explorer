@@ -67,8 +67,8 @@ public void setInt(String a, int b){
 }
 
 public void setBool(String a, boolean b){
-	if(a == "Ages"){ doesage = b;}
-	if(a == "Fades"){ doesfade = b; fadenum = 256;} 
+	if(a == "Ages"){ doesage = b; if(!b){doesfade = false;}}
+	if(a == "Fades"){ doesfade = b;if(b){doesage = true;}} 
 	if(a == "B0"){ bornon[0] = b;}
 	if(a == "B1"){ bornon[1] = b;}
 	if(a == "B2"){ bornon[2] = b;}
@@ -109,6 +109,9 @@ public cell generateCell(){
 		case 1: tiamat =new wolfram(); tiamat = setRules(tiamat); break;
 		case 2:	if(mbotname == "Custom"){tiamat = new mbot(); tiamat = setRules(tiamat);}else{tiamat = new mbot(mbotname);}break;
 		case 3: tiamat = new randCell(); break;
+		case 4: tiamat = new mbot("OnCell"); break;
+		case 5: tiamat = new mbot("OffCell"); break;
+		case 6: tiamat = new mbot("BlinkCell"); break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
