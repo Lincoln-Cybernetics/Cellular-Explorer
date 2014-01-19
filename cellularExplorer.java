@@ -201,8 +201,8 @@ public class cellularExplorer implements ucListener{
 						  cPick.setVisible(true);
 						  Fred.setVisible(true);
 						  Gwen.setVisible(true);
-						  Fred.adducListener(v1.castor); v1.castor.setCP(Fred);Fred.setCOH(v1.castor);
-						  Gwen.adducListener(v1.pollux); v1.pollux.setCP(Gwen);Gwen.setCOH(v1.pollux);
+						  Fred.adducListener(v1.castor); v1.castor.setCP(Fred);Fred.setCOH(v1.castor);Fred.adducListener(v1);
+						  Gwen.adducListener(v1.pollux); v1.pollux.setCP(Gwen);Gwen.setCOH(v1.pollux);Gwen.adducListener(v1);
 						  break;
 						  
 				case 6:  sBox = new JFrame("Selection Tools");
