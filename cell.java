@@ -28,6 +28,7 @@ public class cell{
 	//neighborhood location variables
 	int hoodx;
 	int hoody;
+	boolean mirror;
 	
 	// neighborhood variables
 	boolean self;
@@ -52,9 +53,10 @@ public class cell{
 		radius = 0;
 		active = false;
 		state = 0;
-		name = "cell";
+		name = "Cell";
 		hoodx = -1;
 		hoody = -1;
+		mirror = false;
 		self = false;
 		mystate = 0;
 		age = 0;
@@ -67,16 +69,19 @@ public class cell{
 		public boolean getControls(String control){
 			if(control == "Age"){ return true;}
 			if(control == "Fade"){ return true;}
+			if(control == "Mirror"){ return true;}
 			 return false;}
 		
 		public boolean getOption(String opname){ 
 			if(opname == "Ages"){ return ages;}
 			if(opname == "Fades"){ return fades;}
+			if(opname == "Mirror"){ return mirror;}
 			return false;}
 		
 		public void setOption(String opname, boolean b){
 			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
+			if(opname == "Mirror"){mirror = b; if(b){hoodx = 0; hoody = 0; name  ="Mirror";}else{hoodx = -1; hoody = -1; name = "Cell";}}
 			}
 		
 		public int getParameter(String paramname){ 
@@ -84,11 +89,15 @@ public class cell{
 			if(paramname == "Rad"){ return radius;}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
+			if(paramname == "MirrX"){ return hoodx;}
+			if(paramname == "MirrY"){ return hoody;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
 			if(paramname == "Fade"){fade = a;}
+			if(paramname == "MirrX"){hoodx = a;}
+			if(paramname == "MirrY"){hoody = a;}
 			}
 		
 		public void setRule(int a, boolean b){}
