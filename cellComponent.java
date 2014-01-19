@@ -31,7 +31,7 @@ public class cellComponent extends JComponent
 	int[][] lifespan;// outlines cells based on Maturity setting
 	int[][] age;
 	int[][] ageclass;//determines the color in ulticolor
-	int[][] orientation;
+	int[][] hilite; // hilights cells
 	int hlx = 0;//hilight cell x
 	int hly = 0;// highlight cell y
 	int hlc = 0;//hilight color
@@ -56,7 +56,7 @@ public class cellComponent extends JComponent
 		lifespan = new int[xdim][ydim];
 		age = new int[xdim][ydim];
 		ageclass = new int[xdim][ydim];
-		orientation = new int[xdim][ydim];
+		hilite = new int[xdim][ydim];
 		setPreferredSize(new Dimension(xdim*magnify, ydim*magnify));
 	}
 	
@@ -70,7 +70,7 @@ public class cellComponent extends JComponent
 		lifespan = new int[xdim][ydim];
 		age = new int[xdim][ydim];
 		ageclass = new int[xdim][ydim];
-		orientation = new int[xdim][ydim];
+		hilite = new int[xdim][ydim];
 		setPreferredSize(new Dimension(xdim*magnify, ydim*magnify));
 
 	}
@@ -157,10 +157,11 @@ public void setAgeClass(int a, int b, int c){
 
 //hilights a cell
 	public void setHiLite(int a, int b, int c){
-		hiliteflag = true; hlx = a; hly = b; hlc = c; repaint();}
+		hilite[a][b] = c;
+		 repaint();}
 // remove hilight
 	public void remHilite(){
-		hiliteflag = false; repaint();}
+		for(int[] hinumar : hilite){for(int hinum : hinumar){hinum = 0;}} repaint();}
 
 //main paint method
 public void paintComponent( Graphics g){
@@ -250,21 +251,17 @@ public void paintComponent( Graphics g){
 								
 								g.fillRect(x*magnify,y*magnify,magnify,magnify);}
 						
-						// rendering for the "Fade" rule
-						/*if (mode == 5){
-							g.setColor(new Color(ageclass[x][y], ageclass[x][y], ageclass[x][y]));
-							g.fillRect(x*magnify,y*magnify,magnify,magnify);}*/
+					
 						
-								// hilite a hilited cell
-								if(hiliteflag){
-									if(x == hlx && y == hly){
-								switch(hlc){
+								// hilite cells
+								switch(hilite[x][y]){
+									case 0: break;
 									case 1: g.setColor(Color.red); break;
 									case 2: g.setColor(Color.blue); break;
 									case 3: g.setColor(Color.orange); break;
 									default: g.setColor(Color.red); break;}
-								g.drawRect(x*magnify, y*magnify, magnify, magnify);
-									}}
+									if(hilite[x][y] != 0){g.drawRect(x*magnify, y*magnify, magnify, magnify);}
+									
 									
 								//hilite a selection	
 								if(selectionflag){ 
