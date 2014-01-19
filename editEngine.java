@@ -61,7 +61,19 @@ public void initialize(){
 						  pistons[0][0].initBoard();
 						}
 
-public void handleControl(ucEvent e){}
+public void handleControl(ucEvent e){
+	if(e.getSource() == castor.source){
+		switch(e.getCommand()){
+			case 3: setMouseAction("Mirsel"); prisec = true; break;
+		}
+		}
+	if(e.getSource() == pollux.source){
+		switch(e.getCommand()){
+			case 3: setMouseAction("Mirsel"); prisec = false; break;
+		}
+		} 
+	
+	}
 	//start/stop the automaton
 	public void playPause(){
 		if(!pistons[0][0].mayIterate()){pistons[0][0].setOpMode(pistons[0][0].getDispType());
@@ -510,12 +522,7 @@ public void handleControl(ucEvent e){}
 				
 			
 						
-							//sets neighborhoods for mirror cells
-				//	public void mirSel(boolean a){
-					//	if(mirselflag == false){mirselflag = true; hiliteflag = true; prisec = a;}
-					//	else{if(prisec != a){prisec = a; mirselflag = true; hiliteflag = true;}
-					//		else{mirselflag = false; hiliteflag = false;}}
-					//	}
+			
 
 	// mouse interaction methods
 					public void mouseMoved( MouseEvent e){
@@ -525,24 +532,14 @@ public void handleControl(ucEvent e){}
 						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
-						// hilight passed over cells
-						//if(pistons[0][0].hiliteflag){if(pistons[0][0].mirselflag && mode == 3){int colsel; if(pistons[0][0].prisec){colsel = 1;}
-						//else{colsel = 2;} outputs[0][0].setHiLite(xlocal, ylocal, colsel);}
-						//if(pistons[0][0].singleselflag){outputs[0][0].setHiLite(xlocal,ylocal,1);}
-						//if(pistons[0][0].rectselflag == 1){outputs[0][0].setHiLite(xlocal,ylocal,1);}
-						 //}
+						
 						 // draws rectangle during rectangle selection
 						 if(maction == "SRaction"){for(int y = 0; y <= pistons[0][0].ysiz-1; y++){
 												for(int x = 0; x <= pistons[0][0].xsiz-1; x++){
 													outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));}}
 							 outputs[0][0].finishRect(xlocal,ylocal); }
 						 
-						// hilight a mirrorCell's targets as each mirrrorCell is moused over in the editor 
-						// if(pistons[0][0].mirselflag == false && pistons[0][0].merlin.getOpMode() == 3){
-						//if(pistons[0][0].culture[xlocal][ylocal].hood == "Mirror"){outputs[0][0].setHiLite(
-						//	pistons[0][0].culture[xlocal][ylocal].getInt("HX"),pistons[0][0].culture[xlocal][ylocal].getInt("HY"), 1);}
-						//else{}	
-						//}
+						
 						
 						}
 						
