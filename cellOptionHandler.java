@@ -33,6 +33,7 @@ boolean[] sequence = new boolean[8];
 boolean doesage = false;// sets aging
 boolean doesfade = false;// sets the fade rule
 int fadenum = 0;// maximum age for the fade rule
+boolean mirr = false; // mirror setting for cell
 public cellOptionHandler(){
 }
 
@@ -87,6 +88,7 @@ public void setBool(String a, boolean b){
 	if(a == "S6"){ surv[6] = b;} if(a == "W6"){ rule[6] = b;}
 	if(a == "S7"){ surv[7] = b;} if(a == "W7"){ rule[7] = b;}
 	if(a == "S8"){ surv[8] = b;}
+	if(a == "Mirror"){ mirr = b;}
 }
 
 public void setBoola( String a, boolean[] b){
@@ -118,6 +120,7 @@ public cell generateCell(){
 		if(tiamat.getControls("Fade")){ tiamat.setOption("Fades", doesfade); tiamat.setParameter("Fade", fadenum);}
 		if(tiamat.getControls("Mat")){ tiamat.setParameter("Mat", maturity);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
+		if(tiamat.getControls("Mirror")){ tiamat.setOption("Mirror", mirr); if(mirr){tiamat.setParameter("Mirrx", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
  return tiamat;
 }
 
