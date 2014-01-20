@@ -43,8 +43,9 @@ JLabel matlabel;
 JSlider fadeslider;
 JLabel fadelabel;
 
-JLabel jack;
-JLabel jill;
+JLabel jack;//born
+JLabel jill;//survives
+JLabel rulab;//rule label
 JLabel[] wlab = new JLabel[8];
 JLabel wrlab;
 JRadioButton[] wdirs = new JRadioButton[4];
@@ -70,6 +71,7 @@ public cellPicker(){
 	MBOTPick = new JComboBox(MBOTCells);
 	jack = new JLabel("Born");
 	jill = new JLabel("Survives");
+	rulab = new JLabel();
 	//labels for wolfram rules
 	wlab[0] = new JLabel("111");
 	wlab[1] = new JLabel("110");
@@ -105,6 +107,7 @@ public cellPicker(){
 	opts[11] = new Checkbox("0"); opts[12] = new Checkbox("1"); opts[13] = new Checkbox("2"); 
 	opts[14] = new Checkbox("3"); opts[15] = new Checkbox("4"); opts[16] = new Checkbox("5"); 
 	opts[17] = new Checkbox("6"); opts[18] = new Checkbox("7"); opts[19] = new Checkbox("8"); 
+	
 	//Wolfram rules
 	opts[20] = new Checkbox(); opts[21] = new Checkbox(); opts[22] = new Checkbox(); opts[23] = new Checkbox();
 	opts[24] = new Checkbox(); opts[25] = new Checkbox(); opts[26] = new Checkbox(); opts[27] = new Checkbox();
@@ -130,6 +133,9 @@ public cellPicker(){
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(matslider)
 				.addComponent(matlabel))
+				// MBOT rule
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(rulab))
 				//MBOT born
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(jack)
@@ -211,6 +217,9 @@ public cellPicker(){
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(matslider)
 				.addComponent(matlabel))
+				//MBOT rule
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(rulab))
 				//MBOT born
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(jack)
@@ -295,7 +304,8 @@ public cellPicker(){
 		for (int ab = 0; ab < opts.length; ab++){
 			opts[ab].setMaximumSize(new Dimension(10,10));opts[ab].setVisible(false);
 			 opts[ab].addItemListener(this);}
-		jack.setVisible(false); jill.setVisible(false);
+		// MBOT stuff
+		jack.setVisible(false); jill.setVisible(false); rulab.setVisible(false);
 		
 		//init fade components
 		fadeslider.setVisible(false); fadeslider.setEnabled(false);fadeslider.setValue(256);
@@ -328,7 +338,7 @@ public void setCOH(cellOptionHandler ned){
 
 public void actionPerformed(ActionEvent e){
 	if(e.getSource() == cellpick){command = 1; setCType(); fireucEvent(); setCell();}
-	if(e.getSource() == MBOTPick){command = 2; MBOTtype = MBOTPick.getSelectedItem().toString(); setCell(); fireucEvent();}
+	if(e.getSource() == MBOTPick){command = 2; MBOTtype = MBOTPick.getSelectedItem().toString(); setCell();  fireucEvent();}
 	if(e.getSource() == wdirs[0]){gate.setInt("Dir", 0);}
 	if(e.getSource() == wdirs[1]){gate.setInt("Dir", 1);}
 	if(e.getSource() == wdirs[2]){gate.setInt("Dir", 2);}
@@ -344,25 +354,25 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 0: gate.setBool("Ages", opts[i].getState()); if(!opts[0].getState() && opts[1].getState()){opts[1].setState(false);} break;
 			case 1: gate.setBool("Fades", opts[i].getState());if(opts[1].getState() && !opts[0].getState()){opts[0].setState(true);} break;
 			// Born on for MBOT
-			case 2: gate.setBool("B0", opts[i].getState()); break;
-			case 3: gate.setBool("B1", opts[i].getState()); break;
-			case 4: gate.setBool("B2", opts[i].getState()); break;
-			case 5: gate.setBool("B3", opts[i].getState()); break;
-			case 6: gate.setBool("B4", opts[i].getState()); break;
-			case 7: gate.setBool("B5", opts[i].getState()); break;
-			case 8: gate.setBool("B6", opts[i].getState()); break;
-			case 9: gate.setBool("B7", opts[i].getState()); break;
-			case 10: gate.setBool("B8", opts[i].getState());break;
+			case 2: gate.setBool("B0", opts[i].getState()); setRULAB(); break;
+			case 3: gate.setBool("B1", opts[i].getState()); setRULAB();break;
+			case 4: gate.setBool("B2", opts[i].getState()); setRULAB();break;
+			case 5: gate.setBool("B3", opts[i].getState()); setRULAB();break;
+			case 6: gate.setBool("B4", opts[i].getState()); setRULAB();break;
+			case 7: gate.setBool("B5", opts[i].getState()); setRULAB();break;
+			case 8: gate.setBool("B6", opts[i].getState()); setRULAB();break;
+			case 9: gate.setBool("B7", opts[i].getState()); setRULAB();break;
+			case 10: gate.setBool("B8", opts[i].getState());setRULAB();break;
 			// Survives for MBOT
-			case 11: gate.setBool("S0", opts[i].getState());break; 
-			case 12: gate.setBool("S1", opts[i].getState());break;
-			case 13: gate.setBool("S2", opts[i].getState());break;
-			case 14: gate.setBool("S3", opts[i].getState());break;
-			case 15: gate.setBool("S4", opts[i].getState());break;
-			case 16: gate.setBool("S5", opts[i].getState());break;
-			case 17: gate.setBool("S6", opts[i].getState());break;
-			case 18: gate.setBool("S7", opts[i].getState());break;
-			case 19: gate.setBool("S8", opts[i].getState());break;
+			case 11: gate.setBool("S0", opts[i].getState());setRULAB();break; 
+			case 12: gate.setBool("S1", opts[i].getState());setRULAB();break;
+			case 13: gate.setBool("S2", opts[i].getState());setRULAB();break;
+			case 14: gate.setBool("S3", opts[i].getState());setRULAB();break;
+			case 15: gate.setBool("S4", opts[i].getState());setRULAB();break;
+			case 16: gate.setBool("S5", opts[i].getState());setRULAB();break;
+			case 17: gate.setBool("S6", opts[i].getState());setRULAB();break;
+			case 18: gate.setBool("S7", opts[i].getState());setRULAB();break;
+			case 19: gate.setBool("S8", opts[i].getState());setRULAB();break;
 			// Wolfram rules
 			case 20: gate.setBool("W7", opts[i].getState());break;
 			case 21: gate.setBool("W6", opts[i].getState());break;
@@ -398,7 +408,7 @@ private void setCType(){
 private void setCell(){
 	
 		setOpts(gate.generateCell());
-		if(ct == 2){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);}
+		if(ct == 2){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);setRULAB();rulab.setVisible(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);rulab.setVisible(false);}
 }
 
 private void setOpts(cell darwin){
@@ -421,14 +431,21 @@ private void toggleControl(int a, boolean b){
 		case 0: opts[0].setVisible(b); opts[0].setEnabled(b); break;
 		case 1: opts[1].setVisible(b); opts[1].setEnabled(b); fadeslider.setVisible(b); fadeslider.setEnabled(b);if(b){ fadeslider.setValue(256); gate.setInt("Fade", fadeslider.getValue());} fadelabel.setVisible(b);if(b){fadelabel.setText(Integer.toString(fadeslider.getValue()));} break;
 		case 2: matslider.setVisible(b); matslider.setEnabled(b); matlabel.setVisible(b); if(b){matslider.setValue(1);gate.setInt("Mat", matslider.getValue());matlabel.setText("Maturity: "+ Integer.toString(matslider.getValue()));} break;
-		case 3: for(int c = 0; c < 9; c++){opts[c+2].setLabel(String.valueOf(c)); opts[c+2].setVisible(b); opts[c+2].setEnabled(b);} jack.setVisible(b); break;
-		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); break;
+		case 3: for(int c = 0; c < 9; c++){opts[c+2].setLabel(String.valueOf(c)); opts[c+2].setVisible(b); opts[c+2].setEnabled(b);} jack.setVisible(b);rulab.setVisible(b); break;
+		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); rulab.setVisible(b); break;
 		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b); wrlab.setVisible(b); wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));} break;
 		case 6: for(int c = 0; c < 4; c++){wdirs[c].setVisible(b); wdirs[c].setEnabled(b);}orlabel.setVisible(b); break;
-		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);break;
+		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);if(!b){mirbutt.setVisible(false); mirbutt.setEnabled(false);}else{mirbutt.setVisible(opts[28].getState()); mirbutt.setEnabled(opts[28].getState());}break;
 	}
 }
 
+public void setRULAB(){
+	cell gonzo = gate.generateCell(); String bst = ""; String sst = ""; String[] brn = new String[]{"B0","B1","B2","B3","B4","B5","B6","B7","B8"};
+	String[] srv = new String[]{"S0","S1","S2","S3","S4","S5","S6","S7","S8"};
+	for(int i = 0; i<9; i++){ if(gonzo.getOption(brn[i])){bst = bst + Integer.toString(i);} if(gonzo.getOption(srv[i])){sst = sst+ Integer.toString(i);}}
+	rulab.setText("B "+bst+"\\"+"S "+sst); 
+}
+	
 
 
 //event generation
