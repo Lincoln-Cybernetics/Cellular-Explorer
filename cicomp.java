@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class cicomp extends JComponent{
-JLabel[] fields = new JLabel[8];
+JLabel[] fields = new JLabel[10];
 JLabel moniker;
 JLabel aLabel;
 JLabel fLabel;
@@ -11,6 +11,8 @@ JLabel mtLabel;
 JLabel wrLabel;
 JLabel bLabel;
 JLabel sLabel;
+JLabel mxLabel;
+JLabel myLabel;
 cell xerxes;
 
 public cicomp(){
@@ -22,6 +24,8 @@ public cicomp(){
 	fields[5] = new JLabel("Wolfram Rule :");
 	fields[6] = new JLabel("B ");
 	fields[7] = new JLabel("/S ");
+	fields[8] = new JLabel("Mirror x: ");
+	fields[9] = new JLabel("Mirror y: ");
 	moniker = new JLabel();
 	aLabel = new JLabel();
 	fLabel = new JLabel();
@@ -31,6 +35,8 @@ public cicomp(){
 	wrLabel = new JLabel();
 	bLabel = new JLabel();
 	sLabel = new JLabel();
+	mxLabel = new JLabel();
+	myLabel = new JLabel();
 	xerxes = new cell();
 	
 	GroupLayout ccl = new GroupLayout(this);
@@ -63,6 +69,12 @@ public cicomp(){
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[5])
 				.addComponent(wrLabel))
+			.addGroup(ccl.createSequentialGroup()
+				.addComponent(fields[8])
+				.addComponent(mxLabel))
+			.addGroup(ccl.createSequentialGroup()
+				.addComponent(fields[9])
+				.addComponent(myLabel))
 				);
 		
 		ccl.setVerticalGroup(
@@ -91,8 +103,15 @@ public cicomp(){
 			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[5])
 				.addComponent(wrLabel))
+			.addGroup(ccl.createParallelGroup()
+				.addComponent(fields[8])
+				.addComponent(mxLabel))
+			.addGroup(ccl.createParallelGroup()
+				.addComponent(fields[9])
+				.addComponent(myLabel))
 				);
 	setLayout(ccl);
+	for( JLabel sign : fields){ sign.setVisible(false);} fields[0].setVisible(true);
 	}
 public void setCell(cell hammurabi){
 	xerxes = hammurabi;
@@ -116,6 +135,9 @@ public void refCell(){
 	else{fields[7].setVisible(false);sLabel.setVisible(false);}
 	if(xerxes.getControls("WolfRule")){fields[5].setVisible(true);wrLabel.setText(Integer.toString(xerxes.getParameter("WolfRule")));wrLabel.setVisible(true);}
 	else{fields[5].setVisible(false);wrLabel.setVisible(false);}
+	if(xerxes.getOption("Mirror")){fields[8].setVisible(true); mxLabel.setText(Integer.toString(xerxes.getParameter("MirrX"))); mxLabel.setVisible(true); 
+		fields[9].setVisible(true); myLabel.setText(Integer.toString(xerxes.getParameter("MirrY"))); myLabel.setVisible(true);}
+	else{fields[8].setVisible(false); mxLabel.setVisible(false); fields[9].setVisible(false); myLabel.setVisible(false);}
 	
 	}
 
