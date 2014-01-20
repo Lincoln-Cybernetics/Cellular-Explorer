@@ -108,7 +108,7 @@ public class cellComponent extends JComponent
 	
 		
 	public void setDispMode(int a){
-		mode = a; repaint();
+		mode = a; remHilite(); 
 		/*Mode 1: normal rendering for running the automaton
 		 *Mode 2: state editing mode
 		 *Mode 3: Cell editing mode 
@@ -161,7 +161,11 @@ public void setAgeClass(int a, int b, int c){
 		 repaint();}
 // remove hilight
 	public void remHilite(){
-		for(int[] hinumar : hilite){for(int hinum : hinumar){hinum = 0;}} repaint();}
+		for(int y = 0; y< ydim; y++){
+		for(int x = 0; x< xdim; x++){
+			hilite[x][y] = 0;}}
+			repaint();
+		}
 
 //main paint method
 public void paintComponent( Graphics g){
