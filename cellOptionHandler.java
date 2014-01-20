@@ -45,7 +45,7 @@ public void setCP( cellPicker lorenzo){
 public void handleControl( ucEvent e){
 	switch(e.getCommand()){
 		case 1: setCT(source.getCT()); break;
-		case 2: setMBOT(source.getMBOT()); break;
+		case 2: setMBOT(source.getMBOT()); source.setRULAB(); break;
 	}
 	}
 
@@ -120,7 +120,7 @@ public cell generateCell(){
 		if(tiamat.getControls("Fade")){ tiamat.setOption("Fades", doesfade); tiamat.setParameter("Fade", fadenum);}
 		if(tiamat.getControls("Mat")){ tiamat.setParameter("Mat", maturity);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
-		if(tiamat.getControls("Mirror")){ tiamat.setOption("Mirror", mirr); if(mirr){tiamat.setParameter("Mirrx", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
+		if(tiamat.getControls("Mirror")){ tiamat.setOption("Mirror", mirr); if(mirr){tiamat.setParameter("MirrX", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
  return tiamat;
 }
 
@@ -184,7 +184,8 @@ class randcellOptionHandler extends cellOptionHandler{
 	public cell generateCell(){
 	cell tiamat;
 	switch(celltype){
-		case 0: tiamat = new cell();break;
+		case 0: tiamat = new cell(); if(shovel.nextInt(10) <= 6){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
+					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}break;
 		case 1: tiamat = new wolfram(); 
 				for(int ace = 0; ace < 8; ace ++){ tiamat.setRule(ace, shovel.nextBoolean());}
 				break;
