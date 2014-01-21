@@ -29,6 +29,7 @@ public class wolfram extends cell{
 	int hoodx;
 	int hoody;
 	int direction;
+	boolean mirror;
 	// in Wolfram, direction indicates the direction traveled 
 	//from the center cell towards the least significant bit in the neighborhood
 	
@@ -65,6 +66,7 @@ public class wolfram extends cell{
 		name = "Wolfram";
 		hoodx = -1;
 		hoody = -1;
+		mirror = false;
 		direction = 0;
 		self = false;
 		mystate = 0;
@@ -88,6 +90,7 @@ public class wolfram extends cell{
 			if(control == "WolfRule"){ return true;}
 			if(control == "Mat"){ return true;}
 			if(control == "Orient"){ return true;}
+			if(control == "Mirror"){ return true;}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
@@ -101,6 +104,7 @@ public class wolfram extends cell{
 			if(opname == "WR5"){return rule[5];}
 			if(opname == "WR6"){return rule[6];}
 			if(opname == "WR7"){return rule[7];}
+			if(opname == "Mirror"){ return mirror;}
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
@@ -114,6 +118,7 @@ public class wolfram extends cell{
 			if(opname == "WR5"){rule[5] = b;}
 			if(opname == "WR6"){rule[6] = b;}
 			if(opname == "WR7"){rule[7] = b;}
+			if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror-"+name;}else{hoodx = -1; hoody = -1; name = "Wolfram";}}
 			}
 		
 		@Override public int getParameter(String paramname){ 
@@ -124,6 +129,8 @@ public class wolfram extends cell{
 			if(paramname == "Dir"){ return direction;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
+			if(paramname == "MirrX"){ return hoodx;}
+			if(paramname == "MirrY"){ return hoody;}
 			if(paramname == "WolfRule"){int wn = 0; if(rule[7]){wn += 128;} if(rule[6]){wn += 64;} if(rule[5]){wn += 32;} if(rule[4]){wn += 16;}
 				if(rule[3]){wn += 8;} if(rule[2]){wn += 4;} if(rule[1]){wn += 2;} if(rule[0]){wn += 1;} return wn;}
 			return -1;}
@@ -134,6 +141,8 @@ public class wolfram extends cell{
 			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction -= 4;}}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
+			if(paramname == "MirrX"){hoodx = a;}
+			if(paramname == "MirrY"){hoody = a;}
 			}
 			
 		public void setRule(int a, boolean b){if(a < 8){rule[a] = b;}}
