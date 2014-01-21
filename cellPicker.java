@@ -36,23 +36,25 @@ String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimi
 "Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
 String MBOTtype = "Custom";
 
-Checkbox[] opts = new Checkbox[29];
+Checkbox[] opts = new Checkbox[29];//All the options
 
-JSlider matslider;
-JLabel matlabel;
-JSlider fadeslider;
-JLabel fadelabel;
+JSlider matslider;//Sets the maturity variable (number of iterations between state calculations)
+JLabel matlabel;//Maturity indicator
+JSlider fadeslider;//Sets the Fade rule max. lifespan
+JLabel fadelabel;//Fade indicator
 
 JLabel jack;//born
 JLabel jill;//survives
 JLabel rulab;//rule label
-JLabel[] wlab = new JLabel[8];
-JLabel wrlab;
-JRadioButton[] wdirs = new JRadioButton[4];
+JLabel[] wlab = new JLabel[8];//Wolfram rule labels
+JLabel wrlab;//Wolfram rule indicator
+JRadioButton[] wdirs = new JRadioButton[4];//4 orientations used by Wolfram
 JLabel orlabel;
 
-JButton mirbutt;
-
+JButton mirbutt;// button to set mirror
+JButton refsetbutt;//button to set mirror reference point
+JButton refclrbutt;//button to clear mirror reference point
+boolean refflag = false;
 
 // relate to sending command events
 int ct = 0; //cell-type
@@ -114,6 +116,8 @@ public cellPicker(){
 	// Mirror 
 	opts[28] = new Checkbox("Mirror Cell");
 	mirbutt = new JButton("Set Mirror");
+	refsetbutt = new JButton("Set Reference");
+	refclrbutt = new JButton("Clear Reference");
 	
 	GroupLayout cpLayout = new GroupLayout(this);
 	cpLayout.setAutoCreateGaps(false);
@@ -200,7 +204,9 @@ public cellPicker(){
 				// Mirror
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(opts[28])
-				.addComponent(mirbutt))
+				.addComponent(mirbutt)
+				.addComponent(refsetbutt)
+				.addComponent(refclrbutt))
 				);
 				
 	cpLayout.setVerticalGroup(
@@ -284,7 +290,9 @@ public cellPicker(){
 				//mirror
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(opts[28])
-				.addComponent(mirbutt))
+				.addComponent(mirbutt)
+				.addComponent(refsetbutt)
+				.addComponent(refclrbutt))
 				);	
 		setLayout(cpLayout);
 		setPreferredSize(new Dimension(325,200));
@@ -319,6 +327,8 @@ public cellPicker(){
 		
 		//init mirror
 		mirbutt.setVisible(false); mirbutt.setEnabled(false); mirbutt.addActionListener(this);
+		refsetbutt.setVisible(false); refsetbutt.setEnabled(false); refsetbutt.addActionListener(this);
+		refclrbutt.setVisible(false); refclrbutt.setEnabled(false); refclrbutt.addActionListener(this);
 		
 	//init MBOT picker
 	MBOTPick.setVisible(false);
@@ -343,7 +353,9 @@ public void actionPerformed(ActionEvent e){
 	if(e.getSource() == wdirs[1]){gate.setInt("Dir", 1);}
 	if(e.getSource() == wdirs[2]){gate.setInt("Dir", 2);}
 	if(e.getSource() == wdirs[3]){gate.setInt("Dir", 3);}
-	if(e.getSource() == mirbutt){command = 3; fireucEvent();}
+	if(e.getSource() == mirbutt){command = 5; fireucEvent(); command = 3; fireucEvent();}
+	if(e.getSource() == refsetbutt){ refflag = true;command = 4; fireucEvent();}
+	if(e.getSource() == refclrbutt){refflag = false;command = 5; fireucEvent();}
 	}
 
 public void itemStateChanged(ItemEvent e){//age, fade, born, survives
@@ -383,7 +395,9 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 26: gate.setBool("W1", opts[i].getState());break;
 			case 27: gate.setBool("W0", opts[i].getState());break;
 			// mirror
-			case 28: gate.setBool("Mirror", opts[i].getState()); mirbutt.setVisible(opts[i].getState()); mirbutt.setEnabled(opts[i].getState()); break;
+			case 28: gate.setBool("Mirror", opts[i].getState()); mirbutt.setVisible(opts[i].getState()); mirbutt.setEnabled(opts[i].getState()); 
+			if(!refflag){refsetbutt.setVisible(opts[i].getState()); refsetbutt.setEnabled(opts[i].getState());}
+			if(refflag){ refclrbutt.setEnabled(opts[i].getState()); refclrbutt.setVisible(opts[i].getState());} break;
 			}
 			// set Wolfram rule#
 			if(i > 19 && i < 28){ wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));}
@@ -435,7 +449,9 @@ private void toggleControl(int a, boolean b){
 		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); rulab.setVisible(b); break;
 		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b); wrlab.setVisible(b); wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));} break;
 		case 6: for(int c = 0; c < 4; c++){wdirs[c].setVisible(b); wdirs[c].setEnabled(b);}orlabel.setVisible(b); break;
-		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);if(!b){mirbutt.setVisible(false); mirbutt.setEnabled(false);}else{mirbutt.setVisible(opts[28].getState()); mirbutt.setEnabled(opts[28].getState());}break;
+		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);if(!b){mirbutt.setVisible(false); mirbutt.setEnabled(false);refsetbutt.setVisible(false); refsetbutt.setEnabled(false);
+		refclrbutt.setVisible(false); refclrbutt.setEnabled(false);}else{mirbutt.setVisible(opts[28].getState()); mirbutt.setEnabled(opts[28].getState());if(refflag){refclrbutt.setVisible(opts[28].getState());
+		refclrbutt.setEnabled(opts[28].getState());}else{refsetbutt.setVisible(opts[28].getState());refsetbutt.setEnabled(opts[28].getState());}}break;
 	}
 }
 
@@ -462,6 +478,8 @@ public synchronized void removeucListener(ucListener listener){
  * 1= set Cell type
  * 2 = set MBOT type
  * 3 = set mirror point
+ * 4 = set mirror reference
+ * 5 = clear mirror reference
  */
 private synchronized void fireucEvent(){
 	ucEvent cmd = new ucEvent(this);
