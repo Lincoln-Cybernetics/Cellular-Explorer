@@ -306,8 +306,10 @@ class cellBrain  implements Runnable{
 							switch(culture[x][y].getParameter("Dim")){
 								case 0: if(culture[x][y].getOption("Mirror")){culture[x][y].setSelf(getSelf(culture[x][y].getParameter("MirrX"),culture[x][y].getParameter("MirrY")));}
 										else{culture[x][y].setSelf(getSelf(x,y));}break;
-								case 1: culture[x][y].setNeighbors(getWolfram(x,y,culture[x][y].getParameter("Dir"))); break;
-								case 2: culture[x][y].setNeighborhood(getMoore(x,y));
+								case 1:  if(culture[x][y].getOption("Mirror")){culture[x][y].setNeighbors(getWolfram(culture[x][y].getParameter("MirrX"),culture[x][y].getParameter("MirrY"),culture[x][y].getParameter("Dir")));}
+										else{culture[x][y].setNeighbors(getWolfram(x,y,culture[x][y].getParameter("Dir")));} break;
+								case 2: if(culture[x][y].getOption("Mirror")){culture[x][y].setNeighborhood(getMoore(culture[x][y].getParameter("MirrX"),culture[x][y].getParameter("MirrY")));}
+										else{culture[x][y].setNeighborhood(getMoore(x,y));} break;
 								default:  culture[x][y].setSelf(getSelf(x,y)); break;}
 								// iterates the cells
 								culture[x][y].iterate();
