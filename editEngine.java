@@ -9,16 +9,21 @@ int xlocal = 0;// used for mouse events
 int ylocal = 0;// used for mouse events
 int xmax;//x-dimension size of the automaton
 int ymax;// y-dimension size of the automaton
-int zt = 500;
-brush sigmund;
+int zt = 500;// speed setting
+brush sigmund;// editing brush
 int brushtype;
 String maction;
-int mode = 1;
-int dmode = 1;
+int mode = 1;// general operating mode
+int dmode = 1;// display mode
 cellOptionHandler castor;
 cellOptionHandler pollux;
 cellOptionHandler eris;
 boolean prisec = true;//shunts settings info to castor(true) or pollux(false)
+int mirrefflag = 0;//mirror reference state
+int mirrefx;//mirror reference x
+int mirrefy;//mirror reference y
+int anchorx;//anchor coordinate x for mirrors using the reference
+int anchory;//anchor coordinate y for mirrors using the reference
 selector sedna;
 int sdo = 0; //state drawing option
 boolean interactflag = false;
@@ -72,7 +77,12 @@ public void handleControl(ucEvent e){
 			case 3: setMouseAction("Mirsel"); prisec = false; break;
 		}
 		} 
-	
+	if(e.getSource() == castor.source || e.getSource() == pollux.source){
+		switch(e.getCommand()){
+			case 4: mirrefflag = 1; setMouseAction("Mirsel");break;
+			case 5: mirrefflag = 0;break;
+		}
+	}
 	}
 	//start/stop the automaton
 	public void playPause(){
@@ -168,7 +178,7 @@ public void handleControl(ucEvent e){
 		 barnabus = new JFrame("Cell Info");
 		 barnabus.getContentPane().add(mercury);
 		 barnabus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		 barnabus.setSize(200,150);
+		 barnabus.setSize(250,250);
 		 barnabus.setLocation(675,0);
 		 barnabus.setResizable(false);
 		 barnabus.setVisible(true);
@@ -257,6 +267,21 @@ public void handleControl(ucEvent e){
 						default: decider = castor;break;}
 				
 							ed = decider.getCell();	
+								
+								// set mirror reference anchor, and cell mirror coordinates
+								if(mirrefflag == 2 && ed.getOption("Mirror")){
+									anchorx = a; ed.setParameter("MirrX", a);
+									anchory = b; ed.setParameter("MirrY", b);
+									mirrefflag = 3;}
+								//set mirror coordinates 
+								if(mirrefflag == 3 && ed.getOption("Mirror")){
+									int myx = anchorx - a; int myy = anchory - b;
+									myx = mirrefx-myx; myy = mirrefy-myy;
+									if(myx > xmax-1){if(pistons[0][0].getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
+									if(myx < 0){if(pistons[0][0].getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
+									if(myy > ymax-1){if(pistons[0][0].getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
+									if(myy < 0){if(pistons[0][0].getWrap("Y")){myy = myy+ymax;}else{myy = 0;}}
+									ed.setParameter("MirrX",myx); ed.setParameter("MirrY",myy);}
 								
 								pistons[0][0].addCell(a,b,ed);
 						outputs[0][0].setSpecies(a,b,decider.getCT());
@@ -751,9 +776,14 @@ public void handleControl(ucEvent e){
 						//mirror selection
 						if(maction == "Mirsel"){
 						if(mode == 3){
+							switch(mirrefflag){
+							case 0:	
 							if(prisec){castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);}
 							else{pollux.setInt("MirrX", xlocal); pollux.setInt("MirrY", ylocal);}
-							outputs[0][0].setHiLite(xlocal, ylocal, 3);setMouseAction("CDraw");
+							outputs[0][0].setHiLite(xlocal, ylocal, 3);setMouseAction("CDraw"); break;
+							case 1: mirrefflag = 2; mirrefx = xlocal; mirrefy = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 2);
+							setMouseAction("CDraw"); break;
+						}
 						}}
 				}
 					
