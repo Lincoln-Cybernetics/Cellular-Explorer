@@ -199,6 +199,13 @@ class cellBrain  implements Runnable{
 				// set edge-wrapping
 				public void setXYwrap(boolean xwr, boolean ywr){xwrap = xwr; ywrap = ywr; 
 				 ariadne.setWrap(xwrap,ywrap); andromeda.setWrap(xwrap, ywrap);}
+				 
+				 // get wrap settings
+				 public boolean getWrap(String c){
+					 if (c == "X"){return xwrap;}
+					 if (c == "Y"){return ywrap;}
+					 return false;
+				 } 
 				
 				
 				//stores the type of display while editing	
