@@ -168,7 +168,7 @@ class randcellOptionHandler extends cellOptionHandler{
 	int ysiz = 1;
 	String[] MBOTCell = new String[]{"2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
 "Dry Life", "Fredkin", "Gnarl", "High Life", "Life", "Life without Death", "Live Free or Die", "Long Life", "Maze", "Mazectric",
-"Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
+"Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities", "OnCell", "OffCell", "BlinkCell"};
 	Random shovel = new Random();
 	//can not set parameters
 	public void setCT(int a){}
@@ -184,19 +184,21 @@ class randcellOptionHandler extends cellOptionHandler{
 	public cell generateCell(){
 	cell tiamat;
 	switch(celltype){
-		case 0: tiamat = new cell(); if(shovel.nextInt(10) <= 6){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
-					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}break;
+		case 0: tiamat = new cell(); break;
 		case 1: tiamat = new wolfram(); 
 				for(int ace = 0; ace < 8; ace ++){ tiamat.setRule(ace, shovel.nextBoolean());}
 				break;
-		case 2: tiamat = new mbot();
-				for(int ace = 0; ace <= 9; ace++){// String berling = "B"+ace; String sevino = "S"+ace; 
-				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}
+		case 2: if(shovel.nextInt(10) <= 5){tiamat =new mbot(MBOTCell[shovel.nextInt(MBOTCell.length)]);}
+				else{tiamat = new mbot();
+				for(int ace = 0; ace <= 9; ace++){
+				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}}
 				break;
 		case 3: tiamat = new randCell();
 				break;
 
 		default: tiamat = new cell();break;}
+		if(shovel.nextInt(10) <= 6){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
+					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}
 		tiamat.setParameter("Mat", shovel.nextInt(256)); tiamat.setParameter("Dir", shovel.nextInt(8)); 
 		tiamat.setParameter("Age", shovel.nextInt(256));tiamat.setParameter("Fade", shovel.nextInt(256));
 		tiamat.setParameter("Matcount", shovel.nextInt(256));
