@@ -261,7 +261,7 @@ public void paintComponent( Graphics g){
 								switch(hilite[x][y]){
 									case 0: break;
 									case 1: g.setColor(Color.red); break;
-									case 2: g.setColor(Color.blue); break;
+									case 2: g.setColor(Color.yellow); break;
 									case 3: g.setColor(Color.orange); break;
 									default: g.setColor(Color.red); break;}
 									if(hilite[x][y] != 0){g.drawRect(x*magnify, y*magnify, magnify, magnify);}
