@@ -28,6 +28,7 @@ public class mbot extends cell{
 	//neighborhood location variables
 	int hoodx;
 	int hoody;
+	boolean mirror;
 	
 	// neighborhood variables
 	boolean self;
@@ -65,6 +66,7 @@ public class mbot extends cell{
 		name = "M.B.O.T.";
 		hoodx = -1;
 		hoody = -1;
+		mirror = false;
 		self = false;
 		mystate = 0;
 		age = 0;
@@ -86,6 +88,7 @@ public class mbot extends cell{
 		name = type;
 		hoodx = -1;
 		hoody = -1;
+		mirror = false;
 		self = false;
 		mystate = 0;
 		age = 0;
@@ -145,6 +148,7 @@ public class mbot extends cell{
 			if(control == "Mat"){if(name == "OffCell" || name =="OnCell"){return false;}return true;}
 			if(control == "Born"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
 			if(control == "Survives"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
+			if(control == "Mirror"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
@@ -161,7 +165,7 @@ public class mbot extends cell{
 			if(opname == "S4"){return survives[4];}if(opname == "S5"){return survives[5];}
 			if(opname == "S6"){return survives[6];}if(opname == "S7"){return survives[7];}
 			if(opname == "S8"){return survives[8];}
-			
+			if(opname == "Mirror"){ return mirror;}
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
@@ -178,6 +182,7 @@ public class mbot extends cell{
 			if(opname == "S4"){ survives[4]=b;}if(opname == "S5"){ survives[5]=b;}
 			if(opname == "S6"){survives[6]=b;}if(opname == "S7"){ survives[7]=b;}
 			if(opname == "S8"){ survives[8]=b;}
+			if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror-" + name;}else{hoodx = -1; hoody = -1; name = "M.B.O.T.";}}
 			}
 		
 		@Override public int getParameter(String paramname){ 
@@ -187,6 +192,8 @@ public class mbot extends cell{
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
+			if(paramname == "MirrX"){ return hoodx;}
+			if(paramname == "MirrY"){ return hoody;}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
@@ -194,6 +201,8 @@ public class mbot extends cell{
 			if(paramname == "Fade"){fade = a;}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
+			if(paramname == "MirrX"){hoodx = a;}
+			if(paramname == "MirrY"){hoody = a;}
 			}
 			
 		@Override public void setRule(int a, boolean b){if(a < 9){born[a] = b;}else{if(a < 18){survives[a-9] =b;}}}
