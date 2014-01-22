@@ -114,6 +114,7 @@ public class cellularExplorer implements ucListener{
 					case 4: v1.setCDO(Emily.cdoGet()); break;//cell random draw
 					case 5: v1.setCFO(Emily.cfoGet()); break;//cell check fill
 					case 6: v1.setCFO(Emily.cfoGet()); break;//cell random fill
+					case 7: if(v1.getMode() == 3){v1.setMouseAction("CDraw");} break;//Cell Drawing
 				}
 				}
 				
@@ -189,10 +190,13 @@ public class cellularExplorer implements ucListener{
 						  break;
 						  
 				case 5:  cPick = new JFrame("Cell Picker");
+						  JSeparator bernie = new JSeparator(JSeparator.VERTICAL);
+						  bernie.setPreferredSize(new Dimension(5,200));
 						  Fred = new cellPicker(); 
 						  Gwen = new cellPicker();
 						  cPick.setLayout(new FlowLayout());
 						  cPick.getContentPane().add(Fred);
+						  cPick.getContentPane().add(bernie);
 						  cPick.getContentPane().add(Gwen);
 						  cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
 						  cPick.setSize(775,200);
