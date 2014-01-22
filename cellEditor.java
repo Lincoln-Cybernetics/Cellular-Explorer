@@ -26,7 +26,7 @@ import java.beans.PropertyChangeEvent;
 
 public class cellEditor extends JComponent implements ActionListener, ItemListener{
 // controlPanel variables
-JButton[] mainbutts = new JButton[3];
+JButton[] mainbutts = new JButton[4];
 Checkbox[] mainchecks = new Checkbox[4];
 // relate to sending command events
 private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -40,6 +40,7 @@ public cellEditor(){
 	mainbutts[0] = new JButton("Cell Editing Mode");
 	mainbutts[1] = new JButton("Fill");
 	mainbutts[2] = new JButton("Border");
+	mainbutts[3] = new JButton("Cell Draw");
 	
 	mainchecks[0] = new Checkbox("Check");
 	mainchecks[1] = new Checkbox("Random");
@@ -54,6 +55,7 @@ public cellEditor(){
 	ceLayout.setHorizontalGroup(
 		ceLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(mainbutts[0])
+			.addComponent(mainbutts[3])
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
@@ -68,6 +70,7 @@ public cellEditor(){
 	ceLayout.setVerticalGroup(
 		ceLayout.createSequentialGroup()
 			.addComponent(mainbutts[0])
+			.addComponent(mainbutts[3])
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
@@ -84,7 +87,7 @@ public cellEditor(){
 		
 	// plug in controls
 	for(int cont = 0; cont <= 3; cont++){
-		if(cont <= 2){mainbutts[cont].addActionListener(this);mainbutts[cont].setVisible(true);}
+		mainbutts[cont].addActionListener(this);mainbutts[cont].setVisible(true);
 		mainchecks[cont].addItemListener(this);mainchecks[cont].setVisible(true);}
 		
 	
@@ -97,9 +100,14 @@ public void actionPerformed(ActionEvent e){
 		}
 		
 	switch(buttnum){
+		// Cell editing mode
 		case 0: command = 0; fireucEvent(); break;
+		// cell fill
 		case 1: command = 1; fireucEvent(); break;
+		//set border
 		case 2: command = 2; fireucEvent(); break;
+		//Cell draw
+		case 3: command = 7; fireucEvent(); break;
 	}
 	}
 
