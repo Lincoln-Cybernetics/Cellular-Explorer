@@ -19,11 +19,12 @@ cellOptionHandler castor;
 cellOptionHandler pollux;
 cellOptionHandler eris;
 boolean prisec = true;//shunts settings info to castor(true) or pollux(false)
-int mirrefflag = 0;//mirror reference state
-int mirrefx;//mirror reference x
-int mirrefy;//mirror reference y
-int anchorx;//anchor coordinate x for mirrors using the reference
-int anchory;//anchor coordinate y for mirrors using the reference
+int[] mirrefflag = new int[]{0,0,0,0};//mirror reference state
+int[] mirrefx = new int[]{0,0,0,0};//mirror reference x
+int[] mirrefy = new int[]{0,0,0,0};//mirror reference y
+int[] anchorx = new int[]{0,0,0,0};//anchor coordinate x for mirrors using the reference
+int[] anchory = new int[]{0,0,0,0};//anchor coordinate y for mirrors using the reference
+
 selector sedna;
 int sdo = 0; //state drawing option
 boolean interactflag = false;
@@ -69,21 +70,18 @@ public void initialize(){
 public void handleControl(ucEvent e){
 	if(e.getSource() == castor.source){
 		switch(e.getCommand()){
-			case 3: setMouseAction("Mirsel"); prisec = true; break;
+			case 3: setMouseAction("Mirsel"); prisec = true; mirrefflag[1] = 0; break;
+			case 4: mirrefflag[1] = 1; prisec = true; setMouseAction("Mirsel");break;
 		}
 		}
 	if(e.getSource() == pollux.source){
 		switch(e.getCommand()){
-			case 3: setMouseAction("Mirsel"); prisec = false; break;
+			case 3: setMouseAction("Mirsel"); prisec = false; mirrefflag[1] = 0; break;
+			case 4: mirrefflag[1] = 1; prisec = false; setMouseAction("Mirsel");break;
 		}
 		} 
-	if(e.getSource() == castor.source || e.getSource() == pollux.source){
-		switch(e.getCommand()){
-			case 4: mirrefflag = 1; setMouseAction("Mirsel");break;
-			case 5: mirrefflag = 0;break;
-		}
 	}
-	}
+	
 	//start/stop the automaton
 	public void playPause(){
 		if(!pistons[0][0].mayIterate()){pistons[0][0].setOpMode(pistons[0][0].getDispType());
@@ -269,14 +267,15 @@ public void handleControl(ucEvent e){
 							ed = decider.getCell();	
 								
 								// set mirror reference anchor, and cell mirror coordinates
-								if(mirrefflag == 2 && ed.getOption("Mirror")){
-									anchorx = a; ed.setParameter("MirrX", a);
-									anchory = b; ed.setParameter("MirrY", b);
-									mirrefflag = 3;}
+								
+								if(mirrefflag[c] == 2 && ed.getOption("Mirror")){
+									anchorx[c] = a; ed.setParameter("MirrX", a);
+									anchory[c] = b; ed.setParameter("MirrY", b);
+									mirrefflag[c] = 3;}
 								//set mirror coordinates 
-								if(mirrefflag == 3 && ed.getOption("Mirror")){
-									int myx = anchorx - a; int myy = anchory - b;
-									myx = mirrefx-myx; myy = mirrefy-myy;
+								if(mirrefflag[c] == 3 && ed.getOption("Mirror")){
+									int myx = anchorx[c] - a; int myy = anchory[c] - b;
+									myx = mirrefx[c]-myx; myy = mirrefy[c]-myy;
 									if(myx > xmax-1){if(pistons[0][0].getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
 									if(myx < 0){if(pistons[0][0].getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
 									if(myy > ymax-1){if(pistons[0][0].getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
@@ -776,15 +775,27 @@ public void handleControl(ucEvent e){
 						//mirror selection
 						if(maction == "Mirsel"){
 						if(mode == 3){
-							switch(mirrefflag){
+							//primary cell
+							if(prisec){
+							switch(mirrefflag[1]){
 							case 0:	
-							if(prisec){castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);}
-							else{pollux.setInt("MirrX", xlocal); pollux.setInt("MirrY", ylocal);}
-							outputs[0][0].setHiLite(xlocal, ylocal, 3);setMouseAction("CDraw"); break;
-							case 1: mirrefflag = 2; mirrefx = xlocal; mirrefy = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 2);
+							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
+							outputs[0][0].setHiLite(xlocal, ylocal, 1);setMouseAction("CDraw"); break;
+							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 3);
 							setMouseAction("CDraw"); break;
-						}
 						}}
+							//secondary cell
+							else{
+								switch(mirrefflag[2]){
+							case 0:	
+							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
+							outputs[0][0].setHiLite(xlocal, ylocal, 2);setMouseAction("CDraw"); break;
+							case 1: mirrefflag[2] = 2; mirrefx[2] = xlocal; mirrefy[2] = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 4);
+							setMouseAction("CDraw"); break;
+						}}
+						
+						}}
+						
 				}
 					
 				
