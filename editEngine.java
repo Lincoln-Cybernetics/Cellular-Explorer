@@ -253,6 +253,40 @@ public void handleControl(ucEvent e){
 						default : sigmund = new brush(pistons[0][0].xsiz, pistons[0][0].ysiz); break;}
 					}
 					
+	// applies the brush to a point in the automaton
+	public void applyBrush(int x, int y){
+						sigmund.locate(x, y);
+						int reps = sigmund.getBrushLength();
+						for (int a = 0; a <= reps; a++){
+						int thisx = sigmund.getNextX();
+						int thisy = sigmund.getNextY();
+						
+						//edit state
+						if(maction == "SDraw"){
+						if(mode == 2 || interactflag){
+								drawState(thisx, thisy);
+							}}
+						
+						//editcell
+						if(maction == "CDraw"){
+						if (mode == 3 ){
+							drawCell(thisx, thisy);
+							}
+						}
+							
+							// cell selection
+						if(maction == "BSel"){
+							outputs[0][0].setSelect(true);
+							 if(rcflag){sedna.removeCell(thisx,thisy);}
+							 else{sedna.selectCell(thisx,thisy);}
+						}
+						
+					}
+						
+						refreshSel();
+		
+	}
+					
 					//makes the cells
 				public void populate(int a, int b, int c){
 					cell ed;
@@ -577,35 +611,7 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
-						sigmund.locate(xlocal, ylocal);
-						int reps = sigmund.getBrushLength();
-						for (int a = 0; a <= reps; a++){
-						int thisx = sigmund.getNextX();
-						int thisy = sigmund.getNextY();
-						
-						//edit state
-						if(maction == "SDraw"){
-						if(mode == 2 || interactflag){
-								drawState(thisx, thisy);
-							}}
-						
-						//editcell
-						if(maction == "CDraw"){
-						if (mode == 3 ){
-							drawCell(thisx, thisy);
-							}
-						}
-							
-							// cell selection
-						if(maction == "BSel"){
-							outputs[0][0].setSelect(true);
-							 if(rcflag){sedna.removeCell(thisx,thisy);}
-							 else{sedna.selectCell(thisx,thisy);}
-						}
-						
-					}
-						
-						refreshSel();
+						applyBrush(xlocal, ylocal);
 					}
 					else{
 						 //  rectangle selection
@@ -630,34 +636,7 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
-						sigmund.locate(xlocal, ylocal);
-						int reps = sigmund.getBrushLength();
-						for (int a = 0; a <= reps; a++){
-						int thisx = sigmund.getNextX();
-						int thisy = sigmund.getNextY();
-						
-							//edit state
-						if(maction == "SDraw"){
-						if(mode == 2 || interactflag){
-								drawState(thisx, thisy);
-							}}
-						
-						//editcell
-						if(maction == "CDraw"){
-						if (mode == 3 ){
-							drawCell(thisx, thisy);
-							}
-						}
-						
-						// cell selection
-						if(maction == "BSel"){
-							outputs[0][0].setSelect(true);
-							 if(rcflag){sedna.removeCell(thisx,thisy);}
-							 else{sedna.selectCell(thisx,thisy);}
-						}
-						
-					}
-					refreshSel();
+						applyBrush(xlocal, ylocal);
 					}
 					else{
 						
@@ -678,12 +657,8 @@ public void handleControl(ucEvent e){
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
 						//
-						if(isMouseUsed()){
-						sigmund.locate(xlocal, ylocal);
-						int reps = sigmund.getBrushLength();
-						for (int a = 0; a <= reps; a++){
-						//nothin' doin'
-					}}
+						if(isMouseUsed()){ //no action taken
+						}
 					else{
 						//rectangle selection
 						if(maction == "SRaction"){
@@ -714,36 +689,7 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
-						sigmund.locate(xlocal, ylocal);
-						int reps = sigmund.getBrushLength();
-						for (int a = 0; a <= reps; a++){
-						int thisx = sigmund.getNextX();
-						int thisy = sigmund.getNextY();
-						
-						//edit state
-						if(maction == "SDraw"){
-						if(mode == 2 || interactflag){
-								drawState(thisx, thisy);
-						 }}
-						 
-						//edit cells
-						if(maction == "CDraw"){
-						if (mode == 3 ){
-							drawCell(thisx, thisy);
-							}
-						}
-							
-						
-						
-						// cell selection
-						if(maction == "BSel"){
-							outputs[0][0].setSelect(true);
-							if(rcflag){sedna.removeCell(thisx,thisy);}
-							else{sedna.selectCell(thisx,thisy);}	
-						}
-					}
-						
-								refreshSel();
+						applyBrush(xlocal, ylocal);
 						}
 						else{
 						
