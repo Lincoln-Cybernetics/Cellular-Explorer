@@ -59,7 +59,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		wrapbox = new controlBox(2);
 		cidButton = new JButton("Cell info");
 		
-		
+		setPreferredSize(new Dimension(675,165));
 		
 		// set layout
 		setLayout( new FlowLayout() );
@@ -74,6 +74,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	add(cidButton); cidButton.addActionListener(this);
 		
 		}
+		
+	public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
 	
 	public void actionPerformed(ActionEvent e){
 		//create a new automaton
