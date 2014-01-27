@@ -26,7 +26,9 @@ import javax.swing.event.*;
 public class cellularExplorer implements ucListener{
 	editEngine v1;
 	 masterControl Alice;
-	
+	 newControl whiteRabbit;
+	 boolean awflip = false;
+	JFrame cpanel;
 	int xlocal;
 	int ylocal;
 	stateEditor Dan;
@@ -42,6 +44,7 @@ public class cellularExplorer implements ucListener{
 	brushControl Inez;
 	JFrame brushCup;
 	
+	
 	public static void main( String[] args){
 		cellularExplorer bob = new cellularExplorer();
 		
@@ -49,9 +52,11 @@ public class cellularExplorer implements ucListener{
 		
 		public cellularExplorer(){
 			Alice = new masterControl();
+			whiteRabbit = new newControl();
 			v1 = new editEngine();
 			
 			Alice.adducListener(this);
+			whiteRabbit.adducListener(this);
 			//sets up the window, adds the master controls
 			makeWin(1);
 		
@@ -63,7 +68,7 @@ public class cellularExplorer implements ucListener{
 			//Master Control
 			if (e.getSource() == Alice){
 				switch(e.getCommand()){
-					case 1: v1.initialize(); break;// new
+					case 1: awflip = true; flipMaster(); break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
 					case 4: if(Dan == null){makeWin(3);} else{sedit.setVisible(true);} break;// edit state
@@ -77,6 +82,11 @@ public class cellularExplorer implements ucListener{
 					case 12: v1.showCI(); break; //shows cell info
 					default: break;
 				}
+			}
+			
+			//new automaton
+			if(e.getSource() == whiteRabbit){
+				if(e.getCommand() == 1){ v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL()); awflip = false; flipMaster();Alice.setWB();}
 			}
 			
 			//State Editor
@@ -148,12 +158,15 @@ public class cellularExplorer implements ucListener{
 		
 		private void makeWin(int n){
 			switch(n){
-				case 1: JFrame cpanel = new JFrame("Cellular Explorer");
-							cpanel.getContentPane().add( Alice );
+				case 1:    cpanel = new JFrame("Cellular Explorer");
+							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
+							cpanel.getContentPane().add(whiteRabbit); whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.setSize(675,165);
 							cpanel.setResizable(false);
 							cpanel.setVisible(true);
+							cpanel.setLayout(new FlowLayout());
+							
 							break;
 							
 				case 2: //JFrame disp = new JFrame("Cellular Explorer");
@@ -234,7 +247,12 @@ public class cellularExplorer implements ucListener{
 						  break;
 						}
 					}
-					
+
+private void flipMaster(){
+	if(awflip){
+	Alice.setVisible(false);Alice.setEnabled(false); whiteRabbit.setVisible(true); whiteRabbit.setEnabled(true);}
+	else{whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false); Alice.setVisible(true);Alice.setEnabled(true);}
+}
 				
 					
 				
