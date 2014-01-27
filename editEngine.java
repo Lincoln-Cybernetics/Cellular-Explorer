@@ -46,10 +46,21 @@ public  editEngine(){
 	sedna = new selector();
 	}
 	
-public void initialize(){
-	xmax = 400; ymax = 150; 
-	pistons[0][0] = new cellBrain(400,150, this);
-	 outputs[0][0] = new cellComponent(400,150);
+public editEngine(int cbx, int cby){
+	pistons = new cellBrain[cbx][cby];
+	outputs = new cellComponent[cbx][cby];
+	sigmund = new brush();
+	brushtype = 1;
+	castor = new cellOptionHandler();
+	pollux = new cellOptionHandler();
+	eris = new randcellOptionHandler();
+	sedna = new selector();
+}
+	
+public void initialize(int xmx, int ymx){
+	xmax = xmx; ymax = ymx; 
+	pistons[0][0] = new cellBrain(xmx,ymx, this);
+	 outputs[0][0] = new cellComponent(xmx,ymx);
 	  outputs[0][0].addMouseMotionListener(this);	
 							outputs[0][0].addMouseListener(this); pistons[0][0].setDisplay(outputs[0][0]); 
 							setEditBrush(1);
@@ -60,9 +71,9 @@ public void initialize(){
 						  disp.setLocation(200,165);
 						  disp.setResizable(true);
 						  disp.setVisible(true);
-						  eris.setInt("Xsiz", 400);
-						  eris.setInt("Ysiz", 150);
-						  sedna = new selector(400,150);
+						  eris.setInt("Xsiz", xmx);
+						  eris.setInt("Ysiz", ymx);
+						  sedna = new selector(xmx,ymx);
 						  setMode(1);
 						  pistons[0][0].initBoard();
 						}
