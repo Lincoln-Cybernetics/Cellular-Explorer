@@ -120,7 +120,7 @@ public cell generateCell(){
 		if(tiamat.getControls("Fade")){ tiamat.setOption("Fades", doesfade); tiamat.setParameter("Fade", fadenum);}
 		if(tiamat.getControls("Mat")){ tiamat.setParameter("Mat", maturity);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
-		if(tiamat.getControls("Mirror")){ tiamat.setOption("Mirror", mirr); if(mirr){tiamat.setParameter("MirrX", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
+		if(tiamat.getControls("Mirror")){  if(mirr){tiamat.setOption("Mirror", mirr); tiamat.setParameter("MirrX", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
  return tiamat;
 }
 
