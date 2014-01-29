@@ -9,6 +9,10 @@ int xlocal = 0;// used for mouse events
 int ylocal = 0;// used for mouse events
 int xmax;//x-dimension size of the automaton
 int ymax;// y-dimension size of the automaton
+int xaut;// x-dimension size of automaton array
+int yaut;// y-dimension size of automaton array
+int xaw; //working xaut
+int yaw; // working y aut
 int zt = 500;// speed setting
 brush sigmund;// editing brush
 int brushtype;
@@ -36,8 +40,10 @@ boolean rectflag = false;//flag for making rectangles
 cicomp mercury; JFrame barnabus;
 
 public  editEngine(){
-	pistons = new cellBrain[1][1];
-	outputs = new cellComponent[1][1];
+	xaut = 1;
+	yaut = 1;
+	pistons = new cellBrain[xaut][yaut];
+	outputs = new cellComponent[xaut][yaut];
 	sigmund = new brush();
 	brushtype = 1;
 	castor = new cellOptionHandler();
@@ -47,8 +53,10 @@ public  editEngine(){
 	}
 	
 public editEngine(int cbx, int cby){
-	pistons = new cellBrain[cbx][cby];
-	outputs = new cellComponent[cbx][cby];
+	xaut = cbx;
+	yaut = cby;
+	pistons = new cellBrain[xaut][yaut];
+	outputs = new cellComponent[xaut][yaut];
 	sigmund = new brush();
 	brushtype = 1;
 	castor = new cellOptionHandler();
@@ -59,10 +67,13 @@ public editEngine(int cbx, int cby){
 	
 public void initialize(int xmx, int ymx){
 	xmax = xmx; ymax = ymx; 
-	pistons[0][0] = new cellBrain(xmx,ymx, this);
-	 outputs[0][0] = new cellComponent(xmx,ymx);
-	  outputs[0][0].addMouseMotionListener(this);	
-							outputs[0][0].addMouseListener(this); pistons[0][0].setDisplay(outputs[0][0]); 
+	for(int y = 0; y <= yaut-1; y++){
+		for(int x = 0; x <= xaut-1; x++){
+	pistons[x][y] = new cellBrain(xmx,ymx, this);
+	 outputs[x][y] = new cellComponent(xmx,ymx);
+	  outputs[x][y].addMouseMotionListener(this);	
+		outputs[x][y].addMouseListener(this); pistons[x][y].setDisplay(outputs[x][y]); 
+		pistons[x][y].initBoard();}}
 							setEditBrush(1);
 						  JFrame disp = new JFrame("Cellular Explorer");
 						  disp.getContentPane().add(new JScrollPane(outputs[0][0]));
@@ -75,7 +86,7 @@ public void initialize(int xmx, int ymx){
 						  eris.setInt("Ysiz", ymx);
 						  sedna = new selector(xmx,ymx);
 						  setMode(1);
-						  pistons[0][0].initBoard();
+						  
 						}
 
 public void handleControl(ucEvent e){
@@ -287,7 +298,7 @@ public void handleControl(ucEvent e){
 							
 							// cell selection
 						if(maction == "BSel"){
-							outputs[0][0].setSelect(true);
+							outputs[xaw][yaw].setSelect(true);
 							 if(rcflag){sedna.removeCell(thisx,thisy);}
 							 else{sedna.selectCell(thisx,thisy);}
 						}
@@ -321,15 +332,15 @@ public void handleControl(ucEvent e){
 								if(mirrefflag[c] == 3 && ed.getOption("Mirror")){
 									int myx = anchorx[c] - a; int myy = anchory[c] - b;
 									myx = mirrefx[c]-myx; myy = mirrefy[c]-myy;
-									if(myx > xmax-1){if(pistons[0][0].getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
-									if(myx < 0){if(pistons[0][0].getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
-									if(myy > ymax-1){if(pistons[0][0].getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
-									if(myy < 0){if(pistons[0][0].getWrap("Y")){myy = myy+ymax;}else{myy = 0;}}
+									if(myx > xmax-1){if(pistons[xaw][yaw].getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
+									if(myx < 0){if(pistons[xaw][yaw].getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
+									if(myy > ymax-1){if(pistons[xaw][yaw].getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
+									if(myy < 0){if(pistons[xaw][yaw].getWrap("Y")){myy = myy+ymax;}else{myy = 0;}}
 									ed.setParameter("MirrX",myx); ed.setParameter("MirrY",myy);}
 								
-								pistons[0][0].addCell(a,b,ed);
-						outputs[0][0].setSpecies(a,b,decider.getCT());
-						outputs[0][0].setLifespan(a,b,ed.getParameter("Mat")); 
+								pistons[xaw][yaw].addCell(a,b,ed);
+						outputs[xaw][yaw].setSpecies(a,b,decider.getCT());
+						outputs[xaw][yaw].setLifespan(a,b,ed.getParameter("Mat")); 
 						
 					}}
 					
@@ -396,39 +407,39 @@ public void handleControl(ucEvent e){
 							}
 						
 					private void cellFill(){
-					for(int y=0;y<= pistons[0][0].ysiz-1;y++){
-					for(int x=0;x<= pistons[0][0].xsiz-1;x++){
+					for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
+					for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){
 						cellDraw(x,y);}}
-						if( mode == 3){outputs[0][0].repaint();}
+						if( mode == 3){outputs[xaw][yaw].repaint();}
 						}
 					
 					
 					private void cellCheckFill(){
-						for(int y=0;y<= pistons[0][0].ysiz-1;y++){
-						for(int x=0;x<= pistons[0][0].xsiz-1;x++){	
+						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
+						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
 							cellCheckDraw(x,y, false);
 							}}
-						if( mode == 3){outputs[0][0].repaint();}
+						if( mode == 3){outputs[xaw][yaw].repaint();}
 						
 					}
 					
 					private void cellRCFill(){
-						for(int y=0;y<= pistons[0][0].ysiz-1;y++){
-						for(int x=0;x<= pistons[0][0].xsiz-1;x++){	
+						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
+						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
 							cellRCDraw(x,y);
 							}}
-						if( mode == 3){outputs[0][0].repaint();}
+						if( mode == 3){outputs[xaw][yaw].repaint();}
 						
 					}
 					
 				
 					
 					private void cellRandFill(){
-						for(int y=0;y<= pistons[0][0].ysiz-1;y++){
-						for(int x=0;x<= pistons[0][0].xsiz-1;x++){	
+						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
+						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
 							cellRandDraw(x,y);
 						}}
-						if( mode== 3){outputs[0][0].repaint();}
+						if( mode== 3){outputs[xaw][yaw].repaint();}
 						
 					}
 					
@@ -436,21 +447,21 @@ public void handleControl(ucEvent e){
 						
 						// sets the cells around the outside edge of the automaton 
 						public void setBorder(){	
-						for(int x = 0; x <= pistons[0][0].xsiz-1; x++){
+						for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
 							switch(cfo){
-								case 0: cellDraw(x,0); cellDraw(x, pistons[0][0].ysiz-1); break;
-								case 1: cellCheckDraw(x,0, false); cellCheckDraw(x,pistons[0][0].ysiz-1, false); break;
-								case 2: cellRandDraw(x,0); cellRandDraw(x, pistons[0][0].ysiz-1); break;
-								case 3: cellRCDraw(x,0); cellRCDraw(x, pistons[0][0].ysiz-1);break;
-								default: cellDraw(x,0); cellDraw(x, pistons[0][0].ysiz-1); break;}}
-						for(int y = 0; y<= pistons[0][0].ysiz-1; y++){
+								case 0: cellDraw(x,0); cellDraw(x, pistons[xaw][yaw].ysiz-1); break;
+								case 1: cellCheckDraw(x,0, false); cellCheckDraw(x,pistons[xaw][yaw].ysiz-1, false); break;
+								case 2: cellRandDraw(x,0); cellRandDraw(x, pistons[xaw][yaw].ysiz-1); break;
+								case 3: cellRCDraw(x,0); cellRCDraw(x, pistons[xaw][yaw].ysiz-1);break;
+								default: cellDraw(x,0); cellDraw(x, pistons[xaw][yaw].ysiz-1); break;}}
+						for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
 							switch(cfo){
-								case 0: cellDraw(0,y); cellDraw(pistons[0][0].xsiz-1, y); break;
-								case 1: cellCheckDraw(0,y, false); cellCheckDraw(pistons[0][0].xsiz-1,y, false); break;
-								case 2: cellRandDraw(0,y); cellRandDraw(pistons[0][0].xsiz-1, y); break;
-								case 3: cellRCDraw(0,y); cellRCDraw(pistons[0][0].xsiz-1, y); break;
-								default: cellDraw(0,y); cellDraw(pistons[0][0].xsiz-1, y); break;}}
-								if(mode == 3){outputs[0][0].repaint();}
+								case 0: cellDraw(0,y); cellDraw(pistons[xaw][yaw].xsiz-1, y); break;
+								case 1: cellCheckDraw(0,y, false); cellCheckDraw(pistons[xaw][yaw].xsiz-1,y, false); break;
+								case 2: cellRandDraw(0,y); cellRandDraw(pistons[xaw][yaw].xsiz-1, y); break;
+								case 3: cellRCDraw(0,y); cellRCDraw(pistons[xaw][yaw].xsiz-1, y); break;
+								default: cellDraw(0,y); cellDraw(pistons[xaw][yaw].xsiz-1, y); break;}}
+								if(mode == 3){outputs[xaw][yaw].repaint();}
 								
 					}
 					//cell settings editing methods
@@ -495,18 +506,18 @@ public void handleControl(ucEvent e){
 						}
 					
 				private void stateDraw(int x,int y){
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,true);}}
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,true);}}
 					
 				private void stateAltDraw(int x,int y){
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,false);}}
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,false);}}
 					
 				public void stateCheckDraw(int x,int y, boolean fill){
-					if( y % 2 == 1 ^ x % 2 == 1){ if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,fill);}}
+					if( y % 2 == 1 ^ x % 2 == 1){ if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,fill);}}
 						else{if(fill){if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,false);}}}}
 					
 				private void stateRandDraw(int x, int y){
 					Random foghorn = new Random();
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,foghorn.nextBoolean());}}	
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean());}}	
 					
 				private void stateRCDraw(int x, int y){
 						if( y % 2 == 1 || x % 2 == 1){stateCheckDraw(x,y,true);}
@@ -516,8 +527,8 @@ public void handleControl(ucEvent e){
 				
 				//gateway method
 				public void fillState(){
-					if(pistons[0][0].paused){stateFillSelect();}
-					else{pistons[0][0].myopt = 1; pistons[0][0].setII();}
+					if(pistons[xaw][yaw].paused){stateFillSelect();}
+					else{pistons[xaw][yaw].myopt = 1; pistons[xaw][yaw].setII();}
 					}
 				
 					
@@ -547,7 +558,7 @@ public void handleControl(ucEvent e){
 					for(int y=0;y<= ymax-1;y++){
 					for(int x=0;x<= xmax-1;x++){
 						stateDraw(x,y);}}
-						if(mode != 3){pistons[0][0].refreshState();}
+						if(mode != 3){pistons[xaw][yaw].refreshState();}
 					} 
 						
 				private void stateRandFill(){
@@ -555,14 +566,14 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 						stateRandDraw(x,y);
 					}} 
-					if( mode != 3){ pistons[0][0].refreshState();}
+					if( mode != 3){ pistons[xaw][yaw].refreshState();}
 					}
 					
 				private void stateClearFill(){
 					for(int y=0;y<= ymax-1;y++){
 					for(int x=0;x<= xmax-1;x++){
-						pistons[0][0].current[x][y] = false; pistons[0][0].culture[x][y].purgeState();}}
-						if(mode != 3){pistons[0][0].refreshState();}
+						pistons[xaw][yaw].current[x][y] = false; pistons[xaw][yaw].culture[x][y].purgeState();}}
+						if(mode != 3){pistons[xaw][yaw].refreshState();}
 						}
 					
 				private void stateCheckFill(){
@@ -570,7 +581,7 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 					stateCheckDraw(x,y, true);
 					}} 
-					if(mode != 3){pistons[0][0].refreshState();}
+					if(mode != 3){pistons[xaw][yaw].refreshState();}
 					}
 					
 				private void stateRCFill(){
@@ -578,15 +589,15 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 						if( y % 2 == 1 || x % 2 == 1){stateCheckDraw(x,y,true);}
 						else{stateRandDraw(x,y);}}}
-						if(mode != 3){pistons[0][0].refreshState();}
+						if(mode != 3){pistons[xaw][yaw].refreshState();}
 					}
 				
 				private void stateInvert(){
 					for(int y = 0; y<= ymax-1; y++){
 						for(int x=0; x<= xmax-1; x++){
 							if(!sedna.getSelected() ||sedna.getSelection(x,y)){
-								pistons[0][0].setCellState(x,y,!pistons[0][0].current[x][y]);}}}
-					if(mode != 3){pistons[0][0].refreshState();}
+								pistons[xaw][yaw].setCellState(x,y,!pistons[xaw][yaw].current[x][y]);}}}
+					if(mode != 3){pistons[xaw][yaw].refreshState();}
 				}		
 				
 			
@@ -594,32 +605,42 @@ public void handleControl(ucEvent e){
 			
 
 	// mouse interaction methods
+					private void setWorkAut(MouseEvent o){
+						for(int y = 0; y <= yaut-1; y++){
+							for(int x = 0; x <= xaut-1; x++){
+								if(o.getSource() == outputs[x][y]){
+									xaw = x; yaw = y;}
+								}}
+							}
+	
 					public void mouseMoved( MouseEvent e){
-						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[0][0].magnify;}
-						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[0][0].magnify;}
-						if (xlocal > pistons[0][0].xsiz-1){xlocal = pistons[0][0].xsiz-1;}
-						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
+						setWorkAut(e);
+						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						
 						 // draws rectangle during rectangle selection
-						 if(maction == "SRaction"){for(int y = 0; y <= pistons[0][0].ysiz-1; y++){
-												for(int x = 0; x <= pistons[0][0].xsiz-1; x++){
-													outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));}}
-							 outputs[0][0].finishRect(xlocal,ylocal); }
+						 if(maction == "SRaction"){for(int y = 0; y <= pistons[xaw][yaw].ysiz-1; y++){
+												for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
+													outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
+							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }
 						 
 						
 						
 						}
 						
 					public void mouseDragged(MouseEvent e) {
-						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[0][0].magnify;}
-						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[0][0].magnify;}
-						if (xlocal > pistons[0][0].xsiz-1){xlocal = pistons[0][0].xsiz-1;}
-						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
+						setWorkAut(e);
+						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
 						applyBrush(xlocal, ylocal);
@@ -627,10 +648,10 @@ public void handleControl(ucEvent e){
 					else{
 						 //  rectangle selection
 						 if(maction == "SRaction"){
-						 for(int y = 0; y <= pistons[0][0].ysiz-1; y++){
-							for(int x = 0; x <= pistons[0][0].xsiz-1; x++){
-								outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));}}
-							 outputs[0][0].finishRect(xlocal,ylocal); }}
+						 for(int y = 0; y <= pistons[xaw][yaw].ysiz-1; y++){
+							for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
+								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
+							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }}
 							}
 							
 					public void mouseEntered(MouseEvent e){}
@@ -638,13 +659,14 @@ public void handleControl(ucEvent e){
 					public void mouseExited(MouseEvent e){}
 					
 					public void mousePressed(MouseEvent e){
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[0][0].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[0][0].magnify;}
-						if (xlocal > pistons[0][0].xsiz-1){xlocal = pistons[0][0].xsiz-1;}
-						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
+						setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
 						applyBrush(xlocal, ylocal);
@@ -654,19 +676,20 @@ public void handleControl(ucEvent e){
 						//rectangle selection
 						if(maction == "SRect"){
 						sedna.startRect(xlocal,ylocal, !rcflag);
-						 outputs[0][0].remHilite();outputs[0][0].beginRect(xlocal,ylocal,!rcflag); maction = "SRaction";}
+						 outputs[xaw][yaw].remHilite();outputs[xaw][yaw].beginRect(xlocal,ylocal,!rcflag); maction = "SRaction";}
 						 
 					 }
 						}
 					
 					public void mouseReleased(MouseEvent e){
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[0][0].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[0][0].magnify;}
-						if (xlocal > pistons[0][0].xsiz-1){xlocal = pistons[0][0].xsiz-1;}
-						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
+						setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){ //no action taken
 						}
@@ -674,10 +697,10 @@ public void handleControl(ucEvent e){
 						//rectangle selection
 						if(maction == "SRaction"){
 						sedna.endRect(xlocal,ylocal); 
-							for(int y = 0; y<= pistons[0][0].ysiz-1; y++){
-							for(int x = 0; x<= pistons[0][0].xsiz-1; x++){
-								outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));}}
-								outputs[0][0].repaint(); sedna.detectSelection();
+							for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
+							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
+								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
+								outputs[xaw][yaw].repaint(); sedna.detectSelection();
 								switch(mode){
 									case 1: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
 									case 2: setMouseAction("SDraw"); break;
@@ -691,13 +714,14 @@ public void handleControl(ucEvent e){
 						
 					
 					public void mouseClicked(MouseEvent e){
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[0][0].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[0][0].magnify;}
-						if (xlocal > pistons[0][0].xsiz-1){xlocal = pistons[0][0].xsiz-1;}
-						if (ylocal > pistons[0][0].ysiz-1){ylocal = pistons[0][0].ysiz-1;}
+						setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[0][0].culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
 						applyBrush(xlocal, ylocal);
@@ -709,16 +733,16 @@ public void handleControl(ucEvent e){
 							rectflag = true;
 							maction = "SRaction";
 							sedna.startRect(xlocal,ylocal, !rcflag);
-							 outputs[0][0].remHilite();outputs[0][0].beginRect(xlocal,ylocal,!rcflag);
+							 outputs[xaw][yaw].remHilite();outputs[xaw][yaw].beginRect(xlocal,ylocal,!rcflag);
 							  
 						}
 						
 						if(maction == "SRaction" && rectflag == false){
 						sedna.endRect(xlocal,ylocal); 
-							for(int y = 0; y<= pistons[0][0].ysiz-1; y++){
-							for(int x = 0; x<= pistons[0][0].xsiz-1; x++){
-								outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));}}
-								outputs[0][0].repaint(); sedna.detectSelection();
+							for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
+							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
+								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
+								outputs[xaw][yaw].repaint(); sedna.detectSelection();
 								switch(mode){
 									case 1: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
 									case 2: setMouseAction("SDraw"); break;
@@ -737,8 +761,8 @@ public void handleControl(ucEvent e){
 							switch(mirrefflag[1]){
 							case 0:	
 							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
-							outputs[0][0].setHiLite(xlocal, ylocal, 1);setMouseAction("CDraw"); break;
-							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 3);
+							outputs[xaw][yaw].setHiLite(xlocal, ylocal, 1);setMouseAction("CDraw"); break;
+							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; outputs[xaw][yaw].setHiLite(xlocal, ylocal, 3);
 							setMouseAction("CDraw"); break;
 						}}
 							//secondary cell
