@@ -619,9 +619,10 @@ public void handleControl(ucEvent e){
 						for (int a = 0; a <= reps; a++){
 						int thisx = sigmund.getNextX();
 						int thisy = sigmund.getNextY();
-						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);
-						outputs[xaw][yaw].repaint();
+						if(!sedna.getSelected() ||sedna.getSelection(thisx,thisy)){
+						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);}
 						}
+						outputs[xaw][yaw].repaint();
 					}
 	
 					public void mouseMoved( MouseEvent e){
