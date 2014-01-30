@@ -612,6 +612,17 @@ public void handleControl(ucEvent e){
 									xaw = x; yaw = y;}
 								}}
 							}
+							
+					private void drawBrush(int x, int y){
+							sigmund.locate(x, y);
+						int reps = sigmund.getBrushLength();
+						for (int a = 0; a <= reps; a++){
+						int thisx = sigmund.getNextX();
+						int thisy = sigmund.getNextY();
+						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);
+						outputs[xaw][yaw].repaint();
+						}
+					}
 	
 					public void mouseMoved( MouseEvent e){
 						setWorkAut(e);
@@ -621,7 +632,10 @@ public void handleControl(ucEvent e){
 						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
-						
+						if(isMouseUsed()){
+							outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
+					}
 						 // draws rectangle during rectangle selection
 						 if(maction == "SRaction"){for(int y = 0; y <= pistons[xaw][yaw].ysiz-1; y++){
 												for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
@@ -643,6 +657,8 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
+							outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 					}
 					else{
@@ -654,9 +670,18 @@ public void handleControl(ucEvent e){
 							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }}
 							}
 							
-					public void mouseEntered(MouseEvent e){}
+					public void mouseEntered(MouseEvent e){
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
+						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
+						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
+						}
 					
-					public void mouseExited(MouseEvent e){}
+					public void mouseExited(MouseEvent e){
+						outputs[xaw][yaw].remHilite();
+						}
 					
 					public void mousePressed(MouseEvent e){
 						setWorkAut(e);
@@ -669,6 +694,8 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
+							outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 					}
 					else{
@@ -691,7 +718,10 @@ public void handleControl(ucEvent e){
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
-						if(isMouseUsed()){ //no action taken
+						if(isMouseUsed()){ 
+							outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
+							//no action taken
 						}
 					else{
 						//rectangle selection
@@ -724,6 +754,8 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
+							outputs[xaw][yaw].remHilite();
+							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 						}
 						else{
