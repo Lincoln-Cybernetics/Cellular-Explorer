@@ -269,7 +269,9 @@ public void paintComponent( Graphics g){
 									case 2: g.setColor(Color.blue); break;
 									case 3: g.setColor(Color.orange); break;
 									case 4: g.setColor(Color.cyan); break;
-									case 5: g.setColor(Color.white); if(mode == 3 && species[x][y] == 4){g.setColor(Color.black);}
+									case 5: g.setColor(Color.white);
+											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y]){g.setColor(Color.black);} }
+											if(mode == 3){ if( species[x][y] == 4 || lifespan[x][y] == 1){g.setColor(Color.black);}}
 											if(mode == 4 && ageclass[x][y] == 1){g.setColor(Color.black);} break;
 									default: g.setColor(Color.red); break;}
 									if(hilite[x][y] != 0){g.drawRect(x*magnify, y*magnify, magnify, magnify);}
