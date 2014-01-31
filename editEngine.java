@@ -16,7 +16,7 @@ int yaw; // working y aut
 int zt = 500;// speed setting
 brush sigmund;// editing brush
 int brushtype;
-String maction;
+String maction = "None";
 int mode = 1;// general operating mode
 int dmode = 1;// display mode
 cellOptionHandler castor;
@@ -157,6 +157,8 @@ public void handleControl(ucEvent e){
 	 }
 	 
 	public void setInteract(boolean b){ interactflag = b;}
+	
+	public boolean getInteract(){ return interactflag;}
 	 
 	public void setSFO(int v){
 		sfo = v;
@@ -220,12 +222,12 @@ public void handleControl(ucEvent e){
 		 * 4 = Multicolor
 		 */
 		 switch(m){
-			 case 0: mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode); setMouseAction("SDraw"); break;
-			 case 1: mode = 1; dmode = 1; pistons[0][0].setOpMode(1); outputs[0][0].setDispMode(1); setMouseAction("SDraw"); break;
-			 case 2: mode = 2; pistons[0][0].setOpMode(2); outputs[0][0].setDispMode(2); setMouseAction("SDraw"); break;
-			 case 3: mode = 3; pistons[0][0].setOpMode(3); outputs[0][0].setDispMode(3); setMouseAction("CDraw"); break;
-			 case 4: mode = 4; dmode = 4; pistons[0][0].setOpMode(4); outputs[0][0].setDispMode(4); setMouseAction("SDraw"); break;
-			 default:  mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode); setMouseAction("SDraw"); break;
+			 case 0: mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
+			 case 1: mode = 1; dmode = 1; pistons[0][0].setOpMode(1); outputs[0][0].setDispMode(1);  break;
+			 case 2: mode = 2; pistons[0][0].setOpMode(2); outputs[0][0].setDispMode(2);  break;
+			 case 3: mode = 3; pistons[0][0].setOpMode(3); outputs[0][0].setDispMode(3);  break;
+			 case 4: mode = 4; dmode = 4; pistons[0][0].setOpMode(4); outputs[0][0].setDispMode(4);  break;
+			 default:  mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
 		 }
 		}
 		
@@ -513,7 +515,7 @@ public void handleControl(ucEvent e){
 					
 				public void stateCheckDraw(int x,int y, boolean fill){
 					if( y % 2 == 1 ^ x % 2 == 1){ if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,fill);}}
-						else{if(fill){if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[0][0].setCellState(x,y,false);}}}}
+						else{if(fill){if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,false);}}}}
 					
 				private void stateRandDraw(int x, int y){
 					Random foghorn = new Random();
@@ -677,7 +679,9 @@ public void handleControl(ucEvent e){
 						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
 						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						outputs[xaw][yaw].remHilite();
+						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
+						}
 						}
 					
 					public void mouseExited(MouseEvent e){
