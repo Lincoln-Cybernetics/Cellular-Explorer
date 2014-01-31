@@ -102,7 +102,7 @@ public class cellularExplorer implements ucListener{
 					//Invert the state
 					case 3:  v1.setSFO(Dan.getSFO());v1.fillState();break;
 					//set interactive mode
-					case 4:v1.setInteract(Dan.getBSET()); break;
+					case 4:v1.setInteract(Dan.getBSET());if(Dan.getBSET() == false){v1.setMouseAction("None");} break;
 					// set the random option for state drawing
 					case 5: v1.setSDO(Dan.getSDO()); break;
 					// set the check option for thate drawing
@@ -111,6 +111,9 @@ public class cellularExplorer implements ucListener{
 					case 7: v1.setSFO(Dan.getSFO()); break;
 					// set the check option for state fills
 					case 8: v1.setSFO(Dan.getSFO()); break;
+					// activate state drawing
+					case 9: if(v1.getMode() != 3 && v1.getInteract()){v1.setMouseAction("SDraw");} 
+						if(v1.getMode() == 2){v1.setMouseAction("SDraw");}break;
 				}
 			}
 			//Cell Editor
