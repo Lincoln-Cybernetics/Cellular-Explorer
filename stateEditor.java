@@ -27,7 +27,7 @@ public class stateEditor extends JComponent implements ActionListener, ItemListe
 	
 // controlPanel variables
 // controls
-JButton[] statebutts = new JButton[4];
+JButton[] statebutts = new JButton[5];
 Checkbox[] statechecks = new Checkbox[5]; 
 
 // relate to sending command events
@@ -45,6 +45,7 @@ public stateEditor(){
 	statebutts[1] = new JButton("Fill");
 	statebutts[2] = new JButton("Clear");
 	statebutts[3] = new JButton("Invert");
+	statebutts[4] = new JButton("State Draw");
 	
 	statechecks[0] = new Checkbox("Interactive Mode");
 	statechecks[1] = new Checkbox("Random");
@@ -60,6 +61,7 @@ public stateEditor(){
 	seLayout.setHorizontalGroup(
 		seLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(statebutts[0])
+			.addComponent(statebutts[4])
 			.addComponent(statechecks[0])
 			.addGroup(seLayout.createSequentialGroup()
 				.addComponent(statechecks[2])
@@ -76,6 +78,7 @@ public stateEditor(){
 	seLayout.setVerticalGroup(
 		seLayout.createSequentialGroup()
 			.addComponent(statebutts[0])
+			.addComponent(statebutts[4])
 			.addComponent(statechecks[0])
 			.addGroup(seLayout.createParallelGroup()
 				.addComponent(statechecks[2])
@@ -91,7 +94,7 @@ public stateEditor(){
 				setLayout(seLayout);
 				
 				for(int cc = 0; cc <= 4; cc++){
-					if(cc <= 3){statebutts[cc].addActionListener(this);statebutts[cc].setVisible(true);}
+					statebutts[cc].addActionListener(this);statebutts[cc].setVisible(true);
 					statechecks[cc].addItemListener(this);statechecks[cc].setVisible(true);}
 	}
 
@@ -109,6 +112,8 @@ public void actionPerformed(ActionEvent e){
 		case 2: control = 2; clearflag = true; sfoSet(); fireucEvent(); break;
 		//invert
 		case 3: control = 3; invflag = true; sfoSet(); fireucEvent(); break;
+		// State Draw
+		case 4: control = 9; fireucEvent(); break;
 	}
 	}
 
@@ -144,6 +149,18 @@ public synchronized void removeucListener(ucListener listener){
 private synchronized void fireucEvent(){
 	ucEvent cmd = new ucEvent(this);
 	cmd.setCommand(control);
+	/*Commands:
+	 * 0 = state edit mode
+	 * 1 = state fill
+	 * 2 = clear state
+	 * 3 = invert state
+	 * 4 = interactive mode
+	 * 5 = random draw
+	 * 6 = check draw
+	 * 7 = random fill
+	 * 8 = check fill
+	 * 9 = State Draw
+	 */
 	Iterator i = _audience.iterator();
 	while(i.hasNext()){
 		((ucListener) i.next()).handleControl(cmd);}
