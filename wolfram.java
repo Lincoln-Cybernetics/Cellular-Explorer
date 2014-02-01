@@ -86,7 +86,6 @@ public class wolfram extends cell{
 		@Override public boolean getControls(String control){
 			if(control == "Age"){ return true;}
 			if(control == "Fade"){ return true;}
-			if(control == "Dir"){ return true;}
 			if(control == "WolfRule"){ return true;}
 			if(control == "Mat"){ return true;}
 			if(control == "Orient"){ return true;}
@@ -138,7 +137,7 @@ public class wolfram extends cell{
 		@Override public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
 			if(paramname == "Fade"){fade = a;}
-			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction -= 4;}}
+			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction %= 4;}}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
 			if(paramname == "MirrX"){hoodx = a;}
