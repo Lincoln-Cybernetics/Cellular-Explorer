@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -36,7 +36,7 @@ String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimi
 "Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
 String MBOTtype = "Custom";
 
-Checkbox[] opts = new Checkbox[29];//All the options
+Checkbox[] opts = new Checkbox[31];//All the options
 
 JSlider matslider;//Sets the maturity variable (number of iterations between state calculations)
 JLabel matlabel;//Maturity indicator
@@ -117,6 +117,9 @@ public cellPicker(){
 	opts[28] = new Checkbox("Mirror Cell");
 	mirbutt = new JButton("Set Mirror");
 	refsetbutt = new JButton("Set Reference");
+	//Any & All
+	opts[29] = new Checkbox("Any");
+	opts[30] = new Checkbox("All");
 	
 	
 	GroupLayout cpLayout = new GroupLayout(this);
@@ -200,7 +203,9 @@ public cellPicker(){
 				.addComponent(wdirs[0])
 				.addComponent(wdirs[1])
 				.addComponent(wdirs[2])
-				.addComponent(wdirs[3]))
+				.addComponent(wdirs[3])
+				.addComponent(opts[29])
+				.addComponent(opts[30]))
 				// Mirror
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(opts[28])
@@ -285,7 +290,9 @@ public cellPicker(){
 				.addComponent(wdirs[0])
 				.addComponent(wdirs[1])
 				.addComponent(wdirs[2])
-				.addComponent(wdirs[3]))
+				.addComponent(wdirs[3])
+				.addComponent(opts[29])
+				.addComponent(opts[30]))
 				//mirror
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(opts[28])
@@ -394,6 +401,9 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 28: gate.setBool("Mirror", opts[i].getState()); mirbutt.setVisible(opts[i].getState()); mirbutt.setEnabled(opts[i].getState()); 
 			refsetbutt.setVisible(opts[i].getState()); refsetbutt.setEnabled(opts[i].getState());
 			 break;
+			//Any & All
+			case 29: gate.setBool("Any",opts[i].getState());if(opts[i].getState()){opts[30].setState(false);gate.setBool("All", false);}break;
+			case 30: gate.setBool("All",opts[i].getState());if(opts[i].getState()){opts[29].setState(false);gate.setBool("Any", false);}break;
 			}
 			// set Wolfram rule#
 			if(i > 19 && i < 28){ wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));}
@@ -423,7 +433,7 @@ private void setCell(){
 
 private void setOpts(cell darwin){
 	boolean visifier = false;
-	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror"};
+	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All"};
 	for(int concount = 0; concount< names.length; concount++){
 		 visifier =  darwin.getControls(names[concount]); 
 		switch(concount){
@@ -448,6 +458,8 @@ private void toggleControl(int a, boolean b){
 		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);if(!b){mirbutt.setVisible(false); mirbutt.setEnabled(false);refsetbutt.setVisible(false); refsetbutt.setEnabled(false);}
 		else{mirbutt.setVisible(opts[28].getState()); mirbutt.setEnabled(opts[28].getState());
 		refsetbutt.setVisible(opts[28].getState());refsetbutt.setEnabled(opts[28].getState());}break;
+		case 8: opts[29].setVisible(b); opts[29].setEnabled(b); break;
+		case 9: opts[30].setVisible(b); opts[30].setEnabled(b); break;
 	}
 }
 
