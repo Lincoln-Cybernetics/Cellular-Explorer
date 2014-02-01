@@ -103,37 +103,37 @@ public class mbot extends cell{
 		
 		for(int n = 0; n < 9; n++){
 			born[n] = false; survives[n] = false;
-		if( type == "2x2"){ if(n == 3 || n == 6){born[n] = true;} if(n == 1|| n == 2|| n == 5){survives[n] = true;}}
-		if( type == "3/4 Life"){ if(n == 3 || n == 4){born[n] = true; survives[n] = true;} }
-		if( type == "Amoeba"){ if(n == 3 || n == 5 || n == 7){born[n] = true;} if(n == 1 || n == 3||  n == 5|| n == 8){survives[n] = true;}}
-		if( type == "Assimilation"){ if(n == 3 || n==4 || n==5){born[n] = true;} if(n == 4 || n == 5 || n==6 || n==7 ){survives[n] = true;}}
-		if( type == "Coagulations"){ if(n == 3 ||  n == 7 || n == 8){born[n] = true;} if( n == 2|| n == 3||n == 5|| n == 6||n == 7 || n == 8){survives[n] = true;}}
-		if( type == "Coral"){ if(n == 3){born[n] = true;} if(n == 4 || n == 5 || n==6 || n==7 || n == 8){survives[n] = true;}}
-		if( type == "Day and Night"){ if(n == 3 ||  n == 6 || n == 7 || n == 8){born[n] = true;} if( n == 3|| n == 4 || n == 6|| n == 7|| n == 8){survives[n] = true;}}
-		if( type == "Diamoeba"){ if(n == 3 || n == 5 || n == 6 || n == 7 || n == 8){born[n] = true;} if( n == 5|| n == 6 || n == 7 || n == 8){survives[n] = true;}}
-		if( type == "Dot Life"){ if(n == 3){born[n] = true;} if(n == 0|| n == 2|| n == 3){survives[n] = true;}}
-		if( type == "Dry Life"){ if(n == 3 ||  n == 7){born[n] = true;} if( n == 2|| n == 3){survives[n] = true;}}
-		if(type == "Fredkin"){if(n == 1 || n == 3 || n == 5 || n == 7){born[n] = true;}else{ survives[n] = true;} }
-		if(type == "Gnarl"){if(n == 1){born[n] = true;} if (n == 1){survives[n] = true;}}
-		if( type == "High Life"){ if(n == 3 ||  n == 6){born[n] = true;} if( n == 2|| n == 3){survives[n] = true;}}
-		if(type == "Life"){if(n == 3){born[n] = true;} if (n == 3 || n == 2){survives[n] = true;}}
-		if( type == "Life without Death"){ if(n == 3){born[n] = true;} survives[n] = true;}
-		if( type == "Live Free or Die"){ if(n == 2){born[n] = true;} if(n == 0){survives[n] = true;}}
-		if( type == "Long Life"){ if(n == 3 || n == 4 || n == 5){born[n] = true;} if( n == 5){survives[n] = true;}}
-		if( type == "Maze"){ if(n == 3){born[n] = true;} if(n == 1 || n == 2 || n==3 || n==4 || n == 5){survives[n] = true;}}
-		if( type == "Mazectric"){ if(n == 3){born[n] = true;} if(n == 1 || n == 2 || n==3 || n==4 ){survives[n] = true;}}
-		if( type == "Move"){ if(n == 3 || n == 6 || n == 8){born[n] = true;} if(n == 2|| n == 4|| n == 5){survives[n] = true;}}
-		if( type == "Pseudo-life"){ if(n == 3 || n == 5 || n == 7){born[n] = true;} if( n == 2 || n == 3 || n == 8){survives[n] = true;}}
-		if(type == "Replicator"){if(n == 1 || n == 3 || n == 5 || n == 7){born[n] = true; survives[n] = true;} }
-		if(type == "Seeds"){if(n == 2){born[n] = true;}}
-		if( type == "Serviettes"){ if(n == 2 || n == 3 || n == 4){born[n] = true;}}
-		if( type == "Stains"){ if(n == 3 || n == 6 || n == 7|| n == 8){born[n] = true;} if( n == 2|| n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
-		if( type == "Vote"){ if(n > 4){born[n] = true;} if(n >3){survives[n] = true;}}
-		if( type == "Vote 4/5"){ if(n ==4 || n == 6 || n == 7|| n ==8){born[n] = true;} if( n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
-		if( type == "Walled Cities"){ if(n > 3){born[n] = true;} if( n == 2|| n == 3|| n == 4|| n == 5){survives[n] = true;}}
-		if( type == "OnCell"){born[n] = true; survives[n] = true;}
-		if( type == "OffCell"){born[n] = false; survives[n] = false;}
-		if( type == "BlinkCell"){born[n] = true; survives[n] = false;}
+		if( name == "2x2"){ if(n == 3 || n == 6){born[n] = true;} if(n == 1|| n == 2|| n == 5){survives[n] = true;}}
+		if( name == "3/4 Life"){ if(n == 3 || n == 4){born[n] = true; survives[n] = true;} }
+		if( name == "Amoeba"){ if(n == 3 || n == 5 || n == 7){born[n] = true;} if(n == 1 || n == 3||  n == 5|| n == 8){survives[n] = true;}}
+		if( name == "Assimilation"){ if(n == 3 || n==4 || n==5){born[n] = true;} if(n == 4 || n == 5 || n==6 || n==7 ){survives[n] = true;}}
+		if( name == "Coagulations"){ if(n == 3 ||  n == 7 || n == 8){born[n] = true;} if( n == 2|| n == 3||n == 5|| n == 6||n == 7 || n == 8){survives[n] = true;}}
+		if( name == "Coral"){ if(n == 3){born[n] = true;} if(n == 4 || n == 5 || n==6 || n==7 || n == 8){survives[n] = true;}}
+		if( name == "Day and Night"){ if(n == 3 ||  n == 6 || n == 7 || n == 8){born[n] = true;} if( n == 3|| n == 4 || n == 6|| n == 7|| n == 8){survives[n] = true;}}
+		if( name == "Diamoeba"){ if(n == 3 || n == 5 || n == 6 || n == 7 || n == 8){born[n] = true;} if( n == 5|| n == 6 || n == 7 || n == 8){survives[n] = true;}}
+		if( name == "Dot Life"){ if(n == 3){born[n] = true;} if(n == 0|| n == 2|| n == 3){survives[n] = true;}}
+		if( name == "Dry Life"){ if(n == 3 ||  n == 7){born[n] = true;} if( n == 2|| n == 3){survives[n] = true;}}
+		if(name == "Fredkin"){if(n == 1 || n == 3 || n == 5 || n == 7){born[n] = true;}else{ survives[n] = true;} }
+		if(name == "Gnarl"){if(n == 1){born[n] = true;} if (n == 1){survives[n] = true;}}
+		if( name == "High Life"){ if(n == 3 ||  n == 6){born[n] = true;} if( n == 2|| n == 3){survives[n] = true;}}
+		if(name == "Life"){if(n == 3){born[n] = true;} if (n == 3 || n == 2){survives[n] = true;}}
+		if( name == "Life without Death"){ if(n == 3){born[n] = true;} survives[n] = true;}
+		if( name == "Live Free or Die"){ if(n == 2){born[n] = true;} if(n == 0){survives[n] = true;}}
+		if( name == "Long Life"){ if(n == 3 || n == 4 || n == 5){born[n] = true;} if( n == 5){survives[n] = true;}}
+		if( name == "Maze"){ if(n == 3){born[n] = true;} if(n == 1 || n == 2 || n==3 || n==4 || n == 5){survives[n] = true;}}
+		if( name == "Mazectric"){ if(n == 3){born[n] = true;} if(n == 1 || n == 2 || n==3 || n==4 ){survives[n] = true;}}
+		if( name == "Move"){ if(n == 3 || n == 6 || n == 8){born[n] = true;} if(n == 2|| n == 4|| n == 5){survives[n] = true;}}
+		if( name == "Pseudo-life"){ if(n == 3 || n == 5 || n == 7){born[n] = true;} if( n == 2 || n == 3 || n == 8){survives[n] = true;}}
+		if(name == "Replicator"){if(n == 1 || n == 3 || n == 5 || n == 7){born[n] = true; survives[n] = true;} }
+		if(name == "Seeds"){if(n == 2){born[n] = true;}}
+		if( name == "Serviettes"){ if(n == 2 || n == 3 || n == 4){born[n] = true;}}
+		if( name == "Stains"){ if(n == 3 || n == 6 || n == 7|| n == 8){born[n] = true;} if( n == 2|| n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
+		if( name == "Vote"){ if(n > 4){born[n] = true;} if(n >3){survives[n] = true;}}
+		if( name == "Vote 4/5"){ if(n ==4 || n == 6 || n == 7|| n ==8){born[n] = true;} if( n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
+		if( name == "Walled Cities"){ if(n > 3){born[n] = true;} if( n == 2|| n == 3|| n == 4|| n == 5){survives[n] = true;}}
+		if( name == "OnCell"){born[n] = true; survives[n] = true;}
+		if( name == "OffCell"){born[n] = false; survives[n] = false;}
+		if( name == "BlinkCell"){born[n] = true; survives[n] = false;}
 		}
 		
 	}
@@ -182,7 +182,10 @@ public class mbot extends cell{
 			if(opname == "S4"){ survives[4]=b;}if(opname == "S5"){ survives[5]=b;}
 			if(opname == "S6"){survives[6]=b;}if(opname == "S7"){ survives[7]=b;}
 			if(opname == "S8"){ survives[8]=b;}
-			if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror-" + name;}else{hoodx = -1; hoody = -1; name = "M.B.O.T.";}}
+			if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){} else{
+				if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror-" + name;}
+				else{hoodx = -1; hoody = -1; name = "M.B.O.T.";}}
+				}
 			}
 		
 		@Override public int getParameter(String paramname){ 
