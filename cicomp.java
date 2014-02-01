@@ -123,7 +123,9 @@ public void refCell(){
 	else{fields[1].setVisible(false); aLabel.setVisible(false);}
 	if(xerxes.getOption("Fades")){fields[2].setVisible(true); fLabel.setText(Integer.toString(xerxes.getParameter("Fade"))); fLabel.setVisible(true);}
 	else{fields[2].setVisible(false); fLabel.setVisible(false);}
-	if(xerxes.getControls("Dir")){fields[3].setVisible(true); dLabel.setText(Integer.toString(xerxes.getParameter("Dir"))); dLabel.setVisible(true);}
+	if(xerxes.getControls("Orient")){fields[3].setText("Orientation: ");fields[3].setVisible(true); dLabel.setText(Integer.toString(xerxes.getParameter("Dir")));
+		if(xerxes.getOption("Any")){dLabel.setText("Any");}if(xerxes.getOption("All")){dLabel.setText("All");}
+		dLabel.setVisible(true);}
 	else{fields[3].setVisible(false); dLabel.setVisible(false);}
 	if(xerxes.getControls("Mat")){fields[4].setVisible(true); mcLabel.setText(Integer.toString(xerxes.getParameter("Matcount"))); mtLabel.setText("/" + Integer.toString(xerxes.getParameter("Mat"))); mcLabel.setVisible(true); mtLabel.setVisible(true);}
 	else{fields[4].setVisible(false); mcLabel.setVisible(false); mtLabel.setVisible(false);}
