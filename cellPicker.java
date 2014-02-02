@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -48,8 +48,10 @@ JLabel jill;//survives
 JLabel rulab;//rule label
 JLabel[] wlab = new JLabel[8];//Wolfram rule labels
 JLabel wrlab;//Wolfram rule indicator
-JRadioButton[] wdirs = new JRadioButton[4];//4 orientations used by Wolfram
-JLabel orlabel;
+JRadioButton[] wdirs = new JRadioButton[4];//4 orientations used by Wolfram & Symmetric
+JLabel orlabel;//orientation label
+JRadioButton[] dirs = new JRadioButton[8];//8 directions used by conveyor
+JLabel dirlabel;//direction label
 
 JButton mirbutt;// button to set mirror
 JButton refsetbutt;//button to set mirror reference point
@@ -84,12 +86,18 @@ public cellPicker(){
 	wlab[6] = new JLabel("001");
 	wlab[7] = new JLabel("000");
 	wrlab = new JLabel("Wolfram Rule: 0");
-	//wolfram directions
+	//Wolfram directions
 	orlabel = new JLabel("Direction:");
 	wdirs[0] = new JRadioButton("|"); wdirs[1] = new JRadioButton("/");
 	wdirs[2] = new JRadioButton("--"); wdirs[3] = new JRadioButton("\\");
 	ButtonGroup orients = new ButtonGroup(); orients.add(wdirs[0]); orients.add(wdirs[1]);
 	orients.add(wdirs[2]); orients.add(wdirs[3]);wdirs[0].setSelected(true);
+	// 8 directions
+	dirlabel = new JLabel("Direction:");
+	dirs[0] = new JRadioButton("Up"); dirs[1] = new JRadioButton("U-R"); dirs[2] = new JRadioButton("R"); dirs[3] = new JRadioButton("L-R");
+	dirs[4] = new JRadioButton("Down"); dirs[5] = new JRadioButton("L-L"); dirs[6] = new JRadioButton("L"); dirs[7] = new JRadioButton("U-L");
+	ButtonGroup directs = new ButtonGroup(); directs.add(dirs[0]);directs.add(dirs[1]);directs.add(dirs[2]);directs.add(dirs[3]);directs.add(dirs[4]);
+	directs.add(dirs[5]);directs.add(dirs[6]);directs.add(dirs[7]); dirs[0].setSelected(true);
 	
 	// age and fade options
 	opts[0] = new Checkbox("Ages"); 
@@ -206,6 +214,18 @@ public cellPicker(){
 				.addComponent(wdirs[3])
 				.addComponent(opts[29])
 				.addComponent(opts[30]))
+				// 8 directions
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(dirlabel)
+				.addComponent(dirs[0])
+				.addComponent(dirs[1])
+				.addComponent(dirs[2])
+				.addComponent(dirs[3]))
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(dirs[4])
+				.addComponent(dirs[5])
+				.addComponent(dirs[6])
+				.addComponent(dirs[7]))
 				// Mirror
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(opts[28])
@@ -293,6 +313,18 @@ public cellPicker(){
 				.addComponent(wdirs[3])
 				.addComponent(opts[29])
 				.addComponent(opts[30]))
+				//8 directions
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(dirlabel)
+				.addComponent(dirs[0])
+				.addComponent(dirs[1])
+				.addComponent(dirs[2])
+				.addComponent(dirs[3]))
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(dirs[4])
+				.addComponent(dirs[5])
+				.addComponent(dirs[6])
+				.addComponent(dirs[7]))
 				//mirror
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(opts[28])
@@ -309,10 +341,14 @@ public cellPicker(){
 		for (int aa = 0; aa < wlab.length; aa++){
 			wlab[aa].setVisible(false);}
 			wrlab.setVisible(false);
-		//wolfram direction
+		//Wolfram direction
 		for(int ac = 0; ac < wdirs.length; ac++){
 			wdirs[ac].setVisible(false); wdirs[ac].addActionListener(this);}
 		orlabel.setVisible(false);
+		// 8 directions
+		for(int ad = 0; ad < dirs.length; ad++){
+			dirs[ad].setVisible(false); dirs[ad].addActionListener(this);}
+			dirlabel.setVisible(false);
 		//init opts	
 		for (int ab = 0; ab < opts.length; ab++){
 			opts[ab].setMaximumSize(new Dimension(10,10));opts[ab].setVisible(false);
@@ -359,6 +395,14 @@ public void actionPerformed(ActionEvent e){
 	if(e.getSource() == wdirs[3]){gate.setInt("Dir", 3);}
 	if(e.getSource() == mirbutt){command = 5; fireucEvent(); command = 3; fireucEvent();}
 	if(e.getSource() == refsetbutt){ command = 4; fireucEvent();}
+	if(e.getSource() == dirs[0]){gate.setInt("Dir", 0);}
+	if(e.getSource() == dirs[1]){gate.setInt("Dir", 1);}
+	if(e.getSource() == dirs[2]){gate.setInt("Dir", 2);}
+	if(e.getSource() == dirs[3]){gate.setInt("Dir", 3);}
+	if(e.getSource() == dirs[4]){gate.setInt("Dir", 4);}
+	if(e.getSource() == dirs[5]){gate.setInt("Dir", 5);}
+	if(e.getSource() == dirs[6]){gate.setInt("Dir", 6);}
+	if(e.getSource() == dirs[7]){gate.setInt("Dir", 7);}
 	}
 
 public void itemStateChanged(ItemEvent e){//age, fade, born, survives
@@ -433,7 +477,7 @@ private void setCell(){
 
 private void setOpts(cell darwin){
 	boolean visifier = false;
-	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All"};
+	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All", "Dir"};
 	for(int concount = 0; concount< names.length; concount++){
 		 visifier =  darwin.getControls(names[concount]); 
 		switch(concount){
@@ -460,6 +504,7 @@ private void toggleControl(int a, boolean b){
 		refsetbutt.setVisible(opts[28].getState());refsetbutt.setEnabled(opts[28].getState());}break;
 		case 8: opts[29].setVisible(b); opts[29].setEnabled(b); break;
 		case 9: opts[30].setVisible(b); opts[30].setEnabled(b); break;
+		case 10: for(int c = 0; c < 8; c++){dirs[c].setVisible(b); dirs[c].setEnabled(b);}dirlabel.setVisible(b); break;
 	}
 }
 
