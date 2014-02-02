@@ -27,7 +27,7 @@ public class cellularExplorer implements ucListener{
 	editEngine v1;
 	 masterControl Alice;
 	 newControl whiteRabbit;
-	 boolean awflip = false;
+	 JFrame npanel;
 	JFrame cpanel;
 	int xlocal;
 	int ylocal;
@@ -52,11 +52,8 @@ public class cellularExplorer implements ucListener{
 		
 		public cellularExplorer(){
 			Alice = new masterControl();
-			whiteRabbit = new newControl();
 			v1 = new editEngine();
-			
 			Alice.adducListener(this);
-			whiteRabbit.adducListener(this);
 			//sets up the window, adds the master controls
 			makeWin(1);
 		
@@ -68,7 +65,7 @@ public class cellularExplorer implements ucListener{
 			//Master Control
 			if (e.getSource() == Alice){
 				switch(e.getCommand()){
-					case 1: awflip = true; flipMaster(); break; //v1.initialize(400,150); break;// new
+					case 1: if(whiteRabbit == null){makeWin(2);}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
 					case 4: if(Dan == null){makeWin(3);} else{sedit.setVisible(true);} break;// edit state
@@ -86,7 +83,8 @@ public class cellularExplorer implements ucListener{
 			
 			//new automaton
 			if(e.getSource() == whiteRabbit){
-				if(e.getCommand() == 1){ v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL()); awflip = false; flipMaster();Alice.setWB();}
+				if(e.getCommand() == 1){ v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL());
+				npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint();}
 			}
 			
 			//State Editor
@@ -163,7 +161,7 @@ public class cellularExplorer implements ucListener{
 			switch(n){
 				case 1:    cpanel = new JFrame("Cellular Explorer");
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
-							cpanel.getContentPane().add(whiteRabbit); whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false);
+							//cpanel.getContentPane().add(whiteRabbit); whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.setSize(675,165);
 							cpanel.setResizable(false);
@@ -172,13 +170,15 @@ public class cellularExplorer implements ucListener{
 							
 							break;
 							
-				case 2: //JFrame disp = new JFrame("Cellular Explorer");
-						 // disp.getContentPane().add(new JScrollPane(bigboard));
-						  //disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-						  //disp.setSize(1000,500);
-						 // disp.setLocation(200,165);
-						 // disp.setResizable(true);
-						 // disp.setVisible(true);
+				case 2:   npanel = new JFrame("New Automaton");
+						  whiteRabbit = new newControl();
+						  npanel.getContentPane().add(whiteRabbit);
+						  npanel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+						  npanel.setSize(675,165);
+						  npanel.setResizable(false);
+						  npanel.setVisible(true);
+						  whiteRabbit.setVisible(true);
+						  whiteRabbit.adducListener(this);
 						  break;
 						  
 				case 3:  sedit = new JFrame("State Editor");
@@ -251,11 +251,6 @@ public class cellularExplorer implements ucListener{
 						}
 					}
 
-private void flipMaster(){
-	if(awflip){
-	Alice.setVisible(false);Alice.setEnabled(false); whiteRabbit.setVisible(true); whiteRabbit.setEnabled(true);}
-	else{whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false); Alice.setVisible(true);Alice.setEnabled(true);}
-}
 				
 					
 				
