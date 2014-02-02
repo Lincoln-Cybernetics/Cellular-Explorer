@@ -119,6 +119,7 @@ public cell generateCell(){
 		case 5: tiamat = new mbot("OffCell"); break;
 		case 6: tiamat = new mbot("BlinkCell"); break;
 		case 7: tiamat = new symmetriCell(); break;
+		case 8: tiamat = new conveyorCell(); break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
@@ -128,6 +129,7 @@ public cell generateCell(){
 		if(tiamat.getControls("Mirror")){  if(mirr){tiamat.setOption("Mirror", mirr); tiamat.setParameter("MirrX", mirrorx); tiamat.setParameter("MirrY", mirrory);}}
 		if(tiamat.getControls("All")){ tiamat.setOption("All", total);}
 		if(tiamat.getControls("Any")){ tiamat.setOption("Any", omni);}
+		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
  return tiamat;
 }
 
@@ -202,6 +204,7 @@ class randcellOptionHandler extends cellOptionHandler{
 				break;
 		case 3: tiamat = new randCell(); break;
 		case 7: tiamat = new symmetriCell();break;
+		case 8: tiamat = new conveyorCell(); break;
 		default: tiamat = new cell();break;}
 		if(shovel.nextInt(10) <= 6){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
 					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}
@@ -215,7 +218,7 @@ class randcellOptionHandler extends cellOptionHandler{
 		
 	public int getCT(){ return celltype;}
 	
-	public cell getCell(){celltype = shovel.nextInt(256);if(celltype <= 16){celltype = 3;}else{if(celltype <= 32){celltype = 0;}else{if(celltype <= 64){celltype = 1;}else{if(celltype <= 128){celltype = 7;}else{celltype = 2;}}}}
+	public cell getCell(){celltype = shovel.nextInt(256);if(celltype <= 8){celltype = 3;}else{if(celltype <= 16){ celltype = 8;}else{if(celltype <= 32){celltype = 0;}else{if(celltype <= 64){celltype = 1;}else{if(celltype <= 128){celltype = 7;}else{celltype = 2;}}}}}
 	// mbotname = MBOTCell[shovel.nextInt(MBOTCell.length)];
 		cell marduk = generateCell(); return marduk;}
 	
