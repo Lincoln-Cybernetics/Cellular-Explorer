@@ -75,11 +75,11 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		}
 		
-	public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
-	
+	//public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
+	public void setCFLAG(boolean b){cflag = b;}
 	public void actionPerformed(ActionEvent e){
 		//create a new automaton
-		if(e.getSource() == buttons[0]){if(!cflag){ cntrl = 1; cflag = true; fireucEvent();}}
+		if(e.getSource() == buttons[0]){if(!cflag){ cntrl = 1;  fireucEvent();}}
 		if(e.getSource() == buttons[8]){ aboutMe();}
 		if(cflag){
 			/* send commands based on what button is pressed
@@ -152,7 +152,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
-		String noticea = "Cellular Explorer Prototype v. 0.0.4 (Year of the Horse 02014)\nPowered by Lincoln Cybernetics.\nLincolnCybernetics.com\n";
+		String noticea = "Cellular Explorer Prototype v. 0.0.5 (Punxsutawney 02014)\nPowered by Lincoln Cybernetics.\nLincolnCybernetics.com\n";
   String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
