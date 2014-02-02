@@ -23,14 +23,16 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class newControl extends JComponent implements ActionListener, ChangeListener{
+public class newControl extends JComponent implements ActionListener, ChangeListener, ItemListener{
 	JSlider xsli;
 	JSlider ysli;
 	JLabel xlab;
 	JLabel ylab;
 	JButton cre;
 	int xval;
-		int yval;
+	int yval;
+	Checkbox sqr;
+	boolean sqrflag;
 	
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -42,6 +44,7 @@ public class newControl extends JComponent implements ActionListener, ChangeList
 		xlab = new JLabel();
 		ylab = new JLabel();
 		cre = new JButton("Create");
+		sqr = new Checkbox("Square");
 		
 		GroupLayout ncLayout = new GroupLayout(this);
 		ncLayout.setAutoCreateGaps(false);
@@ -57,6 +60,8 @@ public class newControl extends JComponent implements ActionListener, ChangeList
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(xlab)
 					.addComponent(ylab))
+				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(sqr))
 					);
 					
 			ncLayout.setVerticalGroup(
@@ -64,6 +69,8 @@ public class newControl extends JComponent implements ActionListener, ChangeList
 					.addGroup(ncLayout.createParallelGroup()
 						.addComponent(xsli)
 						.addComponent(xlab))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(sqr))
 					.addGroup(ncLayout.createParallelGroup()
 						.addComponent(ysli)
 						.addComponent(ylab))
@@ -79,6 +86,8 @@ public class newControl extends JComponent implements ActionListener, ChangeList
 				yval = ysli.getValue();
 				xsli.addChangeListener(this); ysli.addChangeListener(this);
 				cre.addActionListener(this);
+				sqrflag = sqr.getState();
+				sqr.addItemListener(this);
 					}
 					
 		public void actionPerformed(ActionEvent e){
@@ -86,9 +95,21 @@ public class newControl extends JComponent implements ActionListener, ChangeList
 			}
 		
 		public void stateChanged(ChangeEvent e){
-			if(e.getSource() == xsli){xlab.setText("X: " + Integer.toString(xsli.getValue())); xval = xsli.getValue();}
-			if(e.getSource() == ysli){ylab.setText("Y: "+Integer.toString(ysli.getValue())); yval = ysli.getValue();}
+			if(e.getSource() == xsli){
+			if(sqrflag){if(xsli.getValue() > 150){xsli.setValue(150);}ysli.setValue(xsli.getValue()); yval = ysli.getValue(); setYLAB();}
+			 setXLAB(); xval = xsli.getValue();}
+			if(e.getSource() == ysli){
+				if(sqrflag){xsli.setValue(ysli.getValue()); xval = xsli.getValue(); setXLAB();}
+				 setYLAB(); yval = ysli.getValue();}
 			}
+			
+		public void itemStateChanged(ItemEvent e){
+			if(e.getSource() == sqr){sqrflag = sqr.getState();if(sqrflag){xsli.setValue(ysli.getValue());setXLAB();xval = xsli.getValue();}}
+		}
+		
+		private void setXLAB(){xlab.setText("X: " + Integer.toString(xsli.getValue()));}
+		
+		private void setYLAB(){ylab.setText("Y: "+Integer.toString(ysli.getValue()));}
 		
 		public int getXVAL(){ return xval;}
 		
