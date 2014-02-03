@@ -177,7 +177,7 @@ class randcellOptionHandler extends cellOptionHandler{
 	int ysiz = 1;
 	String[] MBOTCell = new String[]{"2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
 "Dry Life", "Fredkin", "Gnarl", "High Life", "Life", "Life without Death", "Live Free or Die", "Long Life", "Maze", "Mazectric",
-"Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities", "OnCell", "OffCell", "BlinkCell"};
+"Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
 	Random shovel = new Random();
 	//can not set parameters
 	public void setCT(int a){}
@@ -203,34 +203,60 @@ class randcellOptionHandler extends cellOptionHandler{
 				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}}
 				break;
 		case 3: tiamat = new randCell(); break;
+		case 4: tiamat = new mbot("OnCell"); break;
+		case 5: tiamat = new mbot("OffCell"); break;
+		case 6: tiamat = new mbot("BlinkCell"); break;
 		case 7: tiamat = new symmetriCell();break;
 		case 8: tiamat = new conveyorCell(); break;
 		default: tiamat = new cell();break;}
-		if(shovel.nextInt(10) <= 6){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
-					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}
-		tiamat.setParameter("Mat", shovel.nextInt(256)); tiamat.setParameter("Dir", shovel.nextInt(8)); 
-		tiamat.setParameter("Age", shovel.nextInt(256));tiamat.setParameter("Fade", shovel.nextInt(256));
-		tiamat.setParameter("Matcount", shovel.nextInt(256));
-		tiamat.setOption("Ages", shovel.nextBoolean()); tiamat.setOption("Fades", shovel.nextBoolean());
-		 tiamat.setOption("All", shovel.nextBoolean()); tiamat.setOption("Any", shovel.nextBoolean());
+		
+		// randomly set mirror options
+		if(tiamat.getControls("Mirror")){
+		if(shovel.nextInt(10) <= 5){tiamat.setOption("Mirror", true); tiamat.setParameter("MirrX", shovel.nextInt(xsiz));
+					tiamat.setParameter("MirrY", shovel.nextInt(ysiz));}}
+		
+		//randomly set maturity
+		if(tiamat.getControls("Mat")){			
+		tiamat.setParameter("Mat", shovel.nextInt(256)); tiamat.setParameter("Matcount", shovel.nextInt(256));}
+		
+		//randomly set directional options
+		if(tiamat.getControls("Dir") || tiamat.getControls("Orient")){
+		tiamat.setParameter("Dir", shovel.nextInt(8)); 
+		if(shovel.nextInt(10) > 3){
+		tiamat.setOption("All", shovel.nextBoolean()); 
+		tiamat.setOption("Any", shovel.nextBoolean());}
+		} 
+		
+		// randomly set aging options
+		if(tiamat.getControls("Age")){
+		tiamat.setOption("Ages", shovel.nextBoolean());tiamat.setParameter("Age", shovel.nextInt(256));}
+		
+		// random fade rule
+		if(tiamat.getControls("Fade")){
+		tiamat.setOption("Fades", shovel.nextBoolean());tiamat.setParameter("Fade", shovel.nextInt(256));}
+		
+		 
+		
 		return tiamat;
 		}
 		
 	public int getCT(){ return celltype;}
 	
-	public cell getCell(){celltype = shovel.nextInt(256);if(celltype <= 8){celltype = 3;}else{if(celltype <= 16){ celltype = 8;}else{if(celltype <= 32){celltype = 0;}else{if(celltype <= 64){celltype = 1;}else{if(celltype <= 128){celltype = 7;}else{celltype = 2;}}}}}
-	// mbotname = MBOTCell[shovel.nextInt(MBOTCell.length)];
+	public cell getCell(){
+		int cellgen = shovel.nextInt(512);
+		if(cellgen == 0 || cellgen == 1){celltype = 5;}
+		if(cellgen > 1 && cellgen < 4){celltype = 4;}
+		if(cellgen > 3 && cellgen < 8){celltype = 6;}
+		if(cellgen > 7 && cellgen < 16){celltype = 3;}
+		if(cellgen > 15 && cellgen < 32){celltype = 0;}
+		if(cellgen > 31 && cellgen < 64){celltype = 8;}
+		if(cellgen > 63 && cellgen < 128){celltype = 1;}
+		if(cellgen > 127 && cellgen < 256){celltype = 7;}
+		if(cellgen > 255 && cellgen < 512){celltype = 2;}
+		
+	
 		cell marduk = generateCell(); return marduk;}
 	
-	//public int getMaturity(){int ranmat =  shovel.nextInt(256); ranmat +=1; return ranmat;}
-	//public int getDirection(){return shovel.nextInt(8);}
-	//public boolean getInvert(){return shovel.nextBoolean();}
-	//public boolean getBool( String a){return shovel.nextBoolean();}
-	//public int getInt(String a){
-		//if(a == "MirrX"){return shovel.nextInt(xsiz);}
-		//if(a == "MirrY"){return shovel.nextInt(ysiz);}
-		//return 0;}
-	//public boolean getBoola(String a, int h){
-	//return shovel.nextBoolean();}
+
 
 }
