@@ -143,12 +143,12 @@ public class mbot extends cell{
 		public String getName(){ return name;}
 		
 		@Override public boolean getControls(String control){
-			if(control == "Age"){ if(name == "OffCell"){return false;} return true;}
-			if(control == "Fade"){ if(name == "OffCell" || name == "BlinkCell"){return false;} return true;}
-			if(control == "Mat"){if(name == "OffCell" || name =="OnCell"){return false;}return true;}
-			if(control == "Born"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
-			if(control == "Survives"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
-			if(control == "Mirror"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;} return true;}
+			if(control == "Age"){ if(name == "OffCell"){return false;}else{ return true;}}
+			if(control == "Fade"){ if(name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
+			if(control == "Mat"){if(name == "OffCell" || name =="OnCell"){return false;}else{return true;}}
+			if(control == "Born"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
+			if(control == "Survives"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
+			if(control == "Mirror"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
