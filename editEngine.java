@@ -216,18 +216,27 @@ public void handleControl(ucEvent e){
 	//general mode setting for display and automaton
 	public void setMode(int m){
 		/*Modes:
+		 * 0 = revert to previously selected display mode
 		 * 1 = Normal Running
 		 * 2 = State Editing
 		 * 3 = Cell Editing
 		 * 4 = Multicolor
 		 */
 		 switch(m){
-			 case 0: mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
-			 case 1: mode = 1; dmode = 1; pistons[0][0].setOpMode(1); outputs[0][0].setDispMode(1);  break;
-			 case 2: mode = 2; pistons[0][0].setOpMode(2); outputs[0][0].setDispMode(2);  break;
-			 case 3: mode = 3; pistons[0][0].setOpMode(3); outputs[0][0].setDispMode(3);  break;
-			 case 4: mode = 4; dmode = 4; pistons[0][0].setOpMode(4); outputs[0][0].setDispMode(4);  break;
-			 default:  mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
+			 case 0: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
+						mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
+						
+			 case 1: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
+						mode = 1; dmode = 1; pistons[0][0].setOpMode(1); outputs[0][0].setDispMode(1);  break;
+						
+			 case 2: setMouseAction("None");mode = 2; pistons[0][0].setOpMode(2); outputs[0][0].setDispMode(2);  break;
+			 
+			 case 3: setMouseAction("None");mode = 3; pistons[0][0].setOpMode(3); outputs[0][0].setDispMode(3);  break;
+			 
+			 case 4: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
+						mode = 4; dmode = 4; pistons[0][0].setOpMode(4); outputs[0][0].setDispMode(4);  break;
+						
+			 default:  setMouseAction("None"); mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
 		 }
 		}
 		
@@ -287,9 +296,13 @@ public void handleControl(ucEvent e){
 						
 						//edit state
 						if(maction == "SDraw"){
-						if(mode == 2 || interactflag){
+						if(mode == 2){
 								drawState(thisx, thisy);
-							}}
+							}
+						if(mode != 3 && interactflag){
+							drawState(thisx, thisy);
+						}
+							}
 						
 						//editcell
 						if(maction == "CDraw"){
