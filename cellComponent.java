@@ -194,15 +194,25 @@ public void paintComponent( Graphics g){
 								if(magnify>4){schmagnify = magnify-1;}
 								else{schmagnify = magnify;}
 								switch(species[x][y]){
+									//cell
 									case 0: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//Wolfram
 									case 1: g.setColor(Color.red);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//MBOT
 									case 2: g.setColor(Color.green);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);break;
+									//RandCell
 									case 3: g.setColor(Color.orange);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//OnCell
 									case 4: g.setColor(Color.white);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//OffCell
 									case 5: g.setColor(Color.black);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//BlinkCell
 									case 6: g.setColor(Color.blue);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//Symmetric Cell
 									case 7: g.setColor(Color.cyan);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									//Conveyor Cell
 									case 8: g.setColor(Color.yellow);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									
 									case 9: g.setColor(Color.pink);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									case 10: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
 											 g.setColor(Color.black);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
