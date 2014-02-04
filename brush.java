@@ -51,6 +51,9 @@ public class brush{
 		public void setOrientation(int a){
 			orientation = a;}
 			
+		public boolean getControls(String a){
+			return false;}
+			
 		public int getNextX(){
 			int currentx;
 			xcount += 1;
@@ -96,6 +99,8 @@ public class brush{
 
 class twobrush extends brush{
 	
+	public twobrush(){}
+	
 	public twobrush(int x, int y){
 		xsiz = x;
 		ysiz = y;
@@ -123,6 +128,8 @@ class twobrush extends brush{
 }
 
 class threebrush extends brush{
+	
+	public threebrush(){}
 	
 	public threebrush(int x, int y){
 		xsiz = x;
@@ -162,6 +169,8 @@ class threebrush extends brush{
 		
 class gliderbrush extends brush{
 	
+	public gliderbrush(){}
+	
 	public gliderbrush(int x, int y){
 		xsiz = x;
 		ysiz = y;
@@ -191,6 +200,10 @@ class gliderbrush extends brush{
 			default: y = yloc; break;}
 			return y;
 			}
+			
+@Override public boolean getControls(String a){
+			if(a == "Dir"){return true;}
+			return false;}
 }
 
 class spinbrush extends brush{
