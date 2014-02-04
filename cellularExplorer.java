@@ -148,10 +148,11 @@ public class cellularExplorer implements ucListener{
 						case 5: v1.outputs[0][0].setSelect(!Hank.getBoolo()); break;
 					}
 				}
-				
+				//brush control
 				if(e.getSource() == Inez){
 					switch(e.getCommand()){
 						case 1: v1.setEditBrush(Inez.getBrush()); break;
+						case 2: v1.sigmund.setOrientation(Inez.getBrushDir()); break;
 					}
 				}
 				
