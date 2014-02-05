@@ -282,6 +282,8 @@ public void handleControl(ucEvent e){
 						case 3: sigmund = new threebrush(pistons[0][0].xsiz,pistons[0][0].ysiz); break;
 							//Glider
 						case 4: sigmund = new gliderbrush(pistons[0][0].xsiz, pistons[0][0].ysiz); sigmund.setOrientation(0); break;
+							//R-pentomino
+						case 5: sigmund = new rpentbrush(pistons[0][0].xsiz, pistons[0][0].ysiz); sigmund.setOrientation(0); break;
 						
 						default : sigmund = new brush(pistons[0][0].xsiz, pistons[0][0].ysiz); break;}
 					}
