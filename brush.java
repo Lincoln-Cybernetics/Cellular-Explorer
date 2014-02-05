@@ -236,3 +236,41 @@ class spinbrush extends brush{
 			return y;}
 			
 }
+
+class rpentbrush extends brush{
+	
+	public rpentbrush(){}
+	
+	public rpentbrush(int x, int y){
+		xsiz = x;
+		ysiz = y;
+		bristles = 5;}
+	
+	protected int calculateX(){
+		int x = xloc;
+		switch (xcount){
+			case 1: x = xloc; break;
+			case 2: switch(orientation){case 0: break; case 1: x -= 1; break; case 2: break; case 3: x += 1; break;}break;
+			case 3: switch(orientation){case 0: x -= 1;break; case 1: break; case 2: x += 1; break; case 3: break;}break;
+			case 4: switch(orientation){case 0: break; case 1: x += 1; break; case 2: break; case 3: x -= 1; break;}break; 
+			case 5: switch(orientation){case 0: x += 1;break; case 1: x += 1; break; case 2: x -= 1; break; case 3: x -= 1; break;}break;
+			default: x = xloc; break;}
+			return x;
+		}
+	
+	protected int calculateY(){
+		int y = yloc;
+		switch(ycount){
+			case 1:y = yloc; break;
+			case 2: switch(orientation){case 0: y += 1; break; case 1: break; case 2: y -= 1; break; case 3: break;}break;
+			case 3: switch(orientation){case 0: break; case 1: y -= 1; break; case 2: break; case 3: y += 1; break;}break;
+			case 4: switch(orientation){case 0: y -= 1; break; case 1: break; case 2: y += 1; break; case 3: break;}break;
+			case 5: switch(orientation){case 0: y -= 1; break; case 1: y += 1; break; case 2: y += 1; break; case 3: y -= 1; break;}break;
+			default: y = yloc; break;}
+			return y;
+			}
+			
+@Override public boolean getControls(String a){
+			if(a == "Orient"){return true;}
+			return false;}
+}
