@@ -27,12 +27,13 @@ public class brushControl extends JComponent implements ActionListener{
 // controlPanel variables
 //brush selection
 JComboBox brushPicker;
-String[] brushes = new String[]{"1x1", "2x2", "3x3", "Glider"};
+String[] brushes = new String[]{"1x1", "2x2", "3x3", "Glider", "R- pentomino"};
 int brush = 1;
-//orientation
+//direction
 JLabel bdlabel;
 JRadioButton[] orients = new JRadioButton[8];
 int brushdir = 0;
+
 //sample brush
 brush gonzo;
 
@@ -44,10 +45,12 @@ int command = 0;
 public brushControl(){
 	//create controls
 	brushPicker = new JComboBox(brushes);
+	// directions
 	for(int i = 0; i < orients.length; i++){
 		orients[i] = new JRadioButton(Integer.toString(i));
 	}
 	bdlabel = new JLabel("Orientation : ");
+
 	//create gonzo
 	gonzo = new brush();
 	
@@ -129,20 +132,36 @@ public void actionPerformed(ActionEvent e){
 			case 2: gonzo = new twobrush(); break;
 			case 3: gonzo = new threebrush(); break;
 			case 4: gonzo = new gliderbrush(); break;
+			case 5: gonzo = new rpentbrush(); break;
 		}
 	}
 	
 	private void toggleControls(){
-		String[] controls = new String[]{"Dir"};
+		String[] controls = new String[]{"Dir", "Orient"};
+		boolean[] constate = new boolean[controls.length];
+		int connum = 0;
 		for(int abc = 0; abc < controls.length; abc++){
-			boolean vis = gonzo.getControls(controls[abc]); 
-			switch(abc){
-				case 0: bdlabel.setVisible(vis);
+			constate[abc]  = gonzo.getControls(controls[abc]);} 
+			if(constate[0]){connum += 1;} if(constate[1]){connum += 2;}
+			switch(connum){
+				case 0: bdlabel.setVisible(false);
 						for(int def = 0; def < orients.length; def++)
-						{orients[def].setVisible(vis); orients[def].setEnabled(vis);} 
+						{orients[def].setVisible(false); orients[def].setEnabled(false);} 
+						break; 
+				case 1: bdlabel.setVisible(true);
+						for(int def = 0; def < orients.length; def++)
+						{orients[def].setVisible(true); orients[def].setEnabled(true);} 
+						orients[0].setSelected(true); brushdir = 0;
+						break; 
+						
+				case 2: bdlabel.setVisible(true); boolean sig;
+						for(int def = 0; def < orients.length; def++)
+						{if(def < 4){sig = true;}else{sig = false;}
+						orients[def].setVisible(sig); orients[def].setEnabled(sig);} 
+						orients[0].setSelected(true); brushdir = 0;
 						break; 
 			}
-		}
+		
 	}
 
 //event generation
