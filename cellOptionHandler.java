@@ -120,6 +120,7 @@ public cell generateCell(){
 		case 6: tiamat = new mbot("BlinkCell"); break;
 		case 7: tiamat = new symmetriCell(); break;
 		case 8: tiamat = new conveyorCell(); break;
+		case 9: tiamat = new strobeCell(); break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
@@ -208,6 +209,7 @@ class randcellOptionHandler extends cellOptionHandler{
 		case 6: tiamat = new mbot("BlinkCell"); break;
 		case 7: tiamat = new symmetriCell();break;
 		case 8: tiamat = new conveyorCell(); break;
+		case 9: tiamat = new strobeCell(); break;
 		default: tiamat = new cell();break;}
 		
 		// randomly set mirror options
@@ -243,16 +245,17 @@ class randcellOptionHandler extends cellOptionHandler{
 	public int getCT(){ return celltype;}
 	
 	public cell getCell(){
-		int cellgen = shovel.nextInt(512);
-		if(cellgen == 0 || cellgen == 1){celltype = 5;}
-		if(cellgen > 1 && cellgen < 4){celltype = 4;}
-		if(cellgen > 3 && cellgen < 8){celltype = 6;}
-		if(cellgen > 7 && cellgen < 16){celltype = 3;}
-		if(cellgen > 15 && cellgen < 32){celltype = 0;}
-		if(cellgen > 31 && cellgen < 64){celltype = 8;}
-		if(cellgen > 63 && cellgen < 128){celltype = 1;}
-		if(cellgen > 127 && cellgen < 256){celltype = 7;}
-		if(cellgen > 255 && cellgen < 512){celltype = 2;}
+		int cellgen = shovel.nextInt(1024);
+		if(cellgen == 0 || cellgen == 1){celltype = 5;}//offcell
+		if(cellgen > 1 && cellgen < 4){celltype = 4;}//oncell
+		if(cellgen > 3 && cellgen < 8){celltype = 6;}//blinkcell
+		if(cellgen > 7 && cellgen < 16){celltype = 9;}//strobe cell
+		if(cellgen > 15 && cellgen < 32){celltype = 3;}//randcell
+		if(cellgen > 31 && cellgen < 64){celltype = 0;}//cell
+		if(cellgen > 63 && cellgen < 128){celltype = 8;}//conveyorcell
+		if(cellgen > 127 && cellgen < 256){celltype = 1;}//Wolfram
+		if(cellgen > 255 && cellgen < 512){celltype = 7;}//symmetric
+		if(cellgen > 511 && cellgen < 1024){celltype = 2;}//MBOT
 		
 	
 		cell marduk = generateCell(); return marduk;}
