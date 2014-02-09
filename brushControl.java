@@ -23,7 +23,7 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class brushControl extends JComponent implements ActionListener{
+public class brushControl extends JComponent implements ActionListener, ItemListener{
 // controlPanel variables
 //brush selection
 JComboBox brushPicker;
@@ -33,7 +33,11 @@ int brush = 1;
 JLabel bdlabel;
 JRadioButton[] orients = new JRadioButton[8];
 int brushdir = 0;
-
+// options
+Checkbox[] option;
+String[] optstr = new String[]{"Reflect"};
+String opname; 
+boolean opval;
 //sample brush
 brush gonzo;
 
@@ -50,7 +54,10 @@ public brushControl(){
 		orients[i] = new JRadioButton(Integer.toString(i));
 	}
 	bdlabel = new JLabel("Orientation : ");
-
+	//options
+	option = new Checkbox[1];
+	option[0] = new Checkbox("Reflect");
+	opval = false;
 	//create gonzo
 	gonzo = new brush();
 	
@@ -71,7 +78,8 @@ public brushControl(){
 				.addComponent(orients[4])
 				.addComponent(orients[5])
 				.addComponent(orients[6])
-				.addComponent(orients[7]))
+				.addComponent(orients[7])
+				.addComponent(option[0]))
 				);
 				
 	brushout.setVerticalGroup(
@@ -86,7 +94,8 @@ public brushControl(){
 				.addComponent(orients[4])
 				.addComponent(orients[5])
 				.addComponent(orients[6])
-				.addComponent(orients[7]))
+				.addComponent(orients[7])
+				.addComponent(option[0]))
 		);
 		
 	setLayout(brushout);
@@ -106,6 +115,12 @@ public brushControl(){
 	}
 	orients[0].setSelected(true);
 	bdlabel.setVisible(false);
+	// options
+	for(int i = 0; i < option.length; i++){
+		option[i].addItemListener(this);
+		option[i].setVisible(false);
+		option[i].setEnabled(false);
+	}
 	}
 
 public void actionPerformed(ActionEvent e){
@@ -125,6 +140,14 @@ public void actionPerformed(ActionEvent e){
 	}
 	fireucEvent();
 }
+	public void itemStateChanged(ItemEvent e){
+		int opnum = 0;
+		for(int i = 0; i < option.length; i++){
+			if(e.getSource() == option[i]){ opnum = i; opname = optstr[i];opval = option[i].getState();}
+		}
+		command = 3;
+		fireucEvent();
+	}
 
 	private void setGonzo(int a){
 		switch(a){
@@ -137,21 +160,23 @@ public void actionPerformed(ActionEvent e){
 	}
 	
 	private void toggleControls(){
-		String[] controls = new String[]{"Dir", "Orient"};
+		String[] controls = new String[]{"Dir", "Orient", "Reflect"};
 		boolean[] constate = new boolean[controls.length];
 		int connum = 0;
 		for(int abc = 0; abc < controls.length; abc++){
 			constate[abc]  = gonzo.getControls(controls[abc]);} 
-			if(constate[0]){connum += 1;} if(constate[1]){connum += 2;}
+			if(constate[0]){connum += 1;} if(constate[1]){connum += 2;} if(constate[2]){ connum += 4;}
 			switch(connum){
 				case 0: bdlabel.setVisible(false);
 						for(int def = 0; def < orients.length; def++)
 						{orients[def].setVisible(false); orients[def].setEnabled(false);} 
+						option[0].setVisible(false); option[0].setEnabled(false);
 						break; 
 				case 1: bdlabel.setVisible(true);
 						for(int def = 0; def < orients.length; def++)
 						{orients[def].setVisible(true); orients[def].setEnabled(true);} 
 						orients[0].setSelected(true); brushdir = 0;
+						option[0].setVisible(false); option[0].setEnabled(false);
 						break; 
 						
 				case 2: bdlabel.setVisible(true); boolean sig;
@@ -159,6 +184,26 @@ public void actionPerformed(ActionEvent e){
 						{if(def < 4){sig = true;}else{sig = false;}
 						orients[def].setVisible(sig); orients[def].setEnabled(sig);} 
 						orients[0].setSelected(true); brushdir = 0;
+						option[0].setVisible(false); option[0].setEnabled(false);
+						break; 
+						
+				case 3: break;
+				
+				case 4: option[0].setVisible(true); option[0].setEnabled(true); break;
+				
+				case 5:  bdlabel.setVisible(true);
+						for(int def = 0; def < orients.length; def++)
+						{orients[def].setVisible(true); orients[def].setEnabled(true);} 
+						orients[0].setSelected(true); brushdir = 0;
+						option[0].setVisible(true); option[0].setEnabled(true);
+						break; 
+						
+				case 6: bdlabel.setVisible(true); boolean sigB;
+						for(int def = 0; def < orients.length; def++)
+						{if(def < 4){sigB = true;}else{sigB = false;}
+						orients[def].setVisible(sigB); orients[def].setEnabled(sigB);} 
+						orients[0].setSelected(true); brushdir = 0;
+						option[0].setVisible(true); option[0].setEnabled(true);
 						break; 
 			}
 		
@@ -186,4 +231,12 @@ public int getBrush(){
 	
 public int getBrushDir(){
 	return brushdir;}
+	
+public String getOPNAM(){
+	return opname;}
+	
+public boolean getOPVAL(){
+	return opval;}
+	
+	
 }
