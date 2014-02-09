@@ -108,7 +108,8 @@ public cell getCell(){ cell marduk = generateCell(); return marduk;}
 
 public cell generateCell(){
 	cell tiamat;
-	setCT(source.getCT());
+	if(source == null){celltype = 0;}
+	else{setCT(source.getCT());}
 	// makes the right type of cell
 	switch(celltype){
 		case 0: tiamat = new cell();break;
