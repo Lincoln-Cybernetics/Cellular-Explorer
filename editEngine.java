@@ -659,8 +659,13 @@ public void handleControl(ucEvent e){
 												for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
 													outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
 							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }
-						 
-						
+							 
+						 if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							}
+						}
 						
 						}
 						
@@ -686,6 +691,14 @@ public void handleControl(ucEvent e){
 							for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
 								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
 							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }}
+							 
+							  if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+								}
+							}
+							 
 							}
 							
 					public void mouseEntered(MouseEvent e){
@@ -697,6 +710,14 @@ public void handleControl(ucEvent e){
 						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
 						}
+						
+						 if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							}
+						}
+						
 						}
 					
 					public void mouseExited(MouseEvent e){
@@ -726,6 +747,14 @@ public void handleControl(ucEvent e){
 						 outputs[xaw][yaw].remHilite();outputs[xaw][yaw].beginRect(xlocal,ylocal,!rcflag); maction = "SRaction";}
 						 
 					 }
+					 
+					  if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							}
+						}
+						
 						}
 					
 					public void mouseReleased(MouseEvent e){
@@ -760,6 +789,13 @@ public void handleControl(ucEvent e){
 								}
 							}
 							
+							 if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							}
+						}
+						
 						}
 						
 					
@@ -830,7 +866,12 @@ public void handleControl(ucEvent e){
 						}}
 						
 				}
-					
+					 if(mode == 3){
+							 if(pistons[xaw][yaw].culture[xlocal][ylocal].getOption("Mirror")){
+							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrX"), 
+							 pistons[xaw][yaw].culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							}
+						}
 				
 		}
 }
