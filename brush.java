@@ -54,6 +54,9 @@ public class brush{
 		public boolean getControls(String a){
 			return false;}
 			
+		public void setOption(String opname, boolean b){
+		}
+			
 		public int getNextX(){
 			int currentx;
 			xcount += 1;
@@ -238,10 +241,11 @@ class spinbrush extends brush{
 }
 
 class rpentbrush extends brush{
-	
+	boolean ref;
 	public rpentbrush(){}
 	
 	public rpentbrush(int x, int y){
+		ref = false;
 		xsiz = x;
 		ysiz = y;
 		bristles = 5;}
@@ -251,9 +255,11 @@ class rpentbrush extends brush{
 		switch (xcount){
 			case 1: x = xloc; break;
 			case 2: switch(orientation){case 0: break; case 1: x -= 1; break; case 2: break; case 3: x += 1; break;}break;
-			case 3: switch(orientation){case 0: x -= 1;break; case 1: break; case 2: x += 1; break; case 3: break;}break;
+			case 3:if(ref){switch(orientation){case 0: x += 1;break; case 1: break; case 2: x -= 1; break; case 3: break;}}
+			else{switch(orientation){case 0: x -= 1;break; case 1: break; case 2: x += 1; break; case 3: break;}}break;
 			case 4: switch(orientation){case 0: break; case 1: x += 1; break; case 2: break; case 3: x -= 1; break;}break; 
-			case 5: switch(orientation){case 0: x += 1;break; case 1: x += 1; break; case 2: x -= 1; break; case 3: x -= 1; break;}break;
+			case 5: if(ref){switch(orientation){case 0: x -= 1;break; case 1: x += 1; break; case 2: x += 1; break; case 3: x -= 1; break;}}
+			else{switch(orientation){case 0: x += 1;break; case 1: x += 1; break; case 2: x -= 1; break; case 3: x -= 1; break;}}break;
 			default: x = xloc; break;}
 			return x;
 		}
@@ -261,16 +267,25 @@ class rpentbrush extends brush{
 	protected int calculateY(){
 		int y = yloc;
 		switch(ycount){
-			case 1:y = yloc; break;
+			case 1: y = yloc; break;
 			case 2: switch(orientation){case 0: y += 1; break; case 1: break; case 2: y -= 1; break; case 3: break;}break;
-			case 3: switch(orientation){case 0: break; case 1: y -= 1; break; case 2: break; case 3: y += 1; break;}break;
+			case 3: if(ref){switch(orientation){case 0: break; case 1: y += 1; break; case 2: break; case 3: y -= 1; break;}}
+			else{switch(orientation){case 0: break; case 1: y -= 1; break; case 2: break; case 3: y += 1; break;}}break;
 			case 4: switch(orientation){case 0: y -= 1; break; case 1: break; case 2: y += 1; break; case 3: break;}break;
-			case 5: switch(orientation){case 0: y -= 1; break; case 1: y += 1; break; case 2: y += 1; break; case 3: y -= 1; break;}break;
+			case 5: if(ref){switch(orientation){case 0: y -= 1; break; case 1: y -= 1; break; case 2: y += 1; break; case 3: y += 1; break;}}
+			else{switch(orientation){case 0: y -= 1; break; case 1: y += 1; break; case 2: y += 1; break; case 3: y -= 1; break;}}break;
 			default: y = yloc; break;}
 			return y;
 			}
 			
 @Override public boolean getControls(String a){
 			if(a == "Orient"){return true;}
+			if(a == "Reflect"){return true;}
 			return false;}
+			
+@Override public void setOption(String opname, boolean b){
+			if(opname == "Reflect"){ ref = b;}
+		}
+		
+		
 }
