@@ -153,6 +153,7 @@ public class cellularExplorer implements ucListener{
 					switch(e.getCommand()){
 						case 1: v1.setEditBrush(Inez.getBrush()); break;
 						case 2: v1.sigmund.setOrientation(Inez.getBrushDir()); break;
+						case 3: v1.sigmund.setOption(Inez.getOPNAM(), Inez.getOPVAL()); break;
 					}
 				}
 				
