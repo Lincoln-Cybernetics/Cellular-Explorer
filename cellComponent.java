@@ -214,38 +214,21 @@ public void paintComponent( Graphics g){
 									case 8: g.setColor(Color.yellow);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 									//strobe Cell
 									case 9: g.setColor(Color.pink);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
-									case 10: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.black);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 11: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.white);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 12: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.red);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 13:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.blue);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 14:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.orange);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 15:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.green);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 16:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.cyan);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 17:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.yellow);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
-									case 18:  g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
-											 g.setColor(Color.pink);g.fillRect(x*magnify+2,y*magnify+2,schmagnify-2,schmagnify-2); break;
+									
 									default: g.setColor(Color.black);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 								}
 								//outline each cell according to its maturity setting
-								switch(lifespan[x][y]){
-									case 1: g.setColor(Color.white); break;
-									case 2: g.setColor(Color.red); break;
-									case 3: g.setColor(Color.blue); break;
-									case 4: g.setColor(Color.black); break;
-									case 8: g.setColor(Color.yellow); break;
-									case 16: g.setColor(Color.cyan); break;
-									case 32: g.setColor(Color.magenta); break;
-									default: g.setColor(Color.green); break;
-								}
-								g.drawRect(x*magnify,y*magnify,magnify,magnify);
+								//switch(lifespan[x][y]){
+									//case 1: g.setColor(Color.white); break;
+									//case 2: g.setColor(Color.red); break;
+									//case 3: g.setColor(Color.blue); break;
+									//case 4: g.setColor(Color.black); break;
+									//case 8: g.setColor(Color.yellow); break;
+									//case 16: g.setColor(Color.cyan); break;
+									//case 32: g.setColor(Color.magenta); break;
+									//default: g.setColor(Color.green); break;
+								//}
+								//g.drawRect(x*magnify,y*magnify,magnify,magnify);
 							}
 							
 							//multicolor rendering
@@ -278,7 +261,7 @@ public void paintComponent( Graphics g){
 									case 1: g.setColor(Color.red); break;
 									case 2: g.setColor(Color.blue); break;
 									case 3: g.setColor(Color.orange); break;
-									case 4: g.setColor(Color.cyan); break;
+									case 4: if(selection[x][y]){g.setColor(Color.cyan);}else{g.setColor(Color.red);} break;
 									case 5: g.setColor(Color.white);
 											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y]){g.setColor(Color.black);} }
 											if(mode == 3){ if( species[x][y] == 4 || lifespan[x][y] == 1){g.setColor(Color.black);}}
