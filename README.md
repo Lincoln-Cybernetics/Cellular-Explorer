@@ -1,4 +1,6 @@
 Cellular-Explorer
 =================
 
-Mixed rule cellular automaton editor
+Cellular Explorer is a mixed rule cellular automaton editor created in Java.  
+
+
