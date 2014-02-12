@@ -28,7 +28,7 @@ public class cellComponent extends JComponent
 	boolean[][] selection;
 	boolean selectionflag = false;// shows, hides selections
 	int[][] species;// colors cells by type
-	int[][] lifespan;// outlines cells based on Maturity setting
+	//int[][] lifespan;// outlines cells based on Maturity setting
 	int[][] age;
 	int[][] ageclass;//determines the color in ulticolor
 	int[][] hilite; // hilights cells
@@ -53,7 +53,7 @@ public class cellComponent extends JComponent
 		cstate = new boolean[xdim][ydim];
 		selection = new boolean[xdim][ydim];
 		species = new int[xdim][ydim];
-		lifespan = new int[xdim][ydim];
+		//lifespan = new int[xdim][ydim];
 		age = new int[xdim][ydim];
 		ageclass = new int[xdim][ydim];
 		hilite = new int[xdim][ydim];
@@ -67,7 +67,7 @@ public class cellComponent extends JComponent
 		cstate = new boolean[xdim][ydim];
 		selection = new boolean[xdim][ydim];
 		species = new int[xdim][ydim];
-		lifespan = new int[xdim][ydim];
+		//lifespan = new int[xdim][ydim];
 		age = new int[xdim][ydim];
 		ageclass = new int[xdim][ydim];
 		hilite = new int[xdim][ydim];
@@ -121,8 +121,8 @@ public class cellComponent extends JComponent
 	public void setSpecies(int a, int b, int c){
 		species[a][b] = c;}
 		
-	public void setLifespan(int a, int b, int c){
-		lifespan[a][b] = c;}
+	//public void setLifespan(int a, int b, int c){
+		//lifespan[a][b] = c;}
 		
 	public void setAge(int x, int y, int a){
 		age[x][y] = a;
@@ -264,7 +264,7 @@ public void paintComponent( Graphics g){
 									case 4: if(selection[x][y]){g.setColor(Color.cyan);}else{g.setColor(Color.red);} break;
 									case 5: g.setColor(Color.white);
 											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y]){g.setColor(Color.black);} }
-											if(mode == 3){ if( species[x][y] == 4 || lifespan[x][y] == 1){g.setColor(Color.black);}}
+											if(mode == 3){ if( species[x][y] == 4 /*|| lifespan[x][y] == 1*/){g.setColor(Color.black);}}
 											if(mode == 4 && ageclass[x][y] == 1){g.setColor(Color.black);} break;
 									default: g.setColor(Color.red); break;}
 									if(hilite[x][y] != 0){g.drawRect(x*magnify, y*magnify, magnify, magnify);}
