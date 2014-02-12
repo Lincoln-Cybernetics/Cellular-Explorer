@@ -72,8 +72,11 @@ public void initialize(int xmx, int ymx){
 	pistons[x][y] = new cellBrain(xmx,ymx, this);
 	 outputs[x][y] = new cellComponent(xmx,ymx);
 	  outputs[x][y].addMouseMotionListener(this);	
-		outputs[x][y].addMouseListener(this); pistons[x][y].setDisplay(outputs[x][y]); 
-		pistons[x][y].initBoard();}}
+		outputs[x][y].addMouseListener(this); 
+		pistons[x][y].setDisplay(outputs[x][y]); 
+		pistons[x][y].initBoard();
+		pistons[x][y].pP();
+		}}
 							setEditBrush(1);
 						  JFrame disp = new JFrame("Cellular Explorer");
 						  disp.getContentPane().add(new JScrollPane(outputs[0][0]));
@@ -109,13 +112,24 @@ public void handleControl(ucEvent e){
 		if(!pistons[0][0].mayIterate()){pistons[0][0].setOpMode(pistons[0][0].getDispType());
 		outputs[0][0].setDispMode(pistons[0][0].getDispType());}
 								pistons[0][0].pP(); }
-								
+		
+	// step forward one generation						
 	public void step(int a){
 		for (int n = 0; n < a; n++){
 			pistons[0][0].iterate();}
 		}
 
+	// recieves a signal from an interrupted cellBrain
 	public void iterateInterrupt(int a){if (a == 1){stateFillSelect();}}
+	
+	//recieves the current state from a cellBrain
+	public void updateState(boolean[][] uds, cellBrain mybrain){
+		for(int a = 0; a < yaut; a++){
+			for(int b = 0; b < xaut; b++){
+				if(mybrain == pistons[b][a]){ outputs[b][a].setState(uds);}
+			}
+		}
+		}
 	
 	//speed settings
 	public void setMasterSpeed(int a){
@@ -357,7 +371,7 @@ public void handleControl(ucEvent e){
 								
 								pistons[xaw][yaw].addCell(a,b,ed);
 						outputs[xaw][yaw].setSpecies(a,b,decider.getCT());
-						outputs[xaw][yaw].setLifespan(a,b,ed.getParameter("Mat")); 
+						//outputs[xaw][yaw].setLifespan(a,b,ed.getParameter("Mat")); 
 						
 					}}
 					
