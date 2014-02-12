@@ -1,8 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
+//import javax.swing.*;
 import java.util.Random;
-import javax.swing.event.*;
+//import javax.swing.event.*;
 import java.util.*;
 
 /*Cellular Explorer Prototype proof of concept
@@ -65,6 +65,7 @@ class cellBrain  implements Runnable{
 	//state editing flags
 	boolean editflag = false;
 	boolean iiflag = false;
+	boolean interruptedflag = false;
 	int sfopt = 0;
 	int sdopt = 0;
 	boolean rcflag = false;
@@ -105,6 +106,7 @@ class cellBrain  implements Runnable{
 		andromeda.setType(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
+		//pP();
 			}
 	
 	//set size		
@@ -120,7 +122,8 @@ class cellBrain  implements Runnable{
 		andromeda = new spinbrush(xsiz, ysiz);
 		andromeda.setType(true);
 		setXYwrap(false,false);
-		ztime = controller.getMasterSpeed();	
+		ztime = controller.getMasterSpeed();
+		//pP();	
 			}
 		
 		// use Strings to create	
@@ -137,7 +140,7 @@ class cellBrain  implements Runnable{
 		andromeda.setType(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
-		
+		//pP();
 			}
 			
 		public void initBoard(){
@@ -161,7 +164,7 @@ class cellBrain  implements Runnable{
 			//Play/Pause	
 				
 			public void pP(){
-				if (firstflag == true){firstflag = false;setPause(false); t.start();}
+				if (firstflag){setPause(true); t.start();}
 				else{ setPause(!pauseflag);}
 			}
 			
@@ -214,7 +217,9 @@ class cellBrain  implements Runnable{
 				
 				//sends the current state to the display
 				public void refreshState(){
-					display.setState(current);}
+					controller.updateState(current, this);
+					
+					}
 					
 					// general editing methods
 					
@@ -254,7 +259,10 @@ class cellBrain  implements Runnable{
 					if(x <= 0){x=0;}
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
+					if(b){culture[x][y].activate();} else{culture[x][y].purgeState();}
+					if(opmode == 4){display.setAge(x,y,culture[x][y].getState());}
 					current[x][y] = b;
+					
 				}
 				
 			
@@ -306,7 +314,7 @@ class cellBrain  implements Runnable{
 			int x; int y;
 			 if (iiflag){ controller.iterateInterrupt(myopt);
 				  iiflag = false;}
-				   
+				   else{
 					//gets new values from the cells
 					for(y=0;y<=ysiz-1;y++){
 						for(x=0;x<=xsiz-1;x++){
@@ -333,21 +341,22 @@ class cellBrain  implements Runnable{
 						// cycles new values into current state
 						current[x][y] = newstate[x][y]; 
 						}}
-					display.setState(current);	
+					//display.setState(current);
+					refreshState();	
 					controller.iterateNotify();
+				}
 				}}
 			
 			// runs the main thread
 			public void run(){
-				int x=0;
-				int y=0;
 				paused = false;
 			
 					
 					
 				while(true){
-					//update display
-					display.setState(current);
+					//output current state
+					if(firstflag){firstflag = false; refreshState();}
+					//else{display.setState(current);}
 						
 					//pauses the program
 					try{	while (pauseflag ==true){
@@ -355,7 +364,8 @@ class cellBrain  implements Runnable{
 			  Thread.sleep(1);} 
 			   }  catch(InterruptedException ie) {}
 			   paused = false;
-			 
+			   
+			 //main cell logic
 			 iterate();
 			 
 						//timeout between grid-wide iterations
