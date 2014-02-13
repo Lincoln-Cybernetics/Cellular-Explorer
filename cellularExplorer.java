@@ -51,12 +51,20 @@ public class cellularExplorer implements ucListener{
 		}
 		
 		public cellularExplorer(){
+			 SwingUtilities.invokeLater(new Runnable() {
+         public void run() {
+             makeCE();
+         }
+     });
+		
+		}
+		
+		private void makeCE(){
 			Alice = new masterControl();
 			v1 = new editEngine();
 			Alice.adducListener(this);
 			//sets up the window, adds the master controls
 			makeWin(1);
-		
 		}
 		
 		public void handleControl(ucEvent e){
