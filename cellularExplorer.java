@@ -1,7 +1,3 @@
-
-
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -169,9 +165,8 @@ public class cellularExplorer implements ucListener{
 		
 		private void makeWin(int n){
 			switch(n){
-				case 1:    cpanel = new JFrame("Cellular Explorer");
+				case 1:    cpanel = new JFrame("Cellular Explorer v0.0.6");
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
-							//cpanel.getContentPane().add(whiteRabbit); whiteRabbit.setVisible(false); whiteRabbit.setEnabled(false);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.setSize(675,165);
 							cpanel.setResizable(false);
