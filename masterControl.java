@@ -152,7 +152,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
-		String noticea = "Cellular Explorer Prototype v. 0.0.5 (Punxsutawney 02014)\nPowered by Lincoln Cybernetics.\nLincolnCybernetics.com\n";
+		String noticea = "Cellular Explorer Prototype v. 0.0.6 (Valentine 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
   String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
@@ -171,7 +171,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		sign.setText(notice);
 		cpanel.getContentPane().add(sign);
 		cpanel.setLocation(675,0);
-		cpanel.setSize(400,350);
+		cpanel.setSize(400,375);
 		cpanel.setVisible(true);
 	}
 }
