@@ -1,8 +1,5 @@
-import java.awt.*;
-import java.awt.event.*;
-//import javax.swing.*;
+
 import java.util.Random;
-//import javax.swing.event.*;
 import java.util.*;
 
 /*Cellular Explorer Prototype proof of concept
@@ -217,7 +214,7 @@ class cellBrain  implements Runnable{
 				
 				//sends the current state to the display
 				public void refreshState(){
-					controller.updateState(current, this);
+					display.setState(current);
 					
 					}
 					
