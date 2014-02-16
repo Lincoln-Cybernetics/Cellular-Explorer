@@ -122,15 +122,6 @@ public void handleControl(ucEvent e){
 	// recieves a signal from an interrupted cellBrain
 	public void iterateInterrupt(int a){if (a == 1){stateFillSelect();}}
 	
-	//recieves the current state from a cellBrain
-	public void updateState(boolean[][] uds, cellBrain mybrain){
-		for(int a = 0; a < yaut; a++){
-			for(int b = 0; b < xaut; b++){
-				if(mybrain == pistons[b][a]){ outputs[b][a].setState(uds);}
-			}
-		}
-		}
-	
 	//speed settings
 	public void setMasterSpeed(int a){
 		pistons[0][0].setZT(a); zt = a;}
