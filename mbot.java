@@ -135,6 +135,7 @@ public class mbot extends cell{
 		if( name == "OffCell"){born[n] = false; survives[n] = false;}
 		if( name == "BlinkCell"){born[n] = true; survives[n] = false;}
 		}
+		if(name =="Live Free or Die"){name = "L.F.O.D.";}
 		
 	}
 		
