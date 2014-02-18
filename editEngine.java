@@ -17,6 +17,7 @@ int zt = 500;// speed setting
 brush sigmund;// editing brush
 int brushtype;
 String maction = "None";
+String remaction = "None";
 int mode = 1;// general operating mode
 int dmode = 1;// display mode
 cellOptionHandler castor;
@@ -131,6 +132,7 @@ public void handleControl(ucEvent e){
 	
 	// mouse methods	
 	public void setMouseAction(String action){
+		if(action == "Mirsel" || action == "SRect"){remaction = maction;}
 		maction = action;
 	/*mouse actions:
 	 * "BSel" select with the brush
@@ -205,9 +207,10 @@ public void handleControl(ucEvent e){
 		 barnabus = new JFrame("Cell Info");
 		 barnabus.getContentPane().add(mercury);
 		 barnabus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		 barnabus.setSize(250,250);
+		 barnabus.pack();
 		 barnabus.setLocation(675,0);
-		 barnabus.setResizable(false);
+		 barnabus.setResizable(true);
+		 mercury.init();
 		 barnabus.setVisible(true);
 		 mercury.setVisible(true);}
 		 else{barnabus.setVisible(true);}
@@ -655,8 +658,8 @@ public void handleControl(ucEvent e){
 						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
+						outputs[xaw][yaw].remHilite();
 						if(isMouseUsed()){
-							outputs[xaw][yaw].remHilite();
 							drawBrush(xlocal,ylocal);
 					}
 						 // draws rectangle during rectangle selection
@@ -683,9 +686,8 @@ public void handleControl(ucEvent e){
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
-						//
+						outputs[xaw][yaw].remHilite();
 						if(isMouseUsed()){
-							outputs[xaw][yaw].remHilite();
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 					}
@@ -738,9 +740,9 @@ public void handleControl(ucEvent e){
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
-						//
+						
 						if(isMouseUsed()){
-							outputs[xaw][yaw].remHilite();
+							//outputs[xaw][yaw].remHilite();
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 					}
@@ -771,9 +773,9 @@ public void handleControl(ucEvent e){
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
-						//
+						
 						if(isMouseUsed()){ 
-							outputs[xaw][yaw].remHilite();
+							//outputs[xaw][yaw].remHilite();
 							drawBrush(xlocal,ylocal);
 							//no action taken
 						}
@@ -785,12 +787,13 @@ public void handleControl(ucEvent e){
 							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
 								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
 								outputs[xaw][yaw].repaint(); sedna.detectSelection();
-								switch(mode){
+								/*switch(mode){
 									case 1: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
 									case 2: setMouseAction("SDraw"); break;
 									case 3: setMouseAction("CDraw"); break;
 									case 4: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
-									default: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;}
+									default: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;}*/
+									setMouseAction(remaction); remaction = "None";
 								}
 							}
 							
@@ -815,7 +818,7 @@ public void handleControl(ucEvent e){
 						if(mercury != null){mercury.setCell(pistons[xaw][yaw].culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
-							outputs[xaw][yaw].remHilite();
+							//outputs[xaw][yaw].remHilite();
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
 						}
@@ -836,13 +839,13 @@ public void handleControl(ucEvent e){
 							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
 								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
 								outputs[xaw][yaw].repaint(); sedna.detectSelection();
-								switch(mode){
+								/*switch(mode){
 									case 1: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
 									case 2: setMouseAction("SDraw"); break;
 									case 3:setMouseAction("CDraw"); break;
 									case 4: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
 									default: if(interactflag){setMouseAction("SDraw");}else{setMouseAction("None");}break;
-									}
+									}*/setMouseAction(remaction); remaction = "None";
 							}
 						rectflag = false;
 						
@@ -854,21 +857,22 @@ public void handleControl(ucEvent e){
 							switch(mirrefflag[1]){
 							case 0:	
 							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
-							outputs[xaw][yaw].setHiLite(xlocal, ylocal, 1);setMouseAction("CDraw"); break;
+							outputs[xaw][yaw].setHiLite(xlocal, ylocal, 1);setMouseAction(remaction); break;
 							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; outputs[xaw][yaw].setHiLite(xlocal, ylocal, 3);
-							setMouseAction("CDraw"); break;
+							setMouseAction(remaction); break;
 						}}
 							//secondary cell
 							else{
 								switch(mirrefflag[2]){
 							case 0:	
 							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
-							outputs[0][0].setHiLite(xlocal, ylocal, 2);setMouseAction("CDraw"); break;
+							outputs[0][0].setHiLite(xlocal, ylocal, 2);setMouseAction(remaction); break;
 							case 1: mirrefflag[2] = 2; mirrefx[2] = xlocal; mirrefy[2] = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 4);
-							setMouseAction("CDraw"); break;
+							setMouseAction(remaction); break;
 						}}
 						
-						}}
+						}remaction = "None";
+						}
 						
 				}
 					 if(mode == 3){
