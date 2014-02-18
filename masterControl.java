@@ -159,11 +159,11 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
   String noticee=  "the Free Software Foundation,\neither version 3 of the License, or";
   String noticef =  "(at your option) any later version.\n\n";
   String noticeg =  " This program is distributed in the hope that it will be useful,\n";
-  String noticeh =  "but WITHOUT ANY WARRANTY; without even the implied warranty of";
-  String noticei =  " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the";
+  String noticeh =  "but WITHOUT ANY WARRANTY; without even the implied warranty of\n";
+  String noticei =  " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n  See the";
   String noticej =  "GNU General Public License for more details.\n\n";
-  String noticek =  " You should have received a copy of the GNU General Public License";
-  String noticel =  "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n";
+  String noticek =  " You should have received a copy of the GNU General Public License\n";
+  String noticel =  "along with this program.\n  If not, see <http://www.gnu.org/licenses/>.\n";
   String noticem = "The GPL is appended to the end of the file cellularExplorer.java";
   String  notice = noticea+noticeb+noticec+noticed+noticee+noticef+noticeg+noticeh+noticei+noticej+noticek+noticel+noticem;
 		JTextPane sign = new JTextPane();
@@ -171,7 +171,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		sign.setText(notice);
 		cpanel.getContentPane().add(sign);
 		cpanel.setLocation(675,0);
-		cpanel.setSize(400,375);
+		cpanel.pack();
 		cpanel.setVisible(true);
+		cpanel.setResizable(true);
 	}
 }
