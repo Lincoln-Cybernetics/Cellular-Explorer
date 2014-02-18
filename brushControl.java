@@ -110,18 +110,31 @@ public brushControl(){
 	for(int i = 0; i < orients.length; i++){
 		direcpick.add(orients[i]);
 		orients[i].addActionListener(this);
-		orients[i].setVisible(false);
+		orients[i].setVisible(true);
 		orients[i].setEnabled(false);
 	}
 	orients[0].setSelected(true);
-	bdlabel.setVisible(false);
+	bdlabel.setVisible(true);
 	// options
 	for(int i = 0; i < option.length; i++){
 		option[i].addItemListener(this);
-		option[i].setVisible(false);
+		option[i].setVisible(true);
 		option[i].setEnabled(false);
 	}
 	}
+	
+public void init(){
+	for(int i = 0; i < orients.length; i++){	
+		orients[i].setVisible(false);
+		orients[i].setEnabled(false);
+	}
+	bdlabel.setVisible(false);
+	// options
+	for(int i = 0; i < option.length; i++){
+		option[i].setVisible(false);
+		option[i].setEnabled(false);
+	}
+}
 
 public void actionPerformed(ActionEvent e){
 	if(e.getSource() == brushPicker){
