@@ -168,8 +168,8 @@ public class cellularExplorer implements ucListener{
 				case 1:    cpanel = new JFrame("Cellular Explorer v0.0.6");
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-							cpanel.setSize(675,165);
-							cpanel.setResizable(false);
+							cpanel.pack();
+							cpanel.setResizable(true);
 							cpanel.setVisible(true);
 							cpanel.setLayout(new FlowLayout());
 							
@@ -179,8 +179,8 @@ public class cellularExplorer implements ucListener{
 						  whiteRabbit = new newControl();
 						  npanel.getContentPane().add(whiteRabbit);
 						  npanel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-						  npanel.setSize(675,165);
-						  npanel.setResizable(false);
+						  npanel.pack();
+						  npanel.setResizable(true);
 						  npanel.setVisible(true);
 						  whiteRabbit.setVisible(true);
 						  whiteRabbit.adducListener(this);
@@ -190,9 +190,9 @@ public class cellularExplorer implements ucListener{
 						  Dan = new stateEditor(); 
 						  sedit.getContentPane().add(Dan);
 						  sedit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  sedit.setSize(200,500);
+						  sedit.pack();
 						  sedit.setLocation(1200,165);
-						  sedit.setResizable(false);
+						  sedit.setResizable(true);
 						  sedit.setVisible(true);
 						  Dan.setVisible(true);
 						  Dan.adducListener(this);
@@ -202,9 +202,9 @@ public class cellularExplorer implements ucListener{
 						  Emily = new cellEditor(); 
 						  cEdit.getContentPane().add(Emily);
 						  cEdit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  cEdit.setSize(200,500);
+						  cEdit.pack();
 						  cEdit.setLocation(0,165);
-						  cEdit.setResizable(false);
+						  cEdit.setResizable(true);
 						  cEdit.setVisible(true);
 						  Emily.setVisible(true);
 						  Emily.adducListener(this);
@@ -220,9 +220,9 @@ public class cellularExplorer implements ucListener{
 						  cPick.getContentPane().add(bernie);
 						  cPick.getContentPane().add(Gwen);
 						  cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  cPick.setSize(775,200);
+						  cPick.pack();
 						  cPick.setLocation(0,665);
-						  cPick.setResizable(false);
+						  cPick.setResizable(true);
 						  cPick.setVisible(true);
 						  Fred.setVisible(true);
 						  Gwen.setVisible(true);
@@ -234,9 +234,9 @@ public class cellularExplorer implements ucListener{
 						  Hank = new selectionControl(); 
 						  sBox.getContentPane().add(Hank);
 						  sBox.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  sBox.setSize(725,165);
+						  sBox.pack();
 						  sBox.setLocation(675,0);
-						  sBox.setResizable(false);
+						  sBox.setResizable(true);
 						  sBox.setVisible(true);
 						  Hank.setVisible(true);
 						  Hank.adducListener(this);
@@ -246,10 +246,11 @@ public class cellularExplorer implements ucListener{
 						  Inez = new brushControl(); 
 						  brushCup.getContentPane().add(Inez);
 						  brushCup.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  brushCup.setSize(625,200);
+						  brushCup.pack();
 						  brushCup.setLocation(775,665);
-						  brushCup.setResizable(false);
+						  brushCup.setResizable(true);
 						  brushCup.setVisible(true);
+						  Inez.init();
 						  Inez.setVisible(true);
 						  Inez.adducListener(this);
 						  break;
