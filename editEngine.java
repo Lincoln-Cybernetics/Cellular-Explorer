@@ -31,11 +31,16 @@ int[] anchorx = new int[]{0,0,0,0};//anchor coordinate x for mirrors using the r
 int[] anchory = new int[]{0,0,0,0};//anchor coordinate y for mirrors using the reference
 
 selector sedna;
+//parameter names
+String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH"};
 int sdo = 0; //state drawing option
 boolean interactflag = false;
 int sfo = 0; //state fill option
 int cdo = 0; //cell drawing option
 int cfo = 0; //cell fill option
+int wsx = 0; //window start: X
+int wsy = 0; //window start: Y
+int wh = 0; // window height
 boolean rcflag = false;//right click flag
 boolean rectflag = false;//flag for making rectangles
 cicomp mercury; JFrame barnabus;
@@ -82,8 +87,8 @@ public void initialize(int xmx, int ymx){
 						  JFrame disp = new JFrame("Cellular Explorer");
 						  disp.getContentPane().add(new JScrollPane(outputs[0][0]));
 						  disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-						  disp.setSize(1000,500);
-						  disp.setLocation(200,165);
+						  disp.setSize(1000,wh);
+						  disp.setLocation(wsx,wsy);
 						  disp.setResizable(true);
 						  disp.setVisible(true);
 						  eris.setInt("Xsiz", xmx);
@@ -153,50 +158,38 @@ public void handleControl(ucEvent e){
 		return true;}
 	
 	// edit options
-	public void setSDO(int u){
-		sdo = u;
-		/* State Drawing Option
-		 * 0 = Regular drawing 
-		 * 1 = Checker Board pattern
-		 * 2 = Randomized
-		 * 3 = Randomized/Checker Board
-		 */
-	 }
+	
 	 
 	public void setInteract(boolean b){ interactflag = b;}
 	
 	public boolean getInteract(){ return interactflag;}
 	 
-	public void setSFO(int v){
-		sfo = v;
-		/* State Fill Option
+	
+	 
+	 //set parameters
+	 public void setParameter(String pname, int a ){
+		 int j = 0;
+		 for(int n = 0; n < parameters.length; n++){ if(pname == parameters[n]){ j = n; break;}}
+		 switch(j){
+			 /* General Editing Tool Options
 		 * 0 = Regular fill 
 		 * 1 = Checker Board pattern
 		 * 2 = Randomized
 		 * 3 = Randomized/Checker Board
-		 * 4 = Clear state
-		 * 5 = Invert state
+		 * 4 = Clear state (sfo only)
+		 * 5 = Invert state (sfo only)
 		 */
-	 } 
-	 
-	 public void setCDO(int w){
-		cdo = w;
-		/* Cell Drawing Option
-		 * 0 = Regular drawing 
-		 * 1 = Checker Board pattern
-		 * 2 = Randomized
-		 * 3 = Randomized/Checker Board
-		 */
-	 }
-	 
-	 public void setCFO(int t){
-		cfo = t;
-		/* Cell Fill Option
-		 * 0 = Regular drawing 
-		 * 1 = Checker Board pattern
-		 * 2 = Randomized
-		 * 3 = Randomized/Checker Board
-		 */
+			 case 0: cdo = a; break;
+			 case 1: cfo = a; break;
+			 case 2: sdo = a; break;
+			 case 3: sfo = a; break;
+			 
+			 //Automaton window setup 
+			 case 4: wsx = a; break;
+			 case 5: wsy = a; break;
+			 case 6: wh = a; break;
+		 }
+		 
 	 }
 	 
 	 // show cell info
