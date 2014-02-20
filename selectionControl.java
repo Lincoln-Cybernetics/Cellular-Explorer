@@ -41,15 +41,43 @@ public selectionControl(){
 		butts[2] = new JButton("Select All");
 		butts[3] = new JButton("Invert Selection");
 		butts[4] = new JButton("De-select");
+		hide = new Checkbox("Hide Selection");
+		//Layout
+		GroupLayout sellayout = new GroupLayout(this);
+		sellayout.setAutoCreateGaps(false);
+		sellayout.setAutoCreateContainerGaps(true);
+	
+		sellayout.setHorizontalGroup(
+			sellayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+			.addGroup(sellayout.createSequentialGroup()
+				.addComponent(butts[0])
+				.addComponent(butts[1])
+				.addComponent(butts[2]))
+			.addGroup(sellayout.createSequentialGroup()
+				.addComponent(butts[3])
+				.addComponent(butts[4])
+				.addComponent(hide))
+				);
+				
+		sellayout.setVerticalGroup(
+			sellayout.createSequentialGroup()
+			.addGroup(sellayout.createParallelGroup()
+				.addComponent(butts[0])
+				.addComponent(butts[1])
+				.addComponent(butts[2]))
+			.addGroup(sellayout.createParallelGroup()
+				.addComponent(butts[3])
+				.addComponent(butts[4])
+				.addComponent(hide))
+				);
+				
+			setLayout(sellayout);
+		
 	for( JButton item: butts){
 		item.addActionListener(this);
-		add(item);
 		item.setVisible(true);
 		}
-		
-		hide = new Checkbox("Hide Selection");
 		hide.addItemListener(this);
-		add(hide);
 		hide.setVisible(true);
 	}
 	
