@@ -39,6 +39,7 @@ public class cellularExplorer implements ucListener{
 	String seldon = "Selection Done";
 	brushControl Inez;
 	JFrame brushCup;
+	boolean[] winflag = new boolean[5];
 	
 	
 	public static void main( String[] args){
@@ -72,11 +73,11 @@ public class cellularExplorer implements ucListener{
 					case 1: if(whiteRabbit == null){makeWin(2);}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
-					case 4: if(Dan == null){makeWin(3);} else{sedit.setVisible(true);} break;// edit state
-					case 5: if(Emily == null){makeWin(4);} else{cEdit.setVisible(true);} break;// edit cells
-					case 6: if(Fred == null){makeWin(5);} else{cPick.setVisible(true);}break;// Cell picker
-					case 7: if(Hank == null){makeWin(6);} else{sBox.setVisible(true);}break;// selection tools
-					case 8: if(Inez == null){makeWin(7);} else{brushCup.setVisible(true);}break;// brushes
+					case 4: if(winflag[0] == false){makeWin(3);} else{sedit.setVisible(true);} break;// edit state
+					case 5: if(winflag[1] == false){makeWin(4);} else{cEdit.setVisible(true);} break;// edit cells
+					case 6: if(winflag[2] == false){makeWin(5);} else{cPick.setVisible(true);}break;// Cell picker
+					case 7: if(winflag[3] == false){makeWin(6);} else{sBox.setVisible(true);}break;// selection tools
+					case 8: if(winflag[4] == false){makeWin(7);} else{brushCup.setVisible(true);}break;// brushes
 					case 9: v1.setMasterSpeed(Alice.getZTime()); break;// speed setting
 					case 10: v1.setDisplayMode(Alice.getDispType());if(v1.getMode() == 2 || v1.getMode() == 3){}else{v1.setMode(0);}break;//Set Display Type
 					case 11: v1.setWrap(Alice.getWrapType());break;//set edge wrapping
@@ -88,7 +89,7 @@ public class cellularExplorer implements ucListener{
 			//new automaton
 			if(e.getSource() == whiteRabbit){
 				if(e.getCommand() == 1){ v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL());
-				npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint();}
+				npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint();} 
 			}
 			
 			//State Editor
@@ -98,21 +99,21 @@ public class cellularExplorer implements ucListener{
 					case 0: if(v1.getMode() != 2){v1.setMode(2);}
 							else{v1.setMode(0);} break;
 					//State Fill
-					case 1:  v1.setSFO(Dan.getSFO());v1.fillState(); break;
+					case 1:  v1.setParameter("SFO",Dan.getSFO());v1.fillState(); break;
 					//Clear the state
-					case 2:  v1.setSFO(Dan.getSFO());v1.fillState();break;
+					case 2:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;
 					//Invert the state
-					case 3:  v1.setSFO(Dan.getSFO());v1.fillState();break;
+					case 3:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;
 					//set interactive mode
 					case 4:v1.setInteract(Dan.getBSET());if(Dan.getBSET() == false){v1.setMouseAction("None");} break;
 					// set the random option for state drawing
-					case 5: v1.setSDO(Dan.getSDO()); break;
+					case 5: v1.setParameter("SDO",Dan.getSDO()); break;
 					// set the check option for thate drawing
-					case 6: v1.setSDO(Dan.getSDO()); break;
+					case 6: v1.setParameter("SDO",Dan.getSDO()); break;
 					//set the random option for state fills
-					case 7: v1.setSFO(Dan.getSFO()); break;
+					case 7: v1.setParameter("SFO",Dan.getSFO()); break;
 					// set the check option for state fills
-					case 8: v1.setSFO(Dan.getSFO()); break;
+					case 8: v1.setParameter("SFO",Dan.getSFO()); break;
 					// activate state drawing
 					case 9: if(v1.getMode() != 3 && v1.getInteract()){v1.setMouseAction("SDraw");} 
 						if(v1.getMode() == 2){v1.setMouseAction("SDraw");}break;
@@ -125,10 +126,10 @@ public class cellularExplorer implements ucListener{
 							else{v1.setMode(0);} break;//enter cell editing mode
 					case 1: v1.fillCell(); break;//cell fill
 					case 2: v1.setBorder(); break;//set border
-					case 3: v1.setCDO(Emily.cdoGet()); break;//cell check draw
-					case 4: v1.setCDO(Emily.cdoGet()); break;//cell random draw
-					case 5: v1.setCFO(Emily.cfoGet()); break;//cell check fill
-					case 6: v1.setCFO(Emily.cfoGet()); break;//cell random fill
+					case 3: v1.setParameter("CDO",Emily.cdoGet()); break;//cell check draw
+					case 4: v1.setParameter("CDO",Emily.cdoGet()); break;//cell random draw
+					case 5: v1.setParameter("CFO",Emily.cfoGet()); break;//cell check fill
+					case 6: v1.setParameter("CFO",Emily.cfoGet()); break;//cell random fill
 					case 7: if(v1.getMode() == 3){v1.setMouseAction("CDraw");} break;//Cell Drawing
 				}
 				}
@@ -165,14 +166,59 @@ public class cellularExplorer implements ucListener{
 		
 		private void makeWin(int n){
 			switch(n){
-				case 1:    cpanel = new JFrame("Cellular Explorer v0.0.6");
+				case 1:    //master control
+							cpanel = new JFrame("Cellular Explorer v0.0.6");
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.pack();
-							cpanel.setResizable(true);
+							cpanel.setResizable(false);
 							cpanel.setVisible(true);
 							cpanel.setLayout(new FlowLayout());
-							
+							// cell editor
+							cEdit = new JFrame("Cell Editor");
+							Emily = new cellEditor(); 
+							cEdit.getContentPane().add(Emily);
+							cEdit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							cEdit.pack();
+							cEdit.setLocation(0,cpanel.getHeight());
+							//state editor
+							 sedit = new JFrame("State Editor");
+							Dan = new stateEditor(); 
+							sedit.getContentPane().add(Dan);
+							sedit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							sedit.pack();
+							sedit.setLocation(0,cpanel.getHeight()+cEdit.getHeight());
+							//cell picker
+							 cPick = new JFrame("Cell Picker");
+							JSeparator bernie = new JSeparator(JSeparator.VERTICAL);
+							bernie.setPreferredSize(new Dimension(5,200));
+							Fred = new cellPicker(); 
+							Gwen = new cellPicker();
+							cPick.setLayout(new FlowLayout());
+							cPick.getContentPane().add(Fred);
+							cPick.getContentPane().add(bernie);
+							cPick.getContentPane().add(Gwen);
+							cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							cPick.pack();
+							cPick.setLocation(0,cpanel.getHeight()+sedit.getHeight()+cEdit.getHeight());
+							//Selection Tools
+							sBox = new JFrame("Selection Tools");
+							Hank = new selectionControl(); 
+							sBox.getContentPane().add(Hank);
+							sBox.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							sBox.pack();
+							//brushes
+							 brushCup = new JFrame("Brushes");
+							Inez = new brushControl(); 
+							brushCup.getContentPane().add(Inez);
+							brushCup.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							brushCup.pack();
+							brushCup.setLocation(cpanel.getWidth(),sBox.getHeight());
+							Inez.init();
+							//set window format for the automaton
+							v1.setParameter("WSX", sedit.getWidth());
+							v1.setParameter("WSY", cpanel.getHeight());
+							v1.setParameter("WH", sedit.getHeight()+cEdit.getHeight());
 							break;
 							
 				case 2:   npanel = new JFrame("New Automaton");
@@ -180,49 +226,31 @@ public class cellularExplorer implements ucListener{
 						  npanel.getContentPane().add(whiteRabbit);
 						  npanel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 						  npanel.pack();
-						  npanel.setResizable(true);
+						  npanel.setResizable(false);
 						  npanel.setVisible(true);
 						  whiteRabbit.setVisible(true);
 						  whiteRabbit.adducListener(this);
 						  break;
 						  
-				case 3:  sedit = new JFrame("State Editor");
-						  Dan = new stateEditor(); 
-						  sedit.getContentPane().add(Dan);
-						  sedit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  sedit.pack();
-						  sedit.setLocation(1200,165);
-						  sedit.setResizable(true);
+				case 3: 	//State Editor
+						  winflag[0] = true;
+						  sedit.setResizable(false);
 						  sedit.setVisible(true);
 						  Dan.setVisible(true);
 						  Dan.adducListener(this);
 						  break;
 						  
-				case 4:  cEdit = new JFrame("Cell Editor");
-						  Emily = new cellEditor(); 
-						  cEdit.getContentPane().add(Emily);
-						  cEdit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  cEdit.pack();
-						  cEdit.setLocation(0,165);
-						  cEdit.setResizable(true);
+				case 4:  //Cell Editor
+							winflag[1] = true;
+						  cEdit.setResizable(false);
 						  cEdit.setVisible(true);
 						  Emily.setVisible(true);
 						  Emily.adducListener(this);
 						  break;
 						  
-				case 5:  cPick = new JFrame("Cell Picker");
-						  JSeparator bernie = new JSeparator(JSeparator.VERTICAL);
-						  bernie.setPreferredSize(new Dimension(5,200));
-						  Fred = new cellPicker(); 
-						  Gwen = new cellPicker();
-						  cPick.setLayout(new FlowLayout());
-						  cPick.getContentPane().add(Fred);
-						  cPick.getContentPane().add(bernie);
-						  cPick.getContentPane().add(Gwen);
-						  cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  cPick.pack();
-						  cPick.setLocation(0,665);
-						  cPick.setResizable(true);
+				case 5: 	//Cell Picker
+							winflag[2] = true;
+						  cPick.setResizable(false);
 						  cPick.setVisible(true);
 						  Fred.setVisible(true);
 						  Gwen.setVisible(true);
@@ -230,27 +258,19 @@ public class cellularExplorer implements ucListener{
 						  Gwen.adducListener(v1.pollux); v1.pollux.setCP(Gwen);Gwen.setCOH(v1.pollux);Gwen.adducListener(v1);
 						  break;
 						  
-				case 6:  sBox = new JFrame("Selection Tools");
-						  Hank = new selectionControl(); 
-						  sBox.getContentPane().add(Hank);
-						  sBox.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  sBox.pack();
-						  sBox.setLocation(675,0);
-						  sBox.setResizable(true);
+				case 6:  //Selection Tools
+							winflag[3] = true;
+							sBox.setLocation(cpanel.getWidth(),0);
+						  sBox.setResizable(false);
 						  sBox.setVisible(true);
 						  Hank.setVisible(true);
 						  Hank.adducListener(this);
 						  break;
 						  
-				case 7:  brushCup = new JFrame("Brushes");
-						  Inez = new brushControl(); 
-						  brushCup.getContentPane().add(Inez);
-						  brushCup.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-						  brushCup.pack();
-						  brushCup.setLocation(775,665);
-						  brushCup.setResizable(true);
+				case 7: 	//brushes
+							winflag[4] = true;
+						  brushCup.setResizable(false);
 						  brushCup.setVisible(true);
-						  Inez.init();
 						  Inez.setVisible(true);
 						  Inez.adducListener(this);
 						  break;
