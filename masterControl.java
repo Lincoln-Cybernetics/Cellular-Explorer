@@ -112,6 +112,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		}
 		
 		public void handleControl(ucEvent e){
+			if(cflag){
 			if(e.getSource() == dispbox){ cntrl = 10; disptype = e.getCommand(); fireucEvent();}
 			if(e.getSource() == wrapbox){ cntrl = 11;
 						switch(e.getCommand()){
@@ -120,6 +121,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 							case 2: wraptype -= 2;  if(wraptype < 0){wraptype = 0;} break;
 							case 3: wraptype += 2;  if(wraptype > 3){wraptype = 3;} break;
 							}fireucEvent();}
+						}
 				}
 		
 		// get control values
