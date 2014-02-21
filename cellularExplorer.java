@@ -124,7 +124,7 @@ public class cellularExplorer implements ucListener{
 				switch(e.getCommand()){
 					case 0: if(v1.getMode() != 3){v1.setMode(3);}
 							else{v1.setMode(0);} break;//enter cell editing mode
-					case 1: v1.fillCell(); break;//cell fill
+					case 1: v1.fillCellinit(); break;//cell fill
 					case 2: v1.setBorder(); break;//set border
 					case 3: v1.setParameter("CDO",Emily.cdoGet()); break;//cell check draw
 					case 4: v1.setParameter("CDO",Emily.cdoGet()); break;//cell random draw
