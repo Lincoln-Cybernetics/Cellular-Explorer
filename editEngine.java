@@ -32,12 +32,22 @@ int[] anchory = new int[]{0,0,0,0};//anchor coordinate y for mirrors using the r
 
 selector sedna;
 //parameter names
-String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH"};
+String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH", "SDT", "SFT", "CDT", "CFT", "SDP", "SFP", "CDP", "CFP"};
 int sdo = 0; //state drawing option
 boolean interactflag = false;
 int sfo = 0; //state fill option
 int cdo = 0; //cell drawing option
 int cfo = 0; //cell fill option
+int sdt = 0;//state draw tool
+int sft = 0;//state fill tool
+int cdt = 0;//cell draw tool
+int cft = 0;//cell fill tool
+int[] paramval = new int[4];// parameter tool values(0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
+boolean[] opval = new boolean[4];//option tool values (0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
+boolean cellfillflag = false;
+boolean statefillflag = false;
+String[] cellopts = new String[]{"Ages", "Fades"};// for cell editing
+String[] cellparams = new String[]{"Age", "Fade", "Mat", "Matcount"};// for cell/state editing
 int wsx = 0; //window start: X
 int wsy = 0; //window start: Y
 int wh = 0; // window height
@@ -126,7 +136,7 @@ public void handleControl(ucEvent e){
 		}
 
 	// recieves a signal from an interrupted cellBrain
-	public void iterateInterrupt(int a){if (a == 1){stateFillSelect();}}
+	public void iterateInterrupt(int a){if (a == 1){stateFillSelect();} if(a == 2){fillCell();}}
 	
 	//speed settings
 	public void setMasterSpeed(int a){
@@ -188,6 +198,22 @@ public void handleControl(ucEvent e){
 			 case 4: wsx = a; break;
 			 case 5: wsy = a; break;
 			 case 6: wh = a; break;
+			 
+			 /*Tools
+			  * 0 = default
+			  * 1 = option tool
+			  * 2 = parameter tool
+			  */
+			  case 7: sdt = a; break;
+			  case 8: sft = a; break;
+			  case 9: cdt = a; break;
+			  case 10: cft = a; break;
+			  
+			  //Parameter Tool values (0= state draw, 1 = state fill, 2 = cell draw, 3 = cell fil)
+			  case 11: paramval[0] = a; break;
+			  case 12: paramval[1] = a; break;
+			  case 13: paramval[2] = a; break;
+			  case 14: paramval[3] = a; break;
 		 }
 		 
 	 }
@@ -383,88 +409,66 @@ public void handleControl(ucEvent e){
 								default: cellDraw(x,y); break;}}
 						}
 					
+					//Main draws
 					public void cellDraw(int x, int y){
 						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,1);}}
 						
 					public void cellAltDraw(int x, int y){
 						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,2);}} 
+						
+					public void cellRandDraw(int x, int y){
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,3);}
+					}
 					
+					//calculated draws
 					public void cellCheckDraw(int x, int y, boolean b){
 						if( y % 2 == 1 ^ x % 2 == 1){
-							if(b){if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,2);}}
-							else{if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,1);}}
+							if(b){if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellAltDraw(x,y);}}
+							else{if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellDraw(x,y);}}
 							}
 						else{
-							if(b){if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,1);}}
-							else{if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,2);}}
+							if(b){if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellDraw(x,y);}}
+							else{if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellAltDraw(x,y);}}
 							}
 						}
 						
 					public void cellRCDraw(int x, int y){
 						if( y % 2 == 1 ^ x % 2 == 1){
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,1);}}
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellDraw(x,y);}}
 						else{
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,3);}}
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){cellRandDraw(x,y);}}
 						}
 						
-					public void cellRandDraw(int x, int y){
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,3);}
-					}
+					
 						
 					// cell filling methods
+					public void fillCellinit(){
+						if(pistons[xaw][yaw].paused){fillCell();}
+						else{ pistons[xaw][yaw].setII(2);}
+					}
 					
 					// gateway method
 					public void fillCell(){
-		
+						cellfillflag = true;
+						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
+						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){
 						switch(cfo){
-							case 0: cellFill(); break;
-							case 1: cellCheckFill(); break;
-							case 2: cellRandFill(); break;
-							case 3: cellRCFill(); break;
-							default: cellFill(); break;}
+							case 0: cellDraw(x,y); break;
+							case 1: cellCheckDraw(x,y,false); break;
+							case 2: cellRandDraw(x,y); break;
+							case 3: cellRCDraw(x,y); break;
+							default: cellDraw(x,y); break;}
+						}}
+						if( mode == 3){outputs[xaw][yaw].repaint();}
+						cellfillflag = false;
 							}
 						
-					private void cellFill(){
-					for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
-					for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){
-						cellDraw(x,y);}}
-						if( mode == 3){outputs[xaw][yaw].repaint();}
-						}
-					
-					
-					private void cellCheckFill(){
-						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
-						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
-							cellCheckDraw(x,y, false);
-							}}
-						if( mode == 3){outputs[xaw][yaw].repaint();}
-						
-					}
-					
-					private void cellRCFill(){
-						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
-						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
-							cellRCDraw(x,y);
-							}}
-						if( mode == 3){outputs[xaw][yaw].repaint();}
-						
-					}
-					
-				
-					
-					private void cellRandFill(){
-						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
-						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){	
-							cellRandDraw(x,y);
-						}}
-						if( mode== 3){outputs[xaw][yaw].repaint();}
-						
-					}
 					
 					
 						
 						// sets the cells around the outside edge of the automaton 
 						public void setBorder(){	
+							cellfillflag = true;
 						for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
 							switch(cfo){
 								case 0: cellDraw(x,0); cellDraw(x, pistons[xaw][yaw].ysiz-1); break;
@@ -480,7 +484,7 @@ public void handleControl(ucEvent e){
 								case 3: cellRCDraw(0,y); cellRCDraw(pistons[xaw][yaw].xsiz-1, y); break;
 								default: cellDraw(0,y); cellDraw(pistons[xaw][yaw].xsiz-1, y); break;}}
 								if(mode == 3){outputs[xaw][yaw].repaint();}
-								
+								cellfillflag = false;
 					}
 					//cell settings editing methods
 					
@@ -522,20 +526,22 @@ public void handleControl(ucEvent e){
 								case 3: stateRCDraw(x,y); break;
 								default: stateDraw(x,y); break;}}
 						}
-					
+						
+				//main draws	
 				private void stateDraw(int x,int y){
 					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,true);}}
 					
 				private void stateAltDraw(int x,int y){
 					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,false);}}
 					
-				public void stateCheckDraw(int x,int y, boolean fill){
-					if( y % 2 == 1 ^ x % 2 == 1){ if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,fill);}}
-						else{if(fill){if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,false);}}}}
-					
 				private void stateRandDraw(int x, int y){
 					Random foghorn = new Random();
 					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean());}}	
+					
+				//calculated draws
+				public void stateCheckDraw(int x,int y, boolean fill){
+					if( y % 2 == 1 ^ x % 2 == 1){ if(!sedna.getSelected() ||sedna.getSelection(x,y)){if(fill){stateDraw(x,y);}else{stateAltDraw(x,y);}}}
+						else{if(fill){if(!sedna.getSelected() ||sedna.getSelection(x,y)){stateAltDraw(x,y);}}}}
 					
 				private void stateRCDraw(int x, int y){
 						if( y % 2 == 1 || x % 2 == 1){stateCheckDraw(x,y,true);}
@@ -546,7 +552,7 @@ public void handleControl(ucEvent e){
 				//gateway method
 				public void fillState(){
 					if(pistons[xaw][yaw].paused){stateFillSelect();}
-					else{pistons[xaw][yaw].myopt = 1; pistons[xaw][yaw].setII();}
+					else{ pistons[xaw][yaw].setII(1);}
 					}
 				
 					
