@@ -174,8 +174,8 @@ class cellBrain  implements Runnable{
 				return firstflag;}
 				
 			// sets iterate interrupt
-			public void setII(){
-				iiflag = true;
+			public void setII(int a){
+				iiflag = true; myopt = a;
 			}
 				
 				// mode setting methods
