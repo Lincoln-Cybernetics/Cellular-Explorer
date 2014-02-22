@@ -44,6 +44,7 @@ int cdt = 0;//cell draw tool
 int cft = 0;//cell fill tool
 int[] paramval = new int[4];// parameter tool values(0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
 boolean[] opval = new boolean[4];//option tool values (0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
+String[] toolstring = new String[4];//tool string (0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
 boolean cellfillflag = false;
 boolean statefillflag = false;
 String[] cellopts = new String[]{"Ages", "Fades"};// for cell editing
@@ -216,6 +217,26 @@ public void handleControl(ucEvent e){
 			  case 14: paramval[3] = a; break;
 		 }
 		 
+	 }
+	 //sets editing tools
+	 public void setTool(int type, int tool, String tstr, int tval){
+		 //(0= state draw, 1 = state fill, 2 = cell draw, 3 = cell fil)
+		 switch(type){
+			 case 0: sdt = tool; toolstring[0] = tstr; break;
+			 case 1: sft = tool; toolstring[1] = tstr; break;
+			 case 2: cdt = tool; toolstring[2] = tstr; break;
+			 case 3: cft = tool; toolstring[3] = tstr; break;
+		 }
+		  /*Tools
+			  * 0 = default
+			  * 1 = option tool
+			  * 2 = parameter tool
+			  */
+		 switch(tool){
+			 case 0: break;
+			 case 1: if(tval < 1){opval[type] = false;}else{opval[type] = true;}break;
+			 case 2: paramval[type] = tval; break;
+		 }
 	 }
 	 
 	 // show cell info
@@ -411,13 +432,63 @@ public void handleControl(ucEvent e){
 					
 					//Main draws
 					public void cellDraw(int x, int y){
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,1);}}
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+							if(cellfillflag){
+								switch(cft){
+									case 0: populate(x,y,1); break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[3], opval[3]); break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], paramval[3]); break;
+									default: populate(x,y,1); break;}
+								}
+							else{ switch(cdt){
+									case 0: populate(x,y,1);break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[2], opval[2]); break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], paramval[2]); break;
+									default: populate(x,y,1); break;}
+								}
+									}}
 						
 					public void cellAltDraw(int x, int y){
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,2);}} 
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+							if(cellfillflag){
+								switch(cft){
+									case 0: populate(x,y,2); break;
+									case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[3], opval[3]);
+									 break;
+									case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], paramval[3]);
+									 break;
+									default: populate(x,y,2); break;}
+								}
+							else{ switch(cdt){
+									case 0: populate(x,y,2);break;
+									case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[2], opval[2]); 
+									break;
+									case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], paramval[2]);
+									 break;
+									default: populate(x,y,2); break;}
+								}
+							}} 
 						
 					public void cellRandDraw(int x, int y){
-						if(!sedna.getSelected() ||sedna.getSelection(x,y)){populate(x,y,3);}
+						if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+							Random snail = new Random();
+							if(cellfillflag){
+								switch(cft){
+									case 0: populate(x,y,3); break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[3], snail.nextBoolean());
+									 break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], snail.nextInt(512));
+									 break;
+									default: populate(x,y,3); break;}
+								}
+							else{ switch(cdt){
+									case 0: populate(x,y,2);break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[2], snail.nextBoolean()); 
+									break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], snail.nextInt(512));
+									 break;
+									default: populate(x,y,3); break;}
+								}populate(x,y,3);}
 					}
 					
 					//calculated draws
@@ -486,24 +557,8 @@ public void handleControl(ucEvent e){
 								if(mode == 3){outputs[xaw][yaw].repaint();}
 								cellfillflag = false;
 					}
-					//cell settings editing methods
 					
-					//fills boolean settings
-					//public void boolFill(String a, boolean b){
-					//	for(int y=0;y<=ysiz-1;y++){
-					//	for(int x=0;x<=xsiz-1;x++){
-						//	if(harry.getSelected() == false || harry.getSelection(x,y)){
-								//culture[x][y].setBool(a,b);
-					//	}}}
-					//}
 					
-					//fills Int settings
-					//public void intFill(String a, int b){
-					//	for(int y=0;y<=ysiz-1;y++){
-					//	for(int x=0;x<=xsiz-1;x++){
-					//		if(harry.getSelected() == false || harry.getSelection(x,y)){
-						//		culture[x][y].setInt(a,b);}}}
-						//	}
 								
 	//State Editing Methods
 	
@@ -529,14 +584,74 @@ public void handleControl(ucEvent e){
 						
 				//main draws	
 				private void stateDraw(int x,int y){
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,true);}}
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+						if(statefillflag){
+							switch(sft){
+								case 0: pistons[xaw][yaw].setCellState(x,y,true); break;
+								case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[1], opval[1]); break;
+								case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[1], paramval[1]); break;
+								default: pistons[xaw][yaw].setCellState(x,y,true); break;}
+							}
+							else{
+								switch(sdt){
+									case 0: pistons[xaw][yaw].setCellState(x,y,true); break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[0], opval[0]); break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[0], paramval[0]); break;
+									default: pistons[xaw][yaw].setCellState(x,y,true); break;}
+								}
+							}
+						}
+						
+						
+						
 					
 				private void stateAltDraw(int x,int y){
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,false);}}
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+						if(statefillflag){
+							switch(sft){
+								case 0: pistons[xaw][yaw].setCellState(x,y,false); break;
+								case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[1], opval[1]);
+								 break;
+								case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[1], paramval[1]);
+								 break;
+								default: pistons[xaw][yaw].setCellState(x,y,false); break;}
+							}
+							else{
+								switch(sdt){
+									case 0: pistons[xaw][yaw].setCellState(x,y,false); break;
+									case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[0], opval[0]);
+									 break;
+									case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[0], paramval[0]);
+									 break;
+									 default: pistons[xaw][yaw].setCellState(x,y,false); break;
+								}
+							}
+						}}
 					
 				private void stateRandDraw(int x, int y){
 					Random foghorn = new Random();
-					if(!sedna.getSelected() ||sedna.getSelection(x,y)){pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean());}}	
+					if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+						if(statefillflag){
+							switch(sft){
+								case 0: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
+								case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[1], foghorn.nextBoolean());
+								 break;
+								case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[1], foghorn.nextInt(512));
+								 break;
+								default: pistons[xaw][yaw].setCellState(x,y,false); break;}
+							}
+							else{
+								switch(sdt){
+									case 0: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
+									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[0], foghorn.nextBoolean());
+									 break;
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[0], foghorn.nextInt(512));
+									 break;
+									 default: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
+								}
+							}
+						}
+					}	
 					
 				//calculated draws
 				public void stateCheckDraw(int x,int y, boolean fill){
