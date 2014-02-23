@@ -28,6 +28,17 @@ public class cellEditor extends JComponent implements ActionListener, ItemListen
 // controlPanel variables
 JButton[] mainbutts = new JButton[4];
 Checkbox[] mainchecks = new Checkbox[4];
+JComboBox dtPick;
+JComboBox ftPick;
+String[] tools = new String[]{"", "Dir"};//for editing
+String[] toolsDisp = new String[]{"Cell", "Direction"};//for display
+int dtval = 0;//drawing tool value
+int dtool = 0;//drawing tool
+int dtsel = 0;//drawing tool selected
+int ftval = 0;//fill tool value
+int ftool = 0;//fill tool
+int ftsel = 0;// fill tool selected
+
 // relate to sending command events
 private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
 int command = 0;
@@ -47,6 +58,9 @@ public cellEditor(){
 	mainchecks[2] = new Checkbox("Check");
 	mainchecks[3] = new Checkbox("Random");
 	
+	dtPick = new JComboBox(toolsDisp);
+	ftPick = new JComboBox(toolsDisp);
+	
 	// layout
 	GroupLayout ceLayout = new GroupLayout(this);
 	ceLayout.setAutoCreateGaps(false);
@@ -56,12 +70,14 @@ public cellEditor(){
 		ceLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(mainbutts[0])
 			.addComponent(mainbutts[3])
+			.addComponent(dtPick)
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainbutts[1])
 				.addComponent(mainbutts[2]))
+				.addComponent(ftPick)
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainchecks[2])
 				.addComponent(mainchecks[3]))
@@ -71,12 +87,14 @@ public cellEditor(){
 		ceLayout.createSequentialGroup()
 			.addComponent(mainbutts[0])
 			.addComponent(mainbutts[3])
+			.addComponent(dtPick)
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainbutts[1])
 				.addComponent(mainbutts[2]))
+				.addComponent(ftPick)
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainchecks[2])
 				.addComponent(mainchecks[3]))
@@ -89,16 +107,17 @@ public cellEditor(){
 	for(int cont = 0; cont <= 3; cont++){
 		mainbutts[cont].addActionListener(this);mainbutts[cont].setVisible(true);
 		mainchecks[cont].addItemListener(this);mainchecks[cont].setVisible(true);}
-		
+		dtPick.addActionListener(this); dtPick.setVisible(true);
+		ftPick.addActionListener(this); ftPick.setVisible(true);
 	
 	}
 
 public void actionPerformed(ActionEvent e){
-	int buttnum = 0;
+	int buttnum = 0; boolean buttflag = false;
 	for(int a = 0; a <= mainbutts.length-1; a++){
-		if(e.getSource() == mainbutts[a]){ buttnum = a;}
+		if(e.getSource() == mainbutts[a]){ buttnum = a; buttflag = true;}
 		}
-		
+	if(buttflag){	
 	switch(buttnum){
 		// Cell editing mode
 		case 0: command = 0; fireucEvent(); break;
@@ -108,7 +127,29 @@ public void actionPerformed(ActionEvent e){
 		case 2: command = 2; fireucEvent(); break;
 		//Cell draw
 		case 3: command = 7; fireucEvent(); break;
-	}
+	}}
+	if(e.getSource() == dtPick){
+		
+		for(int s = 0; s < tools.length; s++){
+			if(dtPick.getSelectedItem() == toolsDisp[s]){dtsel = s;}
+		}
+		switch(dtsel){
+			case 0: dtool = 0; break;
+			case 1: dtool = 2; break;
+		}
+		command = 8; fireucEvent();
+		}
+	if(e.getSource() == ftPick){
+		
+		for(int s = 0; s < tools.length; s++){
+			if(ftPick.getSelectedItem() == toolsDisp[s]){ftsel = s;}
+		}
+		switch(ftsel){
+			case 0: ftool = 0; break;
+			case 1: ftool = 2; break;
+		}
+		command = 9; fireucEvent();
+		}
 	}
 
 public void itemStateChanged(ItemEvent e){
@@ -145,7 +186,18 @@ private synchronized void fireucEvent(){
 	while(i.hasNext()){
 		((ucListener) i.next()).handleControl(cmd);}
 	}
-	
+	/*Commands
+	 * 0 = cell editing mode
+	 * 1 = cell fill
+	 * 2 = set border
+	 * 3 = toggle check draw
+	 * 4 = togglr rand draw
+	 * 5 = toggle check fill
+	 * 6 = toggle rand fill
+	 * 7 = Cell Drawing tool
+	 * 8 = set Drawing tool
+	 * 9 = set Fill Tool
+	*/
 public boolean getBoolSet(){
 	return boolset;}
 	
@@ -164,5 +216,23 @@ private void cfoSet(){
 }
 
 public int cfoGet(){ return cfo;}
+
+public int getTool(int g){
+	if(g == 2){ return dtool;}
+	if(g == 3){ return ftool;}
+	return -1;
+}
+
+public String getTstr(int h){
+	if(h == 2){ return tools[dtsel];}
+	if(h == 3){ return tools[ftsel];}
+	return "Error";
+}
+
+public int getTval(int h){
+	if(h == 2){ return dtval;}
+	if(h == 3){ return ftval;}
+	return -1;
+}
 
 }
