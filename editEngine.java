@@ -239,6 +239,13 @@ public void handleControl(ucEvent e){
 		 }
 	 }
 	 
+	 //generates random values for parameter tools
+	 private int randToolNum(int a){
+		 Random sprue = new Random();
+		 if(toolstring[a] == "Dir"){ return sprue.nextInt(8);}
+		 return sprue.nextInt(512)+1;
+	 }
+	 
 	 // show cell info
 	 public void showCI(){
 		// barnabus.setVisible(false);
@@ -473,22 +480,26 @@ public void handleControl(ucEvent e){
 						if(!sedna.getSelected() ||sedna.getSelection(x,y)){
 							Random snail = new Random();
 							if(cellfillflag){
+								int nose = randToolNum(3);
 								switch(cft){
 									case 0: populate(x,y,3); break;
 									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[3], snail.nextBoolean());
 									 break;
-									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], snail.nextInt(512));
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], nose);
 									 break;
 									default: populate(x,y,3); break;}
 								}
-							else{ switch(cdt){
+							else{ 
+								int elbow = randToolNum(2);
+								switch(cdt){
 									case 0: populate(x,y,2);break;
 									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[2], snail.nextBoolean()); 
 									break;
-									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], snail.nextInt(512));
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], elbow);
 									 break;
 									default: populate(x,y,3); break;}
-								}populate(x,y,3);}
+								}
+								}
 					}
 					
 					//calculated draws
@@ -631,21 +642,23 @@ public void handleControl(ucEvent e){
 				private void stateRandDraw(int x, int y){
 					Random foghorn = new Random();
 					if(!sedna.getSelected() ||sedna.getSelection(x,y)){
+						int dunebuggy = randToolNum(1);
 						if(statefillflag){
 							switch(sft){
 								case 0: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
 								case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[1], foghorn.nextBoolean());
 								 break;
-								case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[1], foghorn.nextInt(512));
+								case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[1], dunebuggy);
 								 break;
 								default: pistons[xaw][yaw].setCellState(x,y,false); break;}
 							}
 							else{
+								int pickaxe = randToolNum(0);
 								switch(sdt){
 									case 0: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
 									case 1: pistons[xaw][yaw].culture[x][y].setOption(toolstring[0], foghorn.nextBoolean());
 									 break;
-									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[0], foghorn.nextInt(512));
+									case 2: pistons[xaw][yaw].culture[x][y].setParameter(toolstring[0], pickaxe);
 									 break;
 									 default: pistons[xaw][yaw].setCellState(x,y,foghorn.nextBoolean()); break;
 								}
