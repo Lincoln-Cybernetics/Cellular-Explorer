@@ -131,6 +131,8 @@ public class cellularExplorer implements ucListener{
 					case 5: v1.setParameter("CFO",Emily.cfoGet()); break;//cell check fill
 					case 6: v1.setParameter("CFO",Emily.cfoGet()); break;//cell random fill
 					case 7: if(v1.getMode() == 3){v1.setMouseAction("CDraw");} break;//Cell Drawing
+					case 8: v1.setTool(2,Emily.getTool(2),Emily.getTstr(2),Emily.getTval(2)); break;//set drawing tool
+					case 9: v1.setTool(3,Emily.getTool(3),Emily.getTstr(3),Emily.getTval(3)); break;//setFilltool
 				}
 				}
 				
