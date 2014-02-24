@@ -1,4 +1,3 @@
-
 /*Cellular Explorer Prototype proof of concept
  * Copyright(C) 02013 Matt Ahlschwede
  *  This program is free software: you can redistribute it and/or modify
