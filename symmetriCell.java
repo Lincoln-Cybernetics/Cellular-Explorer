@@ -1,3 +1,4 @@
+
 /*Cellular Explorer Prototype proof of concept
  * Copyright(C) 02013 Matt Ahlschwede
  *  This program is free software: you can redistribute it and/or modify
@@ -124,7 +125,8 @@ public class symmetriCell extends cell{
 		@Override public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
 			if(paramname == "Fade"){fade = a;}
-			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction %= 4;}any = false; all = false;}
+			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;}
+			 if(direction > 3){direction %= 4;}any = false; all = false;}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
 			if(paramname == "MirrX"){hoodx = a;}
