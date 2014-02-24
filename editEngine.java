@@ -29,7 +29,7 @@ int[] mirrefx = new int[]{0,0,0,0};//mirror reference x
 int[] mirrefy = new int[]{0,0,0,0};//mirror reference y
 int[] anchorx = new int[]{0,0,0,0};//anchor coordinate x for mirrors using the reference
 int[] anchory = new int[]{0,0,0,0};//anchor coordinate y for mirrors using the reference
-
+JFrame disp; // window for the automaton
 selector sedna;
 //parameter names
 String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH", "SDT", "SFT", "CDT", "CFT", "SDP", "SFP", "CDP", "CFP"};
@@ -95,10 +95,10 @@ public void initialize(int xmx, int ymx){
 		pistons[x][y].pP();
 		}}
 							setEditBrush(1);
-						  JFrame disp = new JFrame("Cellular Explorer");
+						  disp = new JFrame("Cellular Explorer");
 						  disp.getContentPane().add(new JScrollPane(outputs[0][0]));
 						  disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-						  disp.setSize(1000,wh);
+						  disp.setSize(800,wh);
 						  disp.setLocation(wsx,wsy);
 						  disp.setResizable(true);
 						  disp.setVisible(true);
@@ -256,7 +256,7 @@ public void handleControl(ucEvent e){
 		 barnabus.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		 barnabus.pack();
 		 barnabus.setLocation(675,0);
-		 barnabus.setResizable(true);
+		 barnabus.setResizable(false);
 		 mercury.init();
 		 barnabus.setVisible(true);
 		 mercury.setVisible(true);}
