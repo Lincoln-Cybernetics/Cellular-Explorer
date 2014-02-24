@@ -24,12 +24,20 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class cellEditor extends JComponent implements ActionListener, ItemListener{
+public class cellEditor extends JComponent implements ActionListener, ItemListener, ChangeListener{
 // controlPanel variables
 JButton[] mainbutts = new JButton[4];
 Checkbox[] mainchecks = new Checkbox[4];
 JComboBox dtPick;
 JComboBox ftPick;
+JSlider dslid;
+JSlider fslid;
+JLabel drawlabel;
+JLabel filllabel;
+JSeparator dfline;
+JSeparator mdline;
+
+
 String[] tools = new String[]{"", "Dir"};//for editing
 String[] toolsDisp = new String[]{"Cell", "Direction"};//for display
 int dtval = 0;//drawing tool value
@@ -61,6 +69,15 @@ public cellEditor(){
 	dtPick = new JComboBox(toolsDisp);
 	ftPick = new JComboBox(toolsDisp);
 	
+	dslid = new JSlider(1,512);
+	fslid = new JSlider(1,512);
+	
+	//make labels, etc
+	drawlabel = new JLabel("***");
+	filllabel = new JLabel("***");
+	dfline = new JSeparator(JSeparator.HORIZONTAL);
+	mdline = new JSeparator(JSeparator.HORIZONTAL);
+	
 	// layout
 	GroupLayout ceLayout = new GroupLayout(this);
 	ceLayout.setAutoCreateGaps(false);
@@ -69,15 +86,21 @@ public cellEditor(){
 	ceLayout.setHorizontalGroup(
 		ceLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(mainbutts[0])
+			.addComponent(mdline)
 			.addComponent(mainbutts[3])
 			.addComponent(dtPick)
+			.addComponent(drawlabel)
+			.addComponent(dslid)
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
+			.addComponent(dfline)
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainbutts[1])
 				.addComponent(mainbutts[2]))
 				.addComponent(ftPick)
+				.addComponent(filllabel)
+				.addComponent(fslid)
 			.addGroup(ceLayout.createSequentialGroup()
 				.addComponent(mainchecks[2])
 				.addComponent(mainchecks[3]))
@@ -86,15 +109,21 @@ public cellEditor(){
 	ceLayout.setVerticalGroup(
 		ceLayout.createSequentialGroup()
 			.addComponent(mainbutts[0])
+			.addComponent(mdline)
 			.addComponent(mainbutts[3])
 			.addComponent(dtPick)
+			.addComponent(drawlabel)
+			.addComponent(dslid)
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainchecks[0])
 				.addComponent(mainchecks[1]))
+			.addComponent(dfline)
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainbutts[1])
 				.addComponent(mainbutts[2]))
 				.addComponent(ftPick)
+				.addComponent(filllabel)
+				.addComponent(fslid)
 			.addGroup(ceLayout.createParallelGroup()
 				.addComponent(mainchecks[2])
 				.addComponent(mainchecks[3]))
@@ -108,9 +137,16 @@ public cellEditor(){
 		mainbutts[cont].addActionListener(this);mainbutts[cont].setVisible(true);
 		mainchecks[cont].addItemListener(this);mainchecks[cont].setVisible(true);}
 		dtPick.addActionListener(this); dtPick.setVisible(true);
+		dslid.addChangeListener(this); dslid.setVisible(true);dslid.setEnabled(false);
+		dslid.setMajorTickSpacing(10);dslid.setPaintTicks(true);
 		ftPick.addActionListener(this); ftPick.setVisible(true);
-	
+		fslid.addChangeListener(this); fslid.setVisible(true);fslid.setEnabled(false);
+		fslid.setMajorTickSpacing(10);fslid.setPaintTicks(true);
+	dfline.setPreferredSize(new Dimension(150, 50));
+	mdline.setPreferredSize(new Dimension(150, 50));
 	}
+
+
 
 public void actionPerformed(ActionEvent e){
 	int buttnum = 0; boolean buttflag = false;
@@ -134,8 +170,8 @@ public void actionPerformed(ActionEvent e){
 			if(dtPick.getSelectedItem() == toolsDisp[s]){dtsel = s;}
 		}
 		switch(dtsel){
-			case 0: dtool = 0; break;
-			case 1: dtool = 2; break;
+			case 0: dtool = 0; dslid.setEnabled(false); drawlabel.setText("***"); break;
+			case 1: dtool = 2; dslid.setEnabled(true);dslid.setMinimum(0); dslid.setMaximum(7);dslid.setValue(0); dslid.setMajorTickSpacing(1); break;
 		}
 		command = 8; fireucEvent();
 		}
@@ -145,12 +181,46 @@ public void actionPerformed(ActionEvent e){
 			if(ftPick.getSelectedItem() == toolsDisp[s]){ftsel = s;}
 		}
 		switch(ftsel){
-			case 0: ftool = 0; break;
-			case 1: ftool = 2; break;
+			case 0: ftool = 0;fslid.setEnabled(false);filllabel.setText("***"); break;
+			case 1: ftool = 2;  fslid.setEnabled(true);fslid.setMinimum(0); fslid.setMaximum(7);fslid.setValue(0); fslid.setMajorTickSpacing(1);fslid.setPaintTicks(true); break;
 		}
 		command = 9; fireucEvent();
 		}
 	}
+	
+public void stateChanged(ChangeEvent e){
+	if(e.getSource() == dslid){dtval = dslid.getValue(); command = 8; fireucEvent();
+	switch(dtsel){
+		case 0: break;
+		case 1: switch(dslid.getValue()){
+						case 0: drawlabel.setText("Up"); break;
+						case 1: drawlabel.setText("Upper-Right"); break;
+						case 2: drawlabel.setText("Right"); break;
+						case 3: drawlabel.setText("Lower-Right"); break;
+						case 4: drawlabel.setText("Down"); break;
+						case 5: drawlabel.setText("Lower-Left"); break;
+						case 6: drawlabel.setText("Left"); break;
+						case 7: drawlabel.setText("Upper-Left"); break;
+					}
+				}
+						
+	}
+	if(e.getSource() == fslid){ftval = fslid.getValue(); command = 9; fireucEvent();
+	switch(ftsel){
+		case 0: break;
+		case 1: switch(fslid.getValue()){
+						case 0: filllabel.setText("Up"); break;
+						case 1: filllabel.setText("Upper-Right"); break;
+						case 2: filllabel.setText("Right"); break;
+						case 3: filllabel.setText("Lower-Right"); break;
+						case 4: filllabel.setText("Down"); break;
+						case 5: filllabel.setText("Lower-Left"); break;
+						case 6: filllabel.setText("Left"); break;
+						case 7: filllabel.setText("Upper-Left"); break;
+					}
+				}
+	}
+}
 
 public void itemStateChanged(ItemEvent e){
 	int checknum = 0;
