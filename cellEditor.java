@@ -38,8 +38,9 @@ JSeparator dfline;
 JSeparator mdline;
 
 
-String[] tools = new String[]{"", "Dir"};//for editing
-String[] toolsDisp = new String[]{"Cell", "Direction"};//for display
+String[] tools = new String[]{"", "Dir", "Mat"};//for editing
+String[] toolsDisp = new String[]{"Cell", "Direction", "Maturity"};//for display
+String[] toolsDispB = toolsDisp;
 int dtval = 0;//drawing tool value
 int dtool = 0;//drawing tool
 int dtsel = 0;//drawing tool selected
@@ -67,7 +68,7 @@ public cellEditor(){
 	mainchecks[3] = new Checkbox("Random");
 	
 	dtPick = new JComboBox(toolsDisp);
-	ftPick = new JComboBox(toolsDisp);
+	ftPick = new JComboBox(toolsDispB);
 	
 	dslid = new JSlider(1,512);
 	fslid = new JSlider(1,512);
@@ -138,10 +139,10 @@ public cellEditor(){
 		mainchecks[cont].addItemListener(this);mainchecks[cont].setVisible(true);}
 		dtPick.addActionListener(this); dtPick.setVisible(true);
 		dslid.addChangeListener(this); dslid.setVisible(true);dslid.setEnabled(false);
-		dslid.setMajorTickSpacing(10);dslid.setPaintTicks(true);
+		dslid.setMajorTickSpacing(16);dslid.setPaintTicks(true);
 		ftPick.addActionListener(this); ftPick.setVisible(true);
 		fslid.addChangeListener(this); fslid.setVisible(true);fslid.setEnabled(false);
-		fslid.setMajorTickSpacing(10);fslid.setPaintTicks(true);
+		fslid.setMajorTickSpacing(16);fslid.setPaintTicks(true);
 	dfline.setPreferredSize(new Dimension(150, 50));
 	mdline.setPreferredSize(new Dimension(150, 50));
 	}
@@ -171,25 +172,31 @@ public void actionPerformed(ActionEvent e){
 		}
 		switch(dtsel){
 			case 0: dtool = 0; dslid.setEnabled(false); drawlabel.setText("***"); break;
-			case 1: dtool = 2; dslid.setEnabled(true);dslid.setMinimum(0); dslid.setMaximum(7);dslid.setValue(0); dslid.setMajorTickSpacing(1); break;
+			case 1: dtool = 2; dslid.setEnabled(true);dslid.setMinimum(0); 
+			dslid.setMaximum(7);dslid.setValue(0); dslid.setMajorTickSpacing(1); dslid.setPaintTicks(true);break;
+			case 2: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1);
+			dslid.setMaximum(64); dslid.setValue(1); dslid.setMajorTickSpacing(4); dslid.setPaintTicks(true); break;
 		}
 		command = 8; fireucEvent();
 		}
 	if(e.getSource() == ftPick){
 		
 		for(int s = 0; s < tools.length; s++){
-			if(ftPick.getSelectedItem() == toolsDisp[s]){ftsel = s;}
+			if(ftPick.getSelectedItem() == toolsDispB[s]){ftsel = s;}
 		}
 		switch(ftsel){
 			case 0: ftool = 0;fslid.setEnabled(false);filllabel.setText("***"); break;
-			case 1: ftool = 2;  fslid.setEnabled(true);fslid.setMinimum(0); fslid.setMaximum(7);fslid.setValue(0); fslid.setMajorTickSpacing(1);fslid.setPaintTicks(true); break;
+			case 1: ftool = 2;  fslid.setEnabled(true);fslid.setMinimum(0); 
+			fslid.setMaximum(7);fslid.setValue(0); fslid.setMajorTickSpacing(1);fslid.setPaintTicks(true); break;
+			case 2: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); 
+			fslid.setMaximum(64); fslid.setValue(1); fslid.setMajorTickSpacing(4); fslid.setPaintTicks(true); break;
 		}
 		command = 9; fireucEvent();
 		}
 	}
 	
 public void stateChanged(ChangeEvent e){
-	if(e.getSource() == dslid){dtval = dslid.getValue(); command = 8; fireucEvent();
+	if(e.getSource() == dslid){
 	switch(dtsel){
 		case 0: break;
 		case 1: switch(dslid.getValue()){
@@ -201,11 +208,13 @@ public void stateChanged(ChangeEvent e){
 						case 5: drawlabel.setText("Lower-Left"); break;
 						case 6: drawlabel.setText("Left"); break;
 						case 7: drawlabel.setText("Upper-Left"); break;
-					}
+					} break;
+		case 2: drawlabel.setText(Integer.toString(dslid.getValue())); break;
+					
 				}
-						
+		dtval = dslid.getValue(); command = 8; fireucEvent();				
 	}
-	if(e.getSource() == fslid){ftval = fslid.getValue(); command = 9; fireucEvent();
+	if(e.getSource() == fslid){
 	switch(ftsel){
 		case 0: break;
 		case 1: switch(fslid.getValue()){
@@ -217,8 +226,10 @@ public void stateChanged(ChangeEvent e){
 						case 5: filllabel.setText("Lower-Left"); break;
 						case 6: filllabel.setText("Left"); break;
 						case 7: filllabel.setText("Upper-Left"); break;
-					}
+					} break;
+		case 2: filllabel.setText(Integer.toString(fslid.getValue())); break;
 				}
+		ftval = fslid.getValue(); command = 9; fireucEvent();
 	}
 }
 
