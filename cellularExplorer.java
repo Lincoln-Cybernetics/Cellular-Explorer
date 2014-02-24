@@ -166,7 +166,7 @@ public class cellularExplorer implements ucListener{
 				
 		}
 		
-		private void makeWin(int n){
+			private void makeWin(int n){
 			switch(n){
 				case 1:    //master control
 							cpanel = new JFrame("Cellular Explorer v0.0.6");
@@ -183,13 +183,6 @@ public class cellularExplorer implements ucListener{
 							cEdit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
 							cEdit.pack();
 							cEdit.setLocation(0,cpanel.getHeight());
-							//state editor
-							 sedit = new JFrame("State Editor");
-							Dan = new stateEditor(); 
-							sedit.getContentPane().add(Dan);
-							sedit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
-							sedit.pack();
-							sedit.setLocation(0,cpanel.getHeight()+cEdit.getHeight());
 							//cell picker
 							 cPick = new JFrame("Cell Picker");
 							JSeparator bernie = new JSeparator(JSeparator.VERTICAL);
@@ -202,7 +195,8 @@ public class cellularExplorer implements ucListener{
 							cPick.getContentPane().add(Gwen);
 							cPick.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
 							cPick.pack();
-							cPick.setLocation(0,cpanel.getHeight()+sedit.getHeight()+cEdit.getHeight());
+							cPick.setLocation(0,cpanel.getHeight()+cEdit.getHeight());
+							
 							//Selection Tools
 							sBox = new JFrame("Selection Tools");
 							Hank = new selectionControl(); 
@@ -218,9 +212,9 @@ public class cellularExplorer implements ucListener{
 							brushCup.setLocation(cpanel.getWidth(),sBox.getHeight());
 							Inez.init();
 							//set window format for the automaton
-							v1.setParameter("WSX", sedit.getWidth());
+							v1.setParameter("WSX", cEdit.getWidth());
 							v1.setParameter("WSY", cpanel.getHeight());
-							v1.setParameter("WH", sedit.getHeight()+cEdit.getHeight());
+							v1.setParameter("WH", cEdit.getHeight());
 							break;
 							
 				case 2:   npanel = new JFrame("New Automaton");
@@ -235,6 +229,13 @@ public class cellularExplorer implements ucListener{
 						  break;
 						  
 				case 3: 	//State Editor
+							//state editor
+							 sedit = new JFrame("State Editor");
+							Dan = new stateEditor(); 
+							sedit.getContentPane().add(Dan);
+							sedit.setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+							sedit.pack();
+							sedit.setLocation(cEdit.getWidth()+v1.disp.getWidth(),cpanel.getHeight());
 						  winflag[0] = true;
 						  sedit.setResizable(false);
 						  sedit.setVisible(true);
