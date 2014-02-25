@@ -694,7 +694,7 @@ public void handleControl(ucEvent e){
 						* 4 = Clear state
 						* 5 = Invert state
 						*/
-					
+					statefillflag = true;
 						switch(sfo){
 							case 0: stateFill(); break;
 							case 1: stateCheckFill(); break;
@@ -704,6 +704,7 @@ public void handleControl(ucEvent e){
 							case 5: stateInvert(); break;
 							
 							default: stateCheckFill(); break;}
+							statefillflag = false;
 						}
 					
 				private void stateFill(){
