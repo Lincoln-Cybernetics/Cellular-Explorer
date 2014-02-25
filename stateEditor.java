@@ -23,12 +23,34 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class stateEditor extends JComponent implements ActionListener, ItemListener{
+public class stateEditor extends JComponent implements ActionListener, ItemListener, ChangeListener{
 	
 // controlPanel variables
-// controls
+// Main controls
 JButton[] statebutts = new JButton[5];
 Checkbox[] statechecks = new Checkbox[5]; 
+
+//draw tool selection/ configuration
+JComboBox drawbox;  //draw tool selector
+int dtsn = 0;// draw tool select number
+int dtt = 0;//draw tool type
+int dtv = 0;//draw tool value
+JSlider drsl;//draw slider
+JLabel dlbl;//draw value label
+
+
+//fill tool selection/config
+JComboBox fillbox; // fill tool selector
+int ftsn = 0; // fill tool selected #
+int ftt = 0; //fill tool type
+int ftv = 0; //fill tool value
+String[] toolstr = new String[]{"", "Age"};//for editing
+String[] sedts = new String[]{"Binary State", "Age"};//for display
+JSlider flsl;//fill slider
+JLabel flbl;//fill value label
+
+JSeparator mdborder;//sepaprate border/draw
+JSeparator dfborder;//separate draw/fill
 
 // relate to sending command events
 private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -53,6 +75,17 @@ public stateEditor(){
 	statechecks[3] = new Checkbox("Random");
 	statechecks[4] = new Checkbox("Check");
 	
+	drawbox = new JComboBox(sedts);
+	drsl  = new JSlider(0,512);
+	fillbox = new JComboBox(sedts);
+	flsl = new JSlider(0,512);
+	
+	//create separators, etc
+	mdborder = new JSeparator(JSeparator.HORIZONTAL);
+	dfborder = new JSeparator(JSeparator.HORIZONTAL);
+	dlbl = new JLabel("***");
+	flbl = new JLabel("***");
+	
 	//layout
 	GroupLayout seLayout = new GroupLayout(this);
 	seLayout.setAutoCreateGaps(false);
@@ -61,12 +94,20 @@ public stateEditor(){
 	seLayout.setHorizontalGroup(
 		seLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 			.addComponent(statebutts[0])
+			.addComponent(mdborder)
 			.addComponent(statebutts[4])
+			.addComponent(drawbox)
+			.addComponent(dlbl)
+			.addComponent(drsl)
 			.addComponent(statechecks[0])
 			.addGroup(seLayout.createSequentialGroup()
 				.addComponent(statechecks[2])
 				.addComponent(statechecks[1]))
+			.addComponent(dfborder)
 			.addComponent(statebutts[1])
+			.addComponent(fillbox)
+			.addComponent(flbl)
+			.addComponent(flsl)
 			.addGroup(seLayout.createSequentialGroup()
 				.addComponent(statechecks[4])
 				.addComponent(statechecks[3]))
@@ -78,12 +119,20 @@ public stateEditor(){
 	seLayout.setVerticalGroup(
 		seLayout.createSequentialGroup()
 			.addComponent(statebutts[0])
+			.addComponent(mdborder)
 			.addComponent(statebutts[4])
+			.addComponent(drawbox)
+			.addComponent(dlbl)
+			.addComponent(drsl)
 			.addComponent(statechecks[0])
 			.addGroup(seLayout.createParallelGroup()
 				.addComponent(statechecks[2])
 				.addComponent(statechecks[1]))
+			.addComponent(dfborder)
 			.addComponent(statebutts[1])
+			.addComponent(fillbox)
+			.addComponent(flbl)
+			.addComponent(flsl)
 			.addGroup(seLayout.createParallelGroup()
 				.addComponent(statechecks[4])
 				.addComponent(statechecks[3]))
@@ -93,16 +142,27 @@ public stateEditor(){
 				);
 				setLayout(seLayout);
 				
+				//set up controls
 				for(int cc = 0; cc <= 4; cc++){
 					statebutts[cc].addActionListener(this);statebutts[cc].setVisible(true);
 					statechecks[cc].addItemListener(this);statechecks[cc].setVisible(true);}
+					
+					drawbox.addActionListener(this);
+					drsl.addChangeListener(this);drsl.setEnabled(false);
+					fillbox.addActionListener(this);
+					flsl.addChangeListener(this);flsl.setEnabled(false);
+					
+				//set up separators, etc
+				mdborder.setPreferredSize(new Dimension(150, 25));
+				dfborder.setPreferredSize(new Dimension(150, 25));
 	}
 
 public void actionPerformed(ActionEvent e){
-	int buttnum = 0;
+	int buttnum = 0; boolean buttflag = false;
 	for(int bc = 0; bc <= statebutts.length-1; bc++){
-		if(e.getSource() == statebutts[bc]){buttnum = bc;}
+		if(e.getSource() == statebutts[bc]){buttnum = bc; buttflag = true;}
 	}
+	if(buttflag){
 	switch(buttnum){
 		//state edit mode
 		case 0: control = 0; fireucEvent(); break;
@@ -115,6 +175,27 @@ public void actionPerformed(ActionEvent e){
 		// State Draw
 		case 4: control = 9; fireucEvent(); break;
 	}
+	}
+	
+	if(e.getSource() == drawbox){
+		for(int s = 0; s < sedts.length; s++){
+			if(drawbox.getSelectedItem() == sedts[s]){dtsn = s;}}
+			switch(dtsn){
+				case 0: dtt = 0; drsl.setEnabled(false); dlbl.setText("***"); break;
+				case 1: dtt = 2;  drsl.setEnabled(true); dlbl.setText(Integer.toString(drsl.getValue())); break;
+			}
+			control = 10; fireucEvent();
+		}
+	
+	if(e.getSource() == fillbox){
+		for(int s = 0; s < sedts.length; s++){
+			if(fillbox.getSelectedItem() == sedts[s]){ftsn = s;}}
+			switch(ftsn){
+				case 0: ftt = 0; flsl.setEnabled(false); flbl.setText("***"); break;
+				case 1: ftt = 2; flsl.setEnabled(true); flbl.setText(Integer.toString(flsl.getValue()));  break;
+			}
+			control = 11; fireucEvent();
+		}
 	}
 
 public void itemStateChanged(ItemEvent e){
@@ -134,6 +215,11 @@ public void itemStateChanged(ItemEvent e){
 		// fill check
 		case 4: control = 8; sfoSet(); fireucEvent(); break;
 	}
+}
+
+public void stateChanged(ChangeEvent e){
+	if(e.getSource() == drsl){dtv = drsl.getValue();dlbl.setText(Integer.toString(drsl.getValue())); control = 10; fireucEvent();}
+	if(e.getSource() == flsl){ftv = flsl.getValue();flbl.setText(Integer.toString(flsl.getValue())); control = 11; fireucEvent();}
 }
 
 //event generation
@@ -160,6 +246,8 @@ private synchronized void fireucEvent(){
 	 * 7 = random fill
 	 * 8 = check fill
 	 * 9 = State Draw
+	 * 10 = set draw tool
+	 * 11 = set fill tool
 	 */
 	Iterator i = _audience.iterator();
 	while(i.hasNext()){
@@ -186,5 +274,21 @@ private synchronized void fireucEvent(){
 	public int getSDO(){ return sdo;}
 	
 	public int getSFO(){ return sfo;}
+	
+	public int getTool(int a){
+		if(a == 0){ return dtt;}
+		if(a == 1){ return ftt;}
+		return -1;}
+		
+	public int getToolVal(int a){
+		if(a == 0){return dtv;}
+		if(a == 1){return ftv;}
+		return -1;}
+		
+	public String getTString(int a){
+		if(a == 0){return toolstr[dtsn];}
+		if(a == 1){return toolstr[ftsn];}
+		return "ERROR";
+	}
 		
 	}
