@@ -117,6 +117,10 @@ public class cellularExplorer implements ucListener{
 					// activate state drawing
 					case 9: if(v1.getMode() != 3 && v1.getInteract()){v1.setMouseAction("SDraw");} 
 						if(v1.getMode() == 2){v1.setMouseAction("SDraw");}break;
+					//set draw tool
+					case 10: v1.setTool(0, Dan.getTool(0), Dan.getTString(0), Dan.getToolVal(0)); break;
+					//set fill tool
+					case 11: v1.setTool(1, Dan.getTool(1), Dan.getTString(1), Dan.getToolVal(1)); break;
 				}
 			}
 			//Cell Editor
