@@ -38,8 +38,8 @@ JSeparator dfline;
 JSeparator mdline;
 
 
-String[] tools = new String[]{"", "Dir", "Mat"};//for editing
-String[] toolsDisp = new String[]{"Cell", "Direction", "Maturity"};//for display
+String[] tools = new String[]{"", "Dir", "Mat", "Fade"};//for editing
+String[] toolsDisp = new String[]{"Cell", "Direction", "Maturity", "Fade"};//for display
 String[] toolsDispB = toolsDisp;
 int dtval = 0;//drawing tool value
 int dtool = 0;//drawing tool
@@ -176,6 +176,8 @@ public void actionPerformed(ActionEvent e){
 			dslid.setMaximum(7);dslid.setValue(0); dslid.setMajorTickSpacing(1); dslid.setPaintTicks(true);break;
 			case 2: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1);
 			dslid.setMaximum(64); dslid.setValue(1); dslid.setMajorTickSpacing(4); dslid.setPaintTicks(true); break;
+			case 3: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1); dslid.setMaximum(1024); dslid.setMajorTickSpacing(64); 
+			dslid.setPaintTicks(true); break;
 		}
 		command = 8; fireucEvent();
 		}
@@ -190,6 +192,8 @@ public void actionPerformed(ActionEvent e){
 			fslid.setMaximum(7);fslid.setValue(0); fslid.setMajorTickSpacing(1);fslid.setPaintTicks(true); break;
 			case 2: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); 
 			fslid.setMaximum(64); fslid.setValue(1); fslid.setMajorTickSpacing(4); fslid.setPaintTicks(true); break;
+			case 3: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); fslid.setMaximum(1024); fslid.setMajorTickSpacing(64); 
+			fslid.setPaintTicks(true); break;
 		}
 		command = 9; fireucEvent();
 		}
@@ -210,7 +214,7 @@ public void stateChanged(ChangeEvent e){
 						case 7: drawlabel.setText("Upper-Left"); break;
 					} break;
 		case 2: drawlabel.setText(Integer.toString(dslid.getValue())); break;
-					
+		case 3: drawlabel.setText(Integer.toString(dslid.getValue())); break;			
 				}
 		dtval = dslid.getValue(); command = 8; fireucEvent();				
 	}
@@ -228,6 +232,7 @@ public void stateChanged(ChangeEvent e){
 						case 7: filllabel.setText("Upper-Left"); break;
 					} break;
 		case 2: filllabel.setText(Integer.toString(fslid.getValue())); break;
+		case 3: filllabel.setText(Integer.toString(fslid.getValue())); break;
 				}
 		ftval = fslid.getValue(); command = 9; fireucEvent();
 	}
