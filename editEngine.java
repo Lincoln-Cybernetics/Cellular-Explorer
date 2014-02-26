@@ -47,8 +47,8 @@ boolean[] opval = new boolean[4];//option tool values (0= StateDdraw, 1 = StateF
 String[] toolstring = new String[4];//tool string (0= StateDdraw, 1 = StateFill, 2 = CellDraw, 3 = CellFill)
 boolean cellfillflag = false;
 boolean statefillflag = false;
-String[] cellopts = new String[]{"Ages", "Fades"};// for cell editing
-String[] cellparams = new String[]{"Age", "Fade", "Mat", "Matcount"};// for cell/state editing
+//String[] cellopts = new String[]{"Ages", "Fades"};// for cell editing
+//String[] cellparams = new String[]{"Age", "Fade", "Mat", "Matcount"};// for cell/state editing
 int wsx = 0; //window start: X
 int wsy = 0; //window start: Y
 int wh = 0; // window height
@@ -243,6 +243,7 @@ public void handleControl(ucEvent e){
 	 private int randToolNum(int a){
 		 Random sprue = new Random();
 		 if(toolstring[a] == "Dir"){ return sprue.nextInt(8);}
+		 if(toolstring[a] == "Fade"){ return sprue.nextInt(1024)+1;}
 		 return sprue.nextInt(512)+1;
 	 }
 	 
