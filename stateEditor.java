@@ -44,8 +44,8 @@ JComboBox fillbox; // fill tool selector
 int ftsn = 0; // fill tool selected #
 int ftt = 0; //fill tool type
 int ftv = 0; //fill tool value
-String[] toolstr = new String[]{"", "Age"};//for editing
-String[] sedts = new String[]{"Binary State", "Age"};//for display
+String[] toolstr = new String[]{"", "Age", "Matcount"};//for editing
+String[] sedts = new String[]{"Binary State", "Age", "Maturity Counter"};//for display
 JSlider flsl;//fill slider
 JLabel flbl;//fill value label
 
@@ -183,6 +183,7 @@ public void actionPerformed(ActionEvent e){
 			switch(dtsn){
 				case 0: dtt = 0; drsl.setEnabled(false); dlbl.setText("***"); break;
 				case 1: dtt = 2;  drsl.setEnabled(true); dlbl.setText(Integer.toString(drsl.getValue())); break;
+				case 2: dtt = 2; drsl.setEnabled(true); dlbl.setText(Integer.toString(drsl.getValue())); break;
 			}
 			control = 10; fireucEvent();
 		}
@@ -193,6 +194,7 @@ public void actionPerformed(ActionEvent e){
 			switch(ftsn){
 				case 0: ftt = 0; flsl.setEnabled(false); flbl.setText("***"); break;
 				case 1: ftt = 2; flsl.setEnabled(true); flbl.setText(Integer.toString(flsl.getValue()));  break;
+				case 2: ftt = 2; flsl.setEnabled(true); flbl.setText(Integer.toString(flsl.getValue()));  break;
 			}
 			control = 11; fireucEvent();
 		}
