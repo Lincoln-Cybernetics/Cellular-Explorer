@@ -175,7 +175,7 @@ public void actionPerformed(ActionEvent e){
 			case 1: dtool = 2; dslid.setEnabled(true);dslid.setMinimum(0); 
 			dslid.setMaximum(7);dslid.setValue(0); dslid.setMajorTickSpacing(1); dslid.setPaintTicks(true);break;
 			case 2: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1);
-			dslid.setMaximum(64); dslid.setValue(1); dslid.setMajorTickSpacing(4); dslid.setPaintTicks(true); break;
+			dslid.setMaximum(512); dslid.setValue(1); dslid.setMajorTickSpacing(16); dslid.setPaintTicks(true); break;
 			case 3: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1); dslid.setMaximum(1024); dslid.setMajorTickSpacing(64); 
 			dslid.setPaintTicks(true); break;
 		}
@@ -191,7 +191,7 @@ public void actionPerformed(ActionEvent e){
 			case 1: ftool = 2;  fslid.setEnabled(true);fslid.setMinimum(0); 
 			fslid.setMaximum(7);fslid.setValue(0); fslid.setMajorTickSpacing(1);fslid.setPaintTicks(true); break;
 			case 2: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); 
-			fslid.setMaximum(64); fslid.setValue(1); fslid.setMajorTickSpacing(4); fslid.setPaintTicks(true); break;
+			fslid.setMaximum(512); fslid.setValue(1); fslid.setMajorTickSpacing(4); fslid.setPaintTicks(true); break;
 			case 3: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); fslid.setMaximum(1024); fslid.setMajorTickSpacing(64); 
 			fslid.setPaintTicks(true); break;
 		}
