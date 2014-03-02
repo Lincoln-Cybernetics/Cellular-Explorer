@@ -82,6 +82,7 @@ public class cellularExplorer implements ucListener{
 					case 10: v1.setDisplayMode(Alice.getDispType());if(v1.getMode() == 2 || v1.getMode() == 3){}else{v1.setMode(0);}break;//Set Display Type
 					case 11: v1.setWrap(Alice.getWrapType());break;//set edge wrapping
 					case 12: v1.showCI(); break; //shows cell info
+					case 13: v1.setAutomatonRule(Alice.getRN(), Alice.getRV()); v1.setAutomatonRuleTimer(Alice.getRN(), Alice.getRT()); break;
 					default: break;
 				}
 			}
@@ -177,6 +178,7 @@ public class cellularExplorer implements ucListener{
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.pack();
+							Alice.init();
 							cpanel.setResizable(false);
 							cpanel.setVisible(true);
 							cpanel.setLayout(new FlowLayout());
