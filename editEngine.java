@@ -264,7 +264,8 @@ public void handleControl(ucEvent e){
 		 else{barnabus.setVisible(true);}
 		 
 		 }
-		 
+	
+	//Each time the automaton iterates, this method is called at the end of the iteration 
 	public void iterateNotify(){ 
 		if(mercury != null){mercury.refCell();}
 	}
@@ -307,6 +308,7 @@ public void handleControl(ucEvent e){
 			}
 		}
 		
+		//sets automaton topology
 		public void setWrap(int a){
 			switch(a){
 				case 0: pistons[0][0].setXYwrap(false, false); break;
@@ -315,6 +317,13 @@ public void handleControl(ucEvent e){
 				case 3: pistons[0][0].setXYwrap(true, true); break;
 			}
 		}
+		
+		//Sets automaton-level rules
+		public void setAutomatonRule(int rn, boolean b){
+			pistons[0][0].setRule(rn, b);}
+			
+		public void setAutomatonRuleTimer(int rn, int t){
+			pistons[0][0].setRuleTimer(rn, t);}
 
 	// refreshes the selection in the display
 					public void refreshSel(){
