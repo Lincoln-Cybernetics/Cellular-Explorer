@@ -24,25 +24,22 @@ class cellBrain  implements Runnable{
 	
 	logicEngine controller;
 	cellComponent display;
-	int myopt = 1;
+	int myopt = 1;//option for iterate interrupts
 	int xsiz;
 	int ysiz; 
-	boolean[][] current; 	
-	boolean[][] newstate; 
-	
+	boolean[][] current; //current binary state of all cells	
+	boolean[][] newstate; //for updating
 	public cell[][] culture; 	
-	//selector harry;
-	int celltype;	
-	int maturity = 1;
-	// settings (speed, primary cell selection, secondary cell selection, maturity, secondary maturity, cell size, and array initialization)
-	
-
 	//general array counters Int x, and Int y are instantiated locally for each use
 	
 	//keep track of mouse position in edit mode
-	int xlocal;
-	int ylocal;
 	int ztime;
+	
+	//variables for automaton-level rules
+	boolean[] rule = new boolean[1];
+	int[] ruletimer = new int[1];
+	int[] ruletcount = new int[1];
+	
 	// moore neighborhood brush
 	threebrush ariadne;
 	//Wolfram neighborhood brush
@@ -57,7 +54,7 @@ class cellBrain  implements Runnable{
 	boolean singleselflag = false;
 	//rectangle selection
 	int rectselflag = 0;
-	boolean rectselfie = false;
+	
 	
 	//state editing flags
 	boolean editflag = false;
@@ -302,6 +299,25 @@ class cellBrain  implements Runnable{
 				return wolfhood;
 			}
 		
+		//Automaton-level rules
+		/* Rules
+		 * rule 0 = Compass Chaos (randomizes direction parameters)
+		 */
+		public void setRule(int rn, boolean rs){ rule[rn] = rs;}
+		
+		public void setRuleTimer(int rn, int rt){ ruletimer[rn] = rt;}
+		
+		public void invokeRule(int r){
+			switch(r){
+				//Compass Chaos rule
+				case 0: for(int y = 0; y <=ysiz-1; y++){
+							for(int x = 0; x <= xsiz-1; x++){
+								Random iceberg = new Random();
+								culture[x][y].setParameter("Dir", iceberg.nextInt(8));}}
+								break;
+				default : break;
+			}
+		}
 	
 		
 		//main logic methods
@@ -309,6 +325,13 @@ class cellBrain  implements Runnable{
 		public void iterate(){
 			if(mayIterate()){
 			int x; int y;
+			
+			//check automaton-level rules
+			for(int q = 0; q < rule.length; q++){
+				if(rule[q]){ruletcount[q] += 1; if(ruletcount[q] >= ruletimer[q]){ruletcount[q] = 0; invokeRule(q);}}
+			} 
+			
+			//iterate interrupt
 			 if (iiflag){ controller.iterateInterrupt(myopt);
 				  iiflag = false;}
 				   else{
