@@ -23,10 +23,13 @@ import java.beans.PropertyChangeEvent;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class masterControl extends JComponent implements ActionListener, ChangeListener, ucListener{
+public class masterControl extends JComponent implements ActionListener, ChangeListener, ItemListener, ucListener{
 	// Main Controls
 	JButton[] buttons = new JButton[9];
+	Checkbox[] checks = new Checkbox[1];
 	JSlider throttle;
+	JSlider rtsetter;
+	JLabel rtslab;
 	controlBox dispbox;
 	controlBox wrapbox;
 	JButton cidButton;
@@ -34,6 +37,10 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
 	int cntrl = 0;
+	
+	//automaton rule numbers
+	int rulnum = 0;
+	boolean rulval;
 	
 	//flags
 	//is there an active automaton to control?
@@ -54,7 +61,10 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		buttons[6] = new JButton("Selection Tools");
 		buttons[7] = new JButton("Brushes");
 		buttons[8] = new JButton("About");
+		checks[0] = new Checkbox("Compass Chaos");
 		throttle = new JSlider(0,1000);
+		rtsetter = new JSlider(1,100);
+		rtslab = new JLabel("50");
 		dispbox = new controlBox(1);
 		wrapbox = new controlBox(2);
 		cidButton = new JButton("Cell info");
@@ -62,18 +72,79 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		setPreferredSize(new Dimension(675,165));
 		
 		// set layout
-		setLayout( new FlowLayout() );
+		GroupLayout mclayout = new GroupLayout(this);
+		mclayout.setAutoCreateGaps(false);
+		mclayout.setAutoCreateContainerGaps(false);
 		
-		// add controls
+		mclayout.setHorizontalGroup(
+			mclayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+			.addGroup(mclayout.createSequentialGroup()
+				.addComponent(buttons[0])
+				.addComponent(buttons[1])
+				.addComponent(throttle)
+				.addComponent(buttons[2]))
+			.addGroup(mclayout.createSequentialGroup()
+				.addComponent(buttons[3])
+				.addComponent(buttons[4])
+				.addComponent(buttons[5])
+				.addComponent(buttons[6])
+				.addComponent(buttons[7]))
+			.addGroup(mclayout.createSequentialGroup()
+				.addComponent(buttons[8])
+				.addComponent(dispbox)
+				.addComponent(wrapbox)
+				.addComponent(cidButton))
+			.addGroup(mclayout.createSequentialGroup()
+				.addComponent(checks[0])
+				.addComponent(rtsetter)
+				.addComponent(rtslab))
+				);
+				
+		mclayout.setVerticalGroup(
+			mclayout.createSequentialGroup()
+			.addGroup(mclayout.createParallelGroup()
+				.addComponent(buttons[0])
+				.addComponent(buttons[1])
+				.addComponent(throttle)
+				.addComponent(buttons[2]))
+			.addGroup(mclayout.createParallelGroup()
+				.addComponent(buttons[3])
+				.addComponent(buttons[4])
+				.addComponent(buttons[5])
+				.addComponent(buttons[6])
+				.addComponent(buttons[7]))
+			.addGroup(mclayout.createParallelGroup()
+				.addComponent(buttons[8])
+				.addComponent(dispbox)
+				.addComponent(wrapbox)
+				.addComponent(cidButton))
+			.addGroup(mclayout.createParallelGroup()
+				.addComponent(checks[0])
+				.addComponent(rtsetter)
+				.addComponent(rtslab))
+				);
+		setLayout( mclayout );
+		
+		// setup controls
 		for( int c = 0; c<= buttons.length-1; c++){
-			if(c == 2){add(throttle); throttle.addChangeListener(this);}
-			add(buttons[c]); buttons[c].addActionListener(this);
+			if(c == 2){ throttle.addChangeListener(this);throttle.setMaximumSize(new Dimension(100,15));
+			}
+			 buttons[c].addActionListener(this);
 		}
-	add(dispbox); dispbox.adducListener(this);
-	add(wrapbox); wrapbox.adducListener(this);
-	add(cidButton); cidButton.addActionListener(this);
+	 checks[0].addItemListener(this);checks[0].setMaximumSize(new Dimension(100,50));
+	 rtsetter.addChangeListener(this); rtsetter.setMaximumSize(new Dimension(100,15));
+	 rtslab.setText(Integer.toString(rtsetter.getValue()));
+	 dispbox.adducListener(this);
+	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
+	 cidButton.addActionListener(this);
 		
 		}
+		
+	public void init(){ 
+		//rtsetter and rtslab start off invisible
+		rtsetter.setVisible(false); rtsetter.setEnabled(false);
+		rtslab.setVisible(false);
+	}
 		
 	//public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
 	public void setCFLAG(boolean b){cflag = b;}
@@ -96,6 +167,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			 * 10 = Set Display Type
 			 * 11 = Set Wrap Type
 			 * 12 = show cell info
+			 * 13 = set automaton rules
 			 */ 
 			for( int cnum = 1; cnum <= buttons.length-2; cnum++){
 				if(e.getSource() == buttons[cnum]){ cntrl = cnum+1; fireucEvent();}
@@ -108,7 +180,17 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		public void stateChanged(ChangeEvent e){
 			if(cflag){
 			if(e.getSource() == throttle) { cntrl = 9; fireucEvent();}
+			if(e.getSource() == rtsetter){ rtslab.setText(Integer.toString(rtsetter.getValue())); cntrl = 13; fireucEvent();}
 		}
+		}
+		
+		public void itemStateChanged(ItemEvent e){
+			if(cflag){
+				if(e.getSource() == checks[0]){ 
+					rtsetter.setVisible(checks[0].getState()); rtsetter.setEnabled(checks[0].getState());
+					rtslab.setVisible(checks[0].getState());
+					rulnum = 0; rulval = checks[0].getState(); cntrl = 13; fireucEvent();}
+			}
 		}
 		
 		public void handleControl(ucEvent e){
@@ -177,4 +259,14 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		cpanel.setVisible(true);
 		cpanel.setResizable(true);
 	}
+	
+	//variable getters
+	public int getRN(){
+		return rulnum;}
+		
+	public int getRT(){
+		return rtsetter.getValue();}
+		
+	public boolean getRV(){
+		return rulval;}
 }
