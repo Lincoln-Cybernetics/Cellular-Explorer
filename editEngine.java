@@ -260,8 +260,9 @@ public void handleControl(ucEvent e){
 		 barnabus.setResizable(false);
 		 mercury.init();
 		 barnabus.setVisible(true);
+		 barnabus.toFront();
 		 mercury.setVisible(true);}
-		 else{barnabus.setVisible(true);}
+		 else{barnabus.toFront();barnabus.setVisible(true);}
 		 
 		 }
 	
