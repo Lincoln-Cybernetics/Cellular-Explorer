@@ -222,6 +222,7 @@ public class mbot extends cell{
 			 if(matcount >= mat){matcount = 0;
 			 calculate(); }
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
+			 else{if(active){state = 1;}else{state = 0;}}
 			 if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
