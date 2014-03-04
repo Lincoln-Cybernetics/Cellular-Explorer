@@ -73,11 +73,11 @@ public class cellularExplorer implements ucListener{
 					case 1: if(whiteRabbit == null){makeWin(2);}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
-					case 4: if(winflag[0] == false){makeWin(3);} else{sedit.setVisible(true);} break;// edit state
-					case 5: if(winflag[1] == false){makeWin(4);} else{cEdit.setVisible(true);} break;// edit cells
-					case 6: if(winflag[2] == false){makeWin(5);} else{cPick.setVisible(true);}break;// Cell picker
-					case 7: if(winflag[3] == false){makeWin(6);} else{sBox.setVisible(true);}break;// selection tools
-					case 8: if(winflag[4] == false){makeWin(7);} else{brushCup.setVisible(true);}break;// brushes
+					case 4: if(winflag[0] == false){makeWin(3);} else{sedit.setVisible(true);}sedit.toFront(); break;// edit state
+					case 5: if(winflag[1] == false){makeWin(4);} else{cEdit.setVisible(true);}cEdit.toFront(); break;// edit cells
+					case 6: if(winflag[2] == false){makeWin(5);} else{cPick.setVisible(true);}cPick.toFront();break;// Cell picker
+					case 7: if(winflag[3] == false){makeWin(6);} else{sBox.setVisible(true);}sBox.toFront();break;// selection tools
+					case 8: if(winflag[4] == false){makeWin(7);} else{brushCup.setVisible(true);}brushCup.toFront(); break;// brushes
 					case 9: v1.setMasterSpeed(Alice.getZTime()); break;// speed setting
 					case 10: v1.setDisplayMode(Alice.getDispType());if(v1.getMode() == 2 || v1.getMode() == 3){}else{v1.setMode(0);}break;//Set Display Type
 					case 11: v1.setWrap(Alice.getWrapType());break;//set edge wrapping
