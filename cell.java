@@ -81,7 +81,7 @@ public class cell{
 		public void setOption(String opname, boolean b){
 			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
-			if(opname == "Mirror"){mirror = b; if(b){hoodx = 0; hoody = 0; name  ="Mirror";}else{hoodx = -1; hoody = -1; name = "Cell";}}
+			if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror";}else{hoodx = -1; hoody = -1; name = "Cell";}}
 			}
 		
 		public int getParameter(String paramname){ 
@@ -111,6 +111,7 @@ public class cell{
 		public void iterate(){
 			 calculate(); 
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
+			 else{if(active){state = 1;}else{state = 0;}}
 			 if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
