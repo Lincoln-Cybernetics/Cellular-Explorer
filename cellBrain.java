@@ -310,10 +310,13 @@ class cellBrain  implements Runnable{
 		public void invokeRule(int r){
 			switch(r){
 				//Compass Chaos rule
-				case 0: for(int y = 0; y <=ysiz-1; y++){
+				case 0: 
+				ruletcount[0] += 1; if(ruletcount[0] >= ruletimer[0]){ruletcount[0] = 0;
+				for(int y = 0; y <=ysiz-1; y++){
 							for(int x = 0; x <= xsiz-1; x++){
 								Random iceberg = new Random();
 								culture[x][y].setParameter("Dir", iceberg.nextInt(8));}}
+							}
 								break;
 				default : break;
 			}
@@ -328,7 +331,7 @@ class cellBrain  implements Runnable{
 			
 			//check automaton-level rules
 			for(int q = 0; q < rule.length; q++){
-				if(rule[q]){ruletcount[q] += 1; if(ruletcount[q] >= ruletimer[q]){ruletcount[q] = 0; invokeRule(q);}}
+				if(rule[q]){ invokeRule(q);}
 			} 
 			
 			//iterate interrupt
