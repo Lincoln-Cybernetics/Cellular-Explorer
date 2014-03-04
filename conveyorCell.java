@@ -54,6 +54,8 @@ public class conveyorCell extends cell{
 	//age and fade rule variables
 	int age;
 	boolean ages;
+	int fade;
+	boolean fades;
 	
 	//constructor
 	public conveyorCell(){
@@ -72,6 +74,8 @@ public class conveyorCell extends cell{
 		matcount = 0;
 		age = 0;
 		ages = false;
+		fade = -1;
+		fades = false;
 		neighborhood = new boolean[3][3];
 		}
 		
@@ -80,22 +84,26 @@ public class conveyorCell extends cell{
 		
 		@Override public boolean getControls(String control){
 			if(control == "Age"){ return true;}
+			if(control == "Fade"){return true;}
 			if(control == "Mat"){ return true;}
 			if(control == "Dir"){ return true;}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
 			if(opname == "Ages"){ return ages;}
+			if(opname == "Fades"){ return fades;}
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
 			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			}
 		
 		@Override public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
 			if(paramname == "Age"){ return age;}
+			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Dir"){ return direction;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
@@ -103,6 +111,7 @@ public class conveyorCell extends cell{
 		
 		@Override public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
+			if(paramname == "Fade"){fade = a;}
 			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 7){direction %= 8;}}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
@@ -122,6 +131,8 @@ public class conveyorCell extends cell{
 			 if(matcount >= mat){matcount = 0;
 			 calculate(); }
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
+			 else{if(active){state = 1;}else{state = 0;}}
+			  if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
 		private void calculate(){
