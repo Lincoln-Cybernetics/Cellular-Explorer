@@ -113,6 +113,7 @@ public class randCell extends cell{
 			 if(matcount >= mat){matcount = 0;
 			 calculate(); }
 			 if(ages){ if(active){ age = bombadil.nextInt(256);}else{ age = 0;} state = age;}
+			 else{if(active){state = 1;}else{state = 0;}}
 			
 			}
 		
