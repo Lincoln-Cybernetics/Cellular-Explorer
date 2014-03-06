@@ -26,10 +26,10 @@ import java.beans.PropertyChangeEvent;
 public class masterControl extends JComponent implements ActionListener, ChangeListener, ItemListener, ucListener{
 	// Main Controls
 	JButton[] buttons = new JButton[9];
-	Checkbox[] checks = new Checkbox[1];
+	Checkbox[] checks = new Checkbox[3];
 	JSlider throttle;
-	JSlider rtsetter;
-	JLabel rtslab;
+	JSlider[] rtsetter = new JSlider[3];
+	JLabel[] rtslab = new JLabel[3];
 	controlBox dispbox;
 	controlBox wrapbox;
 	JButton cidButton;
@@ -39,8 +39,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	int cntrl = 0;
 	
 	//automaton rule numbers
-	int rulnum = 0;
-	boolean rulval;
+	int rulnum = 0;//what rule 0= Compass Chaos, 1 = Boredom(1)
+	boolean rulval;//is the rule on or off
+	int rtval;// rule timer
 	
 	//flags
 	//is there an active automaton to control?
@@ -62,9 +63,15 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		buttons[7] = new JButton("Brushes");
 		buttons[8] = new JButton("About");
 		checks[0] = new Checkbox("Compass Chaos");
+		checks[1] = new Checkbox("Boredom(1)");
+		checks[2] = new Checkbox("Boredom(2)");
 		throttle = new JSlider(0,1000);
-		rtsetter = new JSlider(1,100);
-		rtslab = new JLabel("50");
+		rtsetter[0] = new JSlider(1,100);
+		rtsetter[1] = new JSlider(1,100);
+		rtsetter[2] = new JSlider(1,100);
+		rtslab[0] = new JLabel("50");
+		rtslab[1] = new JLabel("50");
+		rtslab[2] = new JLabel("50");
 		dispbox = new controlBox(1);
 		wrapbox = new controlBox(2);
 		cidButton = new JButton("Cell info");
@@ -96,8 +103,15 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(cidButton))
 			.addGroup(mclayout.createSequentialGroup()
 				.addComponent(checks[0])
-				.addComponent(rtsetter)
-				.addComponent(rtslab))
+				.addComponent(rtsetter[0])
+				.addComponent(rtslab[0]))
+			.addGroup(mclayout.createSequentialGroup()
+				.addComponent(checks[1])
+				.addComponent(rtsetter[1])
+				.addComponent(rtslab[1])
+				.addComponent(checks[2])
+				.addComponent(rtsetter[2])
+				.addComponent(rtslab[2]))
 				);
 				
 		mclayout.setVerticalGroup(
@@ -120,8 +134,15 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(cidButton))
 			.addGroup(mclayout.createParallelGroup()
 				.addComponent(checks[0])
-				.addComponent(rtsetter)
-				.addComponent(rtslab))
+				.addComponent(rtsetter[0])
+				.addComponent(rtslab[0]))
+			.addGroup(mclayout.createParallelGroup()
+				.addComponent(checks[1])
+				.addComponent(rtsetter[1])
+				.addComponent(rtslab[1])
+				.addComponent(checks[2])
+				.addComponent(rtsetter[2])
+				.addComponent(rtslab[2]))
 				);
 		setLayout( mclayout );
 		
@@ -131,9 +152,12 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			}
 			 buttons[c].addActionListener(this);
 		}
-	 checks[0].addItemListener(this);checks[0].setMaximumSize(new Dimension(100,50));
-	 rtsetter.addChangeListener(this); rtsetter.setMaximumSize(new Dimension(100,15));
-	 rtslab.setText(Integer.toString(rtsetter.getValue()));
+		
+	for(int a = 0; a < checks.length; a++){	
+	 checks[a].addItemListener(this);checks[a].setMaximumSize(new Dimension(100,50));
+	 rtsetter[a].addChangeListener(this); rtsetter[a].setMaximumSize(new Dimension(100,15));
+	 rtslab[a].setText(Integer.toString(rtsetter[a].getValue()));
+ }   rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));
 	 dispbox.adducListener(this);
 	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
 	 cidButton.addActionListener(this);
@@ -142,8 +166,10 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 	public void init(){ 
 		//rtsetter and rtslab start off invisible
-		rtsetter.setVisible(false); rtsetter.setEnabled(false);
-		rtslab.setVisible(false);
+		for(int o = 0; o < rtsetter.length; o++){
+		rtsetter[o].setVisible(false); rtsetter[o].setEnabled(false);
+		rtslab[o].setVisible(false);
+	}
 	}
 		
 	//public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
@@ -180,16 +206,27 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		public void stateChanged(ChangeEvent e){
 			if(cflag){
 			if(e.getSource() == throttle) { cntrl = 9; fireucEvent();}
-			if(e.getSource() == rtsetter){ rtslab.setText(Integer.toString(rtsetter.getValue())); cntrl = 13; fireucEvent();}
+			for(int r = 0; r < rtsetter.length; r++){
+			if(e.getSource() == rtsetter[r]){ rtslab[r].setText(Integer.toString(rtsetter[r].getValue()));
+			rtval = rtsetter[r].getValue(); }
+			//double time length for boredom(2)
+			if(e.getSource() == rtsetter[2]){rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));}
+			cntrl = 13; fireucEvent();
+		}
 		}
 		}
 		
 		public void itemStateChanged(ItemEvent e){
 			if(cflag){
-				if(e.getSource() == checks[0]){ 
-					rtsetter.setVisible(checks[0].getState()); rtsetter.setEnabled(checks[0].getState());
-					rtslab.setVisible(checks[0].getState());
-					rulnum = 0; rulval = checks[0].getState(); cntrl = 13; fireucEvent();}
+				for(int w = 0; w < checks.length; w++){
+				if(e.getSource() == checks[w]){ 
+					rtsetter[w].setVisible(checks[w].getState()); rtsetter[w].setEnabled(checks[w].getState());
+					rtslab[w].setVisible(checks[w].getState());
+					rulnum = w; rulval = checks[w].getState(); rtval = rtsetter[w].getValue(); cntrl = 13; fireucEvent();}
+				}
+				//Boredom(1) and Boredom(2) are mutually exclusive
+				if(e.getSource() == checks[1]){if(checks[2].getState()){checks[2].setState(false);}}
+				if(e.getSource() == checks[2]){if(checks[1].getState()){checks[1].setState(false);}}
 			}
 		}
 		
@@ -265,7 +302,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		return rulnum;}
 		
 	public int getRT(){
-		return rtsetter.getValue();}
+		return rtval;}
 		
 	public boolean getRV(){
 		return rulval;}
