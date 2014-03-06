@@ -36,9 +36,11 @@ class cellBrain  implements Runnable{
 	int ztime;
 	
 	//variables for automaton-level rules
-	boolean[] rule = new boolean[1];
-	int[] ruletimer = new int[1];
-	int[] ruletcount = new int[1];
+	boolean[] rule = new boolean[3];
+	int[] ruletimer = new int[3];
+	int[] ruletcount = new int[3];
+	boolean[][] boredboard;//comparison for the boredom rule
+	boolean bored2flag;//flag for boredom(2)
 	
 	// moore neighborhood brush
 	threebrush ariadne;
@@ -93,6 +95,7 @@ class cellBrain  implements Runnable{
 		ysiz = 150;
 		current = new boolean[xsiz][ysiz];
 		newstate = new boolean[xsiz][ysiz];
+		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
 		ariadne = new threebrush(xsiz, ysiz);
 		ariadne.setType(true);
@@ -110,6 +113,7 @@ class cellBrain  implements Runnable{
 		ysiz = b;
 		current = new boolean[xsiz][ysiz];
 		newstate = new boolean[xsiz][ysiz];
+		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
 		ariadne = new threebrush(xsiz, ysiz);
 		ariadne.setType(true);
@@ -127,6 +131,7 @@ class cellBrain  implements Runnable{
 		ysiz = 150;
 		current = new boolean[xsiz][ysiz];
 		newstate = new boolean[xsiz][ysiz];
+		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
 		ariadne = new threebrush(xsiz, ysiz);
 		ariadne.setType(true);
@@ -302,8 +307,15 @@ class cellBrain  implements Runnable{
 		//Automaton-level rules
 		/* Rules
 		 * rule 0 = Compass Chaos (randomizes direction parameters)
+		 * rule 1 = Boredom(1) (Randomizes the state if the automaton is static too long)
+		 * rule 2 = Boredom(2) (Same as Boredom(1), but checks the state every other generation to filter out p2 oscilators)
 		 */
-		public void setRule(int rn, boolean rs){ rule[rn] = rs;}
+		public void setRule(int rn, boolean rs){ 
+			rule[rn] = rs;
+			//Boredom(1) and Boredom(2) are mutually exclusive
+			if(rn == 1 && rs == true){rule[2] = false;}
+			if(rn == 2 && rs == true){rule[1] = false;}
+			}
 		
 		public void setRuleTimer(int rn, int rt){ ruletimer[rn] = rt;}
 		
@@ -318,6 +330,24 @@ class cellBrain  implements Runnable{
 								culture[x][y].setParameter("Dir", iceberg.nextInt(8));}}
 							}
 								break;
+				//Boredom(1) and Boredom(2) rules
+				case 1: 
+				int n = 1; if(bored2flag){n = 2;}
+				boolean exciteflag = false;
+				for(int y = 0; y <=ysiz-1; y++){
+							for(int x = 0; x <= xsiz-1; x++){
+								if(current[x][y] == boredboard[x][y]){}
+								else{exciteflag = true; boredboard[x][y] = current[x][y];}
+							}}
+							if(exciteflag){ruletcount[n] = 0;}
+							else{ruletcount[n] += 1;}
+							if(ruletcount[n] >= ruletimer[n]){
+								for(int y = 0; y <=ysiz-1; y++){
+								for(int x = 0; x <= xsiz-1; x++){
+								Random nosehair = new Random();
+								current[x][y]= nosehair.nextBoolean();}}}
+								break;
+							
 				default : break;
 			}
 		}
@@ -331,7 +361,9 @@ class cellBrain  implements Runnable{
 			
 			//check automaton-level rules
 			for(int q = 0; q < rule.length; q++){
-				if(rule[q]){ invokeRule(q);}
+				if(q != 2){
+				if(rule[q]){ invokeRule(q);}}
+				else{if(rule[2]){if(bored2flag == false){bored2flag = true; invokeRule(1);}else{bored2flag = false;}}}
 			} 
 			
 			//iterate interrupt
