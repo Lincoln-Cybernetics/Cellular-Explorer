@@ -25,7 +25,7 @@ import java.beans.PropertyChangeEvent;
 
 public class masterControl extends JComponent implements ActionListener, ChangeListener, ItemListener, ucListener{
 	// Main Controls
-	JButton[] buttons = new JButton[9];
+	JButton[] buttons = new JButton[3];
 	Checkbox[] checks = new Checkbox[3];
 	JSlider throttle;
 	JSlider[] rtsetter = new JSlider[3];
@@ -33,6 +33,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	controlBox dispbox;
 	controlBox wrapbox;
 	JButton cidButton;
+	JMenuItem[] winitem = new JMenuItem[7];
+	JMenu winmen;
+	JMenuBar mainbar;
 	
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -56,12 +59,12 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		buttons[0] = new JButton("New");
 		buttons[1] = new JButton("Play/Pause");
 		buttons[2] = new JButton("Step");
-		buttons[3] = new JButton("State Editor");
-		buttons[4] = new JButton("Cell Editor");
-		buttons[5] = new JButton("Cell Picker");
-		buttons[6] = new JButton("Selection Tools");
-		buttons[7] = new JButton("Brushes");
-		buttons[8] = new JButton("About");
+		//buttons[3] = new JButton("State Editor");
+		//buttons[4] = new JButton("Cell Editor");
+		//buttons[5] = new JButton("Cell Picker");
+		//buttons[6] = new JButton("Selection Tools");
+		//buttons[7] = new JButton("Brushes");
+		//buttons[8] = new JButton("About");
 		checks[0] = new Checkbox("Compass Chaos");
 		checks[1] = new Checkbox("Boredom(1)");
 		checks[2] = new Checkbox("Boredom(2)");
@@ -75,6 +78,15 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		dispbox = new controlBox(1);
 		wrapbox = new controlBox(2);
 		cidButton = new JButton("Cell info");
+		winitem[0] = new JMenuItem("State Editor");
+		winitem[1] = new JMenuItem("Cell Editor");
+		winitem[2] = new JMenuItem("Cell Picker");
+		winitem[3] = new JMenuItem("Selection Tools");
+		winitem[4] = new JMenuItem("Brushes");
+		winitem[5] = new JMenuItem("Cell Info");
+		winitem[6] = new JMenuItem("About");
+		winmen = new JMenu("Window");
+		mainbar = new JMenuBar();
 		
 		setPreferredSize(new Dimension(675,165));
 		
@@ -84,20 +96,21 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		mclayout.setAutoCreateContainerGaps(false);
 		
 		mclayout.setHorizontalGroup(
-			mclayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+			mclayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			.addComponent(mainbar)
 			.addGroup(mclayout.createSequentialGroup()
 				.addComponent(buttons[0])
 				.addComponent(buttons[1])
 				.addComponent(throttle)
 				.addComponent(buttons[2]))
-			.addGroup(mclayout.createSequentialGroup()
+			/*.addGroup(mclayout.createSequentialGroup()
 				.addComponent(buttons[3])
 				.addComponent(buttons[4])
 				.addComponent(buttons[5])
 				.addComponent(buttons[6])
-				.addComponent(buttons[7]))
+				.addComponent(buttons[7]))*/
 			.addGroup(mclayout.createSequentialGroup()
-				.addComponent(buttons[8])
+				//.addComponent(buttons[8])
 				.addComponent(dispbox)
 				.addComponent(wrapbox)
 				.addComponent(cidButton))
@@ -116,19 +129,20 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				
 		mclayout.setVerticalGroup(
 			mclayout.createSequentialGroup()
+			.addComponent(mainbar)
 			.addGroup(mclayout.createParallelGroup()
 				.addComponent(buttons[0])
 				.addComponent(buttons[1])
 				.addComponent(throttle)
 				.addComponent(buttons[2]))
-			.addGroup(mclayout.createParallelGroup()
+			/*.addGroup(mclayout.createParallelGroup()
 				.addComponent(buttons[3])
 				.addComponent(buttons[4])
 				.addComponent(buttons[5])
 				.addComponent(buttons[6])
-				.addComponent(buttons[7]))
+				.addComponent(buttons[7]))*/
 			.addGroup(mclayout.createParallelGroup()
-				.addComponent(buttons[8])
+				//.addComponent(buttons[8])
 				.addComponent(dispbox)
 				.addComponent(wrapbox)
 				.addComponent(cidButton))
@@ -147,21 +161,29 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		setLayout( mclayout );
 		
 		// setup controls
-		for( int c = 0; c<= buttons.length-1; c++){
+		//buttons
+		for( int c = 0; c < buttons.length; c++){
 			if(c == 2){ throttle.addChangeListener(this);throttle.setMaximumSize(new Dimension(100,15));
 			}
 			 buttons[c].addActionListener(this);
 		}
-		
+	//checkboxes	
 	for(int a = 0; a < checks.length; a++){	
 	 checks[a].addItemListener(this);checks[a].setMaximumSize(new Dimension(100,50));
 	 rtsetter[a].addChangeListener(this); rtsetter[a].setMaximumSize(new Dimension(100,15));
 	 rtslab[a].setText(Integer.toString(rtsetter[a].getValue()));
- }   rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));
+		}
+		
+    rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));
 	 dispbox.adducListener(this);
 	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
 	 cidButton.addActionListener(this);
 		
+	// menu bar
+	for(int s = 0; s < winitem.length; s++){
+		winmen.add(winitem[s]); winitem[s].addActionListener(this);}
+	
+	mainbar.add(winmen);
 		}
 		
 	public void init(){ 
@@ -177,7 +199,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	public void actionPerformed(ActionEvent e){
 		//create a new automaton
 		if(e.getSource() == buttons[0]){if(!cflag){ cntrl = 1;  fireucEvent();}}
-		if(e.getSource() == buttons[8]){ aboutMe();}
+		//if(e.getSource() == buttons[8]){ aboutMe();}
 		if(cflag){
 			/* send commands based on what button is pressed
 			 *  1 = New
@@ -186,16 +208,19 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			 *  4 = Edit State
 			 *  5 = Edit Cells
 			 *  6 = Cell Picker
-			 *  6 = Selection Tools
-			 *  7 = Brushes
-			 *  8 = Set Iteration Speed
-			 *  9 = Set Speed
+			 *  7 = Selection Tools
+			 *  8 = Brushes
+			 *  9 = Set Iteration Speed
 			 * 10 = Set Display Type
 			 * 11 = Set Wrap Type
 			 * 12 = show cell info
 			 * 13 = set automaton rules
 			 */ 
-			for( int cnum = 1; cnum <= buttons.length-2; cnum++){
+			 for(int r = 0; r < winitem.length-1; r++){int c[] = new int[]{4,5,6,7,8,12};
+			 if(e.getSource() == winitem[r]){ cntrl = c[r]; fireucEvent();}}
+			 if(e.getSource() == winitem[6]){aboutMe();}
+			 
+			for( int cnum = 1; cnum < buttons.length; cnum++){
 				if(e.getSource() == buttons[cnum]){ cntrl = cnum+1; fireucEvent();}
 			}
 		if(e.getSource() == cidButton){ cntrl = 12; fireucEvent();}
@@ -273,7 +298,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
-		String noticea = "Cellular Explorer Prototype v. 0.0.6 (Valentine 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
+		String noticea = "Cellular Explorer Prototype v. 0.0.7 (Daylight 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
   String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
