@@ -61,7 +61,7 @@ public  editEngine(){
 	yaut = 1;
 	pistons = new cellBrain[xaut][yaut];
 	outputs = new cellComponent[xaut][yaut];
-	sigmund = new brush();
+	sigmund = new onebrush();
 	brushtype = 1;
 	castor = new cellOptionHandler();
 	pollux = new cellOptionHandler();
@@ -319,6 +319,20 @@ public void handleControl(ucEvent e){
 			}
 		}
 		
+		//Checks for out of bounds points, one axis at a time
+		//Edge-wrap does not apply for editing
+		private int checkPoint(String axis,int value){
+			if(axis == "X"){if (value >= xmax){return -1;}
+							if (value < 0){ return -1;}
+							return value;}
+							
+			if(axis == "Y"){if (value >= ymax){return -1;}
+							if (value < 0){ return -1;}
+							return value;}
+						return -1;	
+						}
+			
+		
 		//Sets automaton-level rules
 		public void setAutomatonRule(int rn, boolean b){
 			pistons[0][0].setRule(rn, b);}
@@ -336,31 +350,51 @@ public void handleControl(ucEvent e){
 							outputs[0][0].repaint();
 						}
 						
+						
+//All about brushes
+
 							// brush setting method
 					public void setEditBrush(int b){
 						brushtype = b;
 						switch(brushtype){
 							// 1x1
-						case 1: sigmund = new brush(pistons[0][0].xsiz, pistons[0][0].ysiz); break;
+						case 1: sigmund = new onebrush(); break;
 							//2x2
-						case 2: sigmund = new twobrush(pistons[0][0].xsiz, pistons[0][0].ysiz); break;
+						case 2: sigmund = new twobrush(); break;
 							//3x3
-						case 3: sigmund = new threebrush(pistons[0][0].xsiz,pistons[0][0].ysiz); break;
+						case 3: sigmund = new threebrush(); break;
 							//Glider
-						case 4: sigmund = new gliderbrush(pistons[0][0].xsiz, pistons[0][0].ysiz); sigmund.setOrientation(0); break;
+						case 4: sigmund = new gliderbrush(); sigmund.setOrientation(0); break;
 							//R-pentomino
-						case 5: sigmund = new rpentbrush(pistons[0][0].xsiz, pistons[0][0].ysiz); sigmund.setOrientation(0); break;
+						case 5: sigmund = new rpentbrush(); sigmund.setOrientation(0); break;
 						
-						default : sigmund = new brush(pistons[0][0].xsiz, pistons[0][0].ysiz); break;}
+						default : sigmund = new onebrush(); break;}
 					}
 					
-	// applies the brush to a point in the automaton
-	public void applyBrush(int x, int y){
+					//draws the brush onto the display
+					private void drawBrush(int x, int y){
+							sigmund.locate(x, y);
+						int reps = sigmund.getBrushLength();
+						for (int a = 0; a <= reps; a++){
+						int thisx = checkPoint("X", sigmund.getNextX());
+						int thisy = checkPoint("Y", sigmund.getNextY());
+						if(thisx == -1 || thisy == -1){}
+						else{
+						if(!sedna.getSelected() ||sedna.getSelection(thisx,thisy)){
+						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);}
+						}}
+						outputs[xaw][yaw].repaint();
+					}
+					
+					// applies the brush to a point in the automaton
+					public void applyBrush(int x, int y){
 						sigmund.locate(x, y);
 						int reps = sigmund.getBrushLength();
 						for (int a = 0; a <= reps; a++){
-						int thisx = sigmund.getNextX();
-						int thisy = sigmund.getNextY();
+						int thisx = checkPoint("X", sigmund.getNextX());
+						int thisy = checkPoint("Y", sigmund.getNextY());
+						if(thisx == -1 || thisy == -1){}
+						else{
 						
 						//edit state
 						if(maction == "SDraw"){
@@ -385,7 +419,7 @@ public void handleControl(ucEvent e){
 							 if(rcflag){sedna.removeCell(thisx,thisy);}
 							 else{sedna.selectCell(thisx,thisy);}
 						}
-						
+					}
 					}
 						
 						refreshSel();
@@ -777,17 +811,7 @@ public void handleControl(ucEvent e){
 								}}
 							}
 							
-					private void drawBrush(int x, int y){
-							sigmund.locate(x, y);
-						int reps = sigmund.getBrushLength();
-						for (int a = 0; a <= reps; a++){
-						int thisx = sigmund.getNextX();
-						int thisy = sigmund.getNextY();
-						if(!sedna.getSelected() ||sedna.getSelection(thisx,thisy)){
-						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);}
-						}
-						outputs[xaw][yaw].repaint();
-					}
+					
 	
 					public void mouseMoved( MouseEvent e){
 						setWorkAut(e);
