@@ -28,7 +28,7 @@ public class brushControl extends JComponent implements ActionListener, ItemList
 //brush selection
 JComboBox brushPicker;
 String[] brushes = new String[]{"1x1", "2x2", "3x3", "Glider", "R- pentomino"};
-int brush = 1;
+int bruush = 1;
 //direction
 JLabel bdlabel;
 JRadioButton[] orients = new JRadioButton[8];
@@ -59,7 +59,7 @@ public brushControl(){
 	option[0] = new Checkbox("Reflect");
 	opval = false;
 	//create gonzo
-	gonzo = new brush();
+	gonzo = new onebrush();
 	
 	//layout
 	GroupLayout brushout = new GroupLayout(this);
@@ -139,7 +139,7 @@ public void init(){
 public void actionPerformed(ActionEvent e){
 	if(e.getSource() == brushPicker){
 	for(int ind = 0; ind < brushes.length; ind++){
-		if(brushPicker.getSelectedItem() == brushes[ind]){command = 1; brush = ind+1; setGonzo(brush); toggleControls(); break;}
+		if(brushPicker.getSelectedItem() == brushes[ind]){command = 1; bruush = ind+1; setGonzo(bruush); toggleControls(); break;}
 	}
 	 
 	}
@@ -164,7 +164,7 @@ public void actionPerformed(ActionEvent e){
 
 	private void setGonzo(int a){
 		switch(a){
-			case 1: gonzo = new brush(); break;
+			case 1: gonzo = new onebrush(); break;
 			case 2: gonzo = new twobrush(); break;
 			case 3: gonzo = new threebrush(); break;
 			case 4: gonzo = new gliderbrush(); break;
@@ -240,7 +240,7 @@ private synchronized void fireucEvent(){
 		((ucListener) i.next()).handleControl(cmd);}
 	}
 public int getBrush(){
-	return brush;}
+	return bruush;}
 	
 public int getBrushDir(){
 	return brushdir;}
