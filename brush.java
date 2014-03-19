@@ -16,192 +16,184 @@
 */
 
 public class brush{
-	int xsiz;
-	int ysiz;
 	int xloc;
+	int[][] xlocs;
 	int yloc;
+	int[][] ylocs;
 	int xcount = 0;
 	int ycount = 0;
 	int bristles;
 	int orientation = 0;
-	boolean wrapx = false;
-	boolean wrapy = false;
-	boolean hoodbrush = false;
-	public brush(){}
-	public brush(int x, int y){
-		xsiz = x;
-		ysiz = y;
+	
+	//constructor
+	public brush(){ 
 		bristles = 1;
-	}
+		xlocs = new int[bristles][1];
+		ylocs = new int[bristles][1];
+		xlocs[0][0] = 0; ylocs[0][0] = 0;
+		}
+	
+		//tells how many cells the brush affects
 		public int getBrushLength(){
 			return bristles;}
 			
+		//tells the brush where it is
 		public void locate(int x, int y){
 			xloc = x;
 			yloc = y;}
-			
-		public void setWrap(boolean xw, boolean yw){
-			wrapx = xw;
-			wrapy = yw;
-			}
-			
-		public void setType(boolean b){
-			hoodbrush = b;}
-			
+
+		//tells the brush what direction it is facing	
 		public void setOrientation(int a){
-			orientation = a;}
+			orientation = 0;}
 			
+		//tells what options and settings are available for this brush
 		public boolean getControls(String a){
 			return false;}
 			
+		//used for setting options
 		public void setOption(String opname, boolean b){
 		}
-			
+		
+		//returns the x coordinates of each of the affected cells in turn	
 		public int getNextX(){
 			int currentx;
-			xcount += 1;
 			currentx = calculateX();
+			xcount += 1;
 			if(xcount >= bristles){xcount = 0;}
-			if(currentx < 0){if(hoodbrush){if(wrapx){currentx = currentx+xsiz;}else{currentx = -1;}}
-				else{if(wrapx){currentx = currentx+xsiz;}else{currentx=0;}}} 
-			if(currentx > xsiz-1){if(hoodbrush){if(wrapx){currentx = currentx-xsiz;}else{currentx = -1;}}
-				else{if(wrapx){currentx = currentx-xsiz;}else{currentx = xsiz-1;}}}
 			return currentx;
 		}
 		
-		protected int calculateX(){
-			int x;
-			switch(xcount){
-				case 1: x = xloc; break;
-				default: x = xloc; break;
-			}
-			return x;}
+		//calculates the x coordinates
+		private int calculateX(){
+			return xloc + xlocs[xcount][orientation];}
 		
+		//returns the y coordinates of each of the affected cells in turn	
 		public int getNextY(){
 			int currenty;
-			ycount += 1;
 			currenty = calculateY();
+			ycount += 1;
 			if(ycount >= bristles){ycount = 0;}
-			if(currenty < 0){if(hoodbrush){if(wrapy){currenty = ysiz+currenty;}else{currenty = -1;}}
-			else{if(wrapy){currenty = ysiz+currenty;}else{currenty = 0;}}}
-			if(currenty > ysiz-1){if(hoodbrush){if(wrapy){currenty = currenty - ysiz;}else{currenty = -1;}}
-				else{if(wrapy){currenty = currenty-ysiz;}else{currenty = ysiz-1;}}}
 			return currenty;
 		}
 		
-		protected int calculateY(){
-			int y;
-			switch(ycount){
-				case 1: y = yloc; break;
-				default: y = yloc; break;
+		// calculates the y-coordinates
+		private int calculateY(){
+			return yloc + ylocs[ycount][orientation];}
+			
+
+}
+
+class onebrush extends brush{
+	
+	//constructor
+	public onebrush(){
+		int bristles = 1;
+		xlocs = new int[bristles][1];
+		ylocs = new int[bristles][1];
+		xlocs[0][0] = 0;
+		ylocs[0][0] = 0;
+		}
+	
+		
+		//calculates the x-coordinates for each cell the brush affects
+		private int calculateX(){
+				return xloc + xlocs[xcount][orientation];}
+		
+	//calculates the y-coordinates for each cell the brush affects
+		private int calculateY(){
+			return yloc + ylocs[ycount][orientation];
 			}
-			return y;}
 			
 
 }
 
 class twobrush extends brush{
 	
-	public twobrush(){}
+	public twobrush(){
+		bristles = 4;
+		xlocs = new int[bristles][1];
+		ylocs = new int[bristles][1];
+		xlocs[0][0] = 0; xlocs[1][0] = 1; xlocs[2][0] = 0; xlocs[3][0] = 1;
+		ylocs[0][0] = 0; ylocs[1][0] = 0; ylocs[2][0] = 1; ylocs[3][0] = 1;
+		}
 	
-	public twobrush(int x, int y){
-		xsiz = x;
-		ysiz = y;
-		bristles = 4;}
+			
+		//calculates the x-coordinates for each cell the brush affects
+		private int calculateX(){
+				return xloc + xlocs[xcount][orientation];}
 		
-		protected int calculateX(){
-			int x;
-			switch(xcount){
-				case 1: x = xloc; break;
-				case 2: x = xloc+1; break;
-				case 3: x = xloc; break;
-				case 4: x = xloc + 1; break;
-				default: x = xloc;break;}
-				return x;}
-				
-		protected int calculateY(){
-			int y;
-			switch(ycount){
-				case 1: y = yloc; break;
-				case 2: y = yloc; break;
-				case 3: y = yloc +1; break;
-				case 4: y = yloc + 1; break;
-				default: y = yloc; break;}
-				return y;}
+	//calculates the y-coordinates for each cell the brush affects
+		private int calculateY(){
+			return yloc + ylocs[ycount][orientation];
+			}
 }
 
 class threebrush extends brush{
 	
-	public threebrush(){}
+	public threebrush(){
+		bristles = 9;
+		xlocs = new int[9][1];
+		ylocs = new int[9][1];
+		xlocs[0][0] = -1; xlocs[1][0] = 0; xlocs[2][0] = 1;
+		ylocs[0][0] = -1; ylocs[1][0] = -1;ylocs[2][0] = -1;
+		xlocs[3][0] = -1; xlocs[4][0] = 0; xlocs[5][0] = 1;
+		ylocs[3][0] = 0; ylocs[4][0] = 0; ylocs[5][0] = 0;
+		xlocs[6][0] = -1; xlocs[7][0] = 0; xlocs[8][0] = 1;
+		ylocs[6][0] = 1; ylocs[7][0] = 1; ylocs[8][0] = 1;
+		}
 	
-	public threebrush(int x, int y){
-		xsiz = x;
-		ysiz = y;
-		bristles = 9;}
-		
-		protected int calculateX(){
-			int x;
-			switch(xcount){
-				case 1: x = xloc - 1; break;
-				case 2: x = xloc; break;
-				case 3: x = xloc + 1; break;
-				case 4: x = xloc - 1; break;
-				case 5: x = xloc; break;
-				case 6: x = xloc + 1; break;
-				case 7: x = xloc - 1; break;
-				case 8: x = xloc; break;
-				case 9: x = xloc + 1; break;
-				default: x = xloc;}
-				return x;}
+		//calculates the x-coordinates for each cell the brush affects
+		private int calculateX(){
+				return xloc + xlocs[xcount][orientation];}
 				
-		protected int calculateY(){
-			int y;
-			switch(ycount){
-				case 1: y = yloc-1; break;
-				case 2: y = yloc-1; break;
-				case 3: y = yloc-1; break;
-				case 4: y = yloc; break;
-				case 5: y = yloc; break;
-				case 6: y = yloc; break;
-				case 7: y = yloc+1; break;
-				case 8: y = yloc+1; break;
-				case 9: y = yloc+1; break;
-				default: y = yloc; break;}
-				return y;}
+		//calculates the y-coordinates for each cell the brush affects
+		private int calculateY(){
+			return yloc + ylocs[ycount][orientation];
+			}
 }
 		
 class gliderbrush extends brush{
 	
-	public gliderbrush(){}
+	public gliderbrush(){
+		bristles = 5;
+		xlocs = new int[5][8];
+		ylocs = new int[5][8];
+		//orientation 0
+		xlocs[0][0] = 0; xlocs[1][0] = -1; xlocs[2][0] = -2; xlocs[3][0] = 0; xlocs[4][0] = -1;
+		ylocs[0][0] = 0; ylocs[1][0] = 0; ylocs[2][0] = 0; ylocs[3][0] = -1; ylocs[4][0] = -2;
+		//orientation 1
+		xlocs[0][1] = 0; xlocs[1][1] = 1; xlocs[2][1] = 2; xlocs[3][1] = 0; xlocs[4][1] = 1;
+		ylocs[0][1] = 0; ylocs[1][1] = 0; ylocs[2][1] = 0; ylocs[3][1] = -1; ylocs[4][1] = -2;
+		//orientation 2
+		xlocs[0][2] = 0; xlocs[1][2] = -1; xlocs[2][2] = -2; xlocs[3][2] = 0; xlocs[4][2] = -1;
+		ylocs[0][2] = 0; ylocs[1][2] = 0; ylocs[2][2] = 0; ylocs[3][2] = 1; ylocs[4][2] = 2;
+		//orientation 3
+		xlocs[0][3] = 0; xlocs[1][3] = 1; xlocs[2][3] = 2; xlocs[3][3] = 0; xlocs[4][3] = 1;
+		ylocs[0][3] = 0; ylocs[1][3] = 0; ylocs[2][3] = 0; ylocs[3][3] = 1; ylocs[4][3] = 2;
+		//orientation 4
+		xlocs[0][4] = 0; xlocs[1][4] = 0; xlocs[2][4] = 0; xlocs[3][4] = -1; xlocs[4][4] = -2;
+		ylocs[0][4] = 0; ylocs[1][4] = -1; ylocs[2][4] = -2; ylocs[3][4] = 0; ylocs[4][4] = -1;
+		//orientation 5
+		xlocs[0][5] = 0; xlocs[1][5] = 0; xlocs[2][5] = 0; xlocs[3][5] = 1; xlocs[4][5] = 2;
+		ylocs[0][5] = 0; ylocs[1][5] = -1; ylocs[2][5] = -2; ylocs[3][5] = 0; ylocs[4][5] = -1;
+		//orientation 6
+		xlocs[0][6] = 0; xlocs[1][6] = 0; xlocs[2][6] = 0; xlocs[3][6] = -1; xlocs[4][6] = -2;
+		ylocs[0][6] = 0; ylocs[1][6] = 1; ylocs[2][6] = 2; ylocs[3][6] = 0; ylocs[4][6] = 1;
+		//orientation 7
+		xlocs[0][7] = 0; xlocs[1][7] = 0; xlocs[2][7] = 0; xlocs[3][7] = 1; xlocs[4][7] = 2;
+		ylocs[0][7] = 0; ylocs[1][7] = 1; ylocs[2][7] = 2; ylocs[3][7] = 0; ylocs[4][7] = 1;
+		
+		}
+		
+	@Override public void setOrientation(int a){
+			if(a > 7 || a < 0){orientation = a%8;} else{orientation = a;}}
 	
-	public gliderbrush(int x, int y){
-		xsiz = x;
-		ysiz = y;
-		bristles = 5;}
-	
-	protected int calculateX(){
-		int x = xloc;
-		switch (xcount){
-			case 1: x = xloc; break;
-			case 2:if(orientation<4){if(orientation == 0 || orientation == 2){x = xloc-1;}else{x = xloc+1;}}else{x=xloc;} break;
-			case 3:if(orientation<4){if(orientation == 0 || orientation == 2){x = xloc-2;}else{x = xloc+2;}}else{x=xloc;} break;
-			case 4:if(orientation<4){x = xloc;}else{if(orientation == 4 || orientation == 6){x = xloc-1;}else{x=xloc+1;}} break; 
-			case 5:if(orientation == 0 || orientation == 2){x=xloc-1;}if(orientation == 1 || orientation == 3){x = xloc+1;}
-				    if(orientation == 4 || orientation == 6){x=xloc-2;} if (orientation == 5 || orientation == 7){x=xloc+2;} break;
-			default: x = xloc; break;}
-			return x;
+	private int calculateX(){
+		return xloc+xlocs[xcount][orientation];
 		}
 	
-	protected int calculateY(){
-		int y = yloc;
-		switch(ycount){
-			case 1:y = yloc; break;
-			case 2:if(orientation<4){y=yloc;}else{if(orientation == 4 || orientation == 5){y=yloc-1;}else{y=yloc+1;}} break;
-			case 3:if(orientation<4){y=yloc;}else{if(orientation == 4 || orientation == 5){y=yloc-2;}else{y=yloc+2;}} break;
-			case 4:if(orientation<2){y=yloc-1;}else{if(orientation<4){y=yloc+1;}else{y=yloc;}} break;
-			case 5:if(orientation<2){y=yloc-2;}else{if(orientation<4){y=yloc+2;}else{if(orientation<6){y=yloc-1;}else{y=yloc+1;}}} break;
-			default: y = yloc; break;}
-			return y;
+	private int calculateY(){
+		return yloc+ylocs[ycount][orientation];
 			}
 			
 @Override public boolean getControls(String a){
@@ -215,77 +207,83 @@ class spinbrush extends brush{
 	//1 =  starts lower-left
 	//2 =  horizontal
 	//3 =  starts upper-left
-	public spinbrush(int x, int y){
-		xsiz = x;
-		ysiz = y;
-		bristles = 3;}
+	public spinbrush(){
+		bristles = 3;
+		xlocs = new int[bristles][4];
+		ylocs = new int[bristles][4];
+		//orient 0
+		xlocs[0][0] = 0; xlocs[1][0] = 0; xlocs[2][0] = 0;
+		ylocs[0][0] = 0; ylocs[1][0] = -1; ylocs[2][0] = 1;
+		//orient 1
+		xlocs[0][1] = 0; xlocs[1][1] = -1; xlocs[2][1] = 1;
+		ylocs[0][1] = 0; ylocs[1][1] = 1; ylocs[2][0] = -1;
+		//orient 2
+		xlocs[0][2] = 0; xlocs[1][2] = -1; xlocs[2][2] = 1;
+		ylocs[0][2] = 0; ylocs[1][2] = 0; ylocs[2][2] = 0;
+		//orient 3
+		xlocs[0][3] = 0; xlocs[1][3] = -1; xlocs[2][3] = 1;
+		ylocs[0][3] = 0; ylocs[1][3] = -1; ylocs[2][0] = 1;
+		}
 		
-	protected int calculateX(){
-		int x = xloc;
-		switch(xcount){
-			case 1: if(orientation == 0){x = xloc;}else{x = xloc-1;} break;
-			case 2: x = xloc; break;
-			case 3: if(orientation == 0){x = xloc;}else{x = xloc+1;} break;
-			default: x = xloc;}
-			return x;}
-			
-	protected int calculateY(){
-		int y = yloc;
-		switch(ycount){
-			case 1: y = yloc; if(orientation == 0 || orientation == 3){ y = yloc-1;} if(orientation == 1){y = yloc+1;} break;
-			case 2: y = yloc; break;
-			case 3: y = yloc; if(orientation == 0 || orientation == 3){ y = yloc+1;} if(orientation == 1){y = yloc-1;} break;
-			default: y = yloc;}
-			return y;}
+	@Override public void setOrientation(int a){
+			if(a > 3 || a < 0){orientation = a%4;} else{orientation = a;}}
+		
+	private int calculateX(){
+		return xloc+xlocs[xcount][orientation];
+		}
+	
+	private int calculateY(){
+		return yloc+ylocs[ycount][orientation];}
 			
 }
 
 class rpentbrush extends brush{
-	boolean ref;
-	public rpentbrush(){}
 	
-	public rpentbrush(int x, int y){
-		ref = false;
-		xsiz = x;
-		ysiz = y;
-		bristles = 5;}
 	
-	protected int calculateX(){
-		int x = xloc;
-		switch (xcount){
-			case 1: x = xloc; break;
-			case 2: switch(orientation){case 0: break; case 1: x -= 1; break; case 2: break; case 3: x += 1; break;}break;
-			case 3:if(ref){switch(orientation){case 0: x += 1;break; case 1: break; case 2: x -= 1; break; case 3: break;}}
-			else{switch(orientation){case 0: x -= 1;break; case 1: break; case 2: x += 1; break; case 3: break;}}break;
-			case 4: switch(orientation){case 0: break; case 1: x += 1; break; case 2: break; case 3: x -= 1; break;}break; 
-			case 5: if(ref){switch(orientation){case 0: x -= 1;break; case 1: x += 1; break; case 2: x += 1; break; case 3: x -= 1; break;}}
-			else{switch(orientation){case 0: x += 1;break; case 1: x += 1; break; case 2: x -= 1; break; case 3: x -= 1; break;}}break;
-			default: x = xloc; break;}
-			return x;
+	public rpentbrush(){
+		bristles = 5;
+		xlocs = new int[bristles][8];
+		ylocs = new int[bristles][8];
+		//orientation 0
+		xlocs[0][0] = 0; xlocs[1][0] = 0; xlocs[2][0] = 0; xlocs[3][0] = -1; xlocs[4][0] = 1;
+		ylocs[0][0] = 0; ylocs[1][0] = 1; ylocs[2][0] = -1; ylocs[3][0] = 0; ylocs[4][0] = -1;
+		//orientation 1
+		xlocs[0][1] = 0; xlocs[1][1] = -1; xlocs[2][1] = 1; xlocs[3][1] = 0; xlocs[4][1] = 1;
+		ylocs[0][1] = 0; ylocs[1][1] = 0; ylocs[2][1] = 0; ylocs[3][1] = -1; ylocs[4][1] = 1;
+		//orientation 2
+		xlocs[0][2] = 0; xlocs[1][2] = 0; xlocs[2][2] = 0; xlocs[3][2] = 1; xlocs[4][2] = -1;
+		ylocs[0][2] = 0; ylocs[1][2] = -1; ylocs[2][2] = 1; ylocs[3][2] = 0; ylocs[4][2] = 1;
+		//orientation 3
+		xlocs[0][3] = 0; xlocs[1][3] = 1; xlocs[2][3] = -1; xlocs[3][3] = 0; xlocs[4][3] = -1;
+		ylocs[0][3] = 0; ylocs[1][3] = 0; ylocs[2][3] = 0; ylocs[3][3] = 1; ylocs[4][3] = -1;
+		//orientation 4
+		xlocs[0][4] = 0; xlocs[1][4] = 0; xlocs[2][4] = 0; xlocs[3][4] = 1; xlocs[4][4] = -1;
+		ylocs[0][4] = 0; ylocs[1][4] = 1; ylocs[2][4] = -1; ylocs[3][4] = 0; ylocs[4][4] = -1;
+		//orientation 5
+		xlocs[0][5] = 0; xlocs[1][5] = -1; xlocs[2][5] = 1; xlocs[3][5] = 0; xlocs[4][5] = 1;
+		ylocs[0][5] = 0; ylocs[1][5] = 0; ylocs[2][5] = 0; ylocs[3][5] = 1; ylocs[4][5] = -1;
+		//orientation 6
+		xlocs[0][6] = 0; xlocs[1][6] = 0; xlocs[2][6] = 0; xlocs[3][6] = -1; xlocs[4][6] = 1;
+		ylocs[0][6] = 0; ylocs[1][6] = -1; ylocs[2][6] = 1; ylocs[3][6] = 0; ylocs[4][6] = 1;
+		//orientation 7
+		xlocs[0][7] = 0; xlocs[1][7] = 1; xlocs[2][7] = -1; xlocs[3][7] = 0; xlocs[4][7] = -1;
+		ylocs[0][7] = 0; ylocs[1][7] = 0; ylocs[2][7] = 0; ylocs[3][7] = -1; ylocs[4][7] = 1;
+		}
+
+	
+	private int calculateX(){
+		return xloc+xlocs[xcount][orientation];
 		}
 	
-	protected int calculateY(){
-		int y = yloc;
-		switch(ycount){
-			case 1: y = yloc; break;
-			case 2: switch(orientation){case 0: y += 1; break; case 1: break; case 2: y -= 1; break; case 3: break;}break;
-			case 3: if(ref){switch(orientation){case 0: break; case 1: y += 1; break; case 2: break; case 3: y -= 1; break;}}
-			else{switch(orientation){case 0: break; case 1: y -= 1; break; case 2: break; case 3: y += 1; break;}}break;
-			case 4: switch(orientation){case 0: y -= 1; break; case 1: break; case 2: y += 1; break; case 3: break;}break;
-			case 5: if(ref){switch(orientation){case 0: y -= 1; break; case 1: y -= 1; break; case 2: y += 1; break; case 3: y += 1; break;}}
-			else{switch(orientation){case 0: y -= 1; break; case 1: y += 1; break; case 2: y += 1; break; case 3: y -= 1; break;}}break;
-			default: y = yloc; break;}
-			return y;
-			}
+	private int calculateY(){
+		return yloc+ylocs[ycount][orientation];}
 			
 @Override public boolean getControls(String a){
-			if(a == "Orient"){return true;}
-			if(a == "Reflect"){return true;}
+			if(a == "Dir"){return true;}
 			return false;}
 			
-@Override public void setOption(String opname, boolean b){
-			if(opname == "Reflect"){ ref = b;}
-		}
+@Override public void setOrientation(int a){
+			if(a > 7 || a < 0){orientation = a%8;} else{orientation = a;}}
 		
 		
 }
