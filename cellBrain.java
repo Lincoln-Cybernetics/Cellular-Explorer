@@ -97,10 +97,10 @@ class cellBrain  implements Runnable{
 		newstate = new boolean[xsiz][ysiz];
 		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
-		ariadne = new threebrush(xsiz, ysiz);
-		ariadne.setType(true);
-		andromeda = new spinbrush(xsiz, ysiz);
-		andromeda.setType(true);
+		ariadne = new threebrush();
+		//ariadne.setType(true);
+		andromeda = new spinbrush();
+		//andromeda.setType(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
 		//pP();
@@ -115,10 +115,10 @@ class cellBrain  implements Runnable{
 		newstate = new boolean[xsiz][ysiz];
 		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
-		ariadne = new threebrush(xsiz, ysiz);
-		ariadne.setType(true);
-		andromeda = new spinbrush(xsiz, ysiz);
-		andromeda.setType(true);
+		ariadne = new threebrush();
+		//ariadne.setType(true);
+		andromeda = new spinbrush();
+		//andromeda.setType(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
 		//pP();	
@@ -133,10 +133,10 @@ class cellBrain  implements Runnable{
 		newstate = new boolean[xsiz][ysiz];
 		boredboard = new boolean[xsiz][ysiz];
 		culture = new cell[xsiz][ysiz];
-		ariadne = new threebrush(xsiz, ysiz);
-		ariadne.setType(true);
-		andromeda = new spinbrush(xsiz, ysiz);
-		andromeda.setType(true);
+		ariadne = new threebrush();
+		//ariadne.setType(true);
+		andromeda = new spinbrush();
+		//andromeda.setType(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
 		//pP();
@@ -200,7 +200,8 @@ class cellBrain  implements Runnable{
 				
 				// set edge-wrapping
 				public void setXYwrap(boolean xwr, boolean ywr){xwrap = xwr; ywrap = ywr; 
-				 ariadne.setWrap(xwrap,ywrap); andromeda.setWrap(xwrap, ywrap);}
+				// ariadne.setWrap(xwrap,ywrap); andromeda.setWrap(xwrap, ywrap);
+				}
 				 
 				 // get wrap settings
 				 public boolean getWrap(String c){
@@ -209,6 +210,22 @@ class cellBrain  implements Runnable{
 					 return false;
 				 } 
 				
+				//checks for out of bounds points, 
+				//edge wrapping does apply for neighborhoods
+				private int checkAddress(String axis, int value){
+					if(axis == "X"){ 
+						if(value >= xsiz){if(xwrap){return value - xsiz;}else{return -1;}}
+						if(value < 0){if(xwrap){return xsiz + value;} else{return -1;}}
+						return value;
+					}
+					
+					if(axis == "Y"){
+						if(value >= ysiz){if(ywrap){return value - ysiz;}else{return -1;}}
+						if(value < 0){if(ywrap){return ysiz + value;}else{return -1;}}
+						return value;
+					}
+					return -1;
+				}
 				
 				//stores the type of display while editing	
 				public int getDispType(){
@@ -283,8 +300,8 @@ class cellBrain  implements Runnable{
 					ariadne.locate(x,y);
 					for(int v = 0; v<=2; v++){
 					for(int h = 0; h<=2; h++){
-						int tempx = ariadne.getNextX();
-						int tempy = ariadne.getNextY();
+						int tempx = checkAddress("X", ariadne.getNextX());
+						int tempy = checkAddress("Y", ariadne.getNextY());
 						if(tempx == -1 || tempy == -1){neighbors[h][v] = false;}
 						else{ neighbors[h][v] = current[tempx][tempy];}}}
 						return neighbors;}
@@ -296,8 +313,8 @@ class cellBrain  implements Runnable{
 			andromeda.locate(x,y);
 			andromeda.setOrientation(o);
 			for(int v = 0; v <= 2; v++){
-				int tempx = andromeda.getNextX();
-				int tempy = andromeda.getNextY();
+				int tempx = checkAddress("X", andromeda.getNextX());
+				int tempy = checkAddress("Y", andromeda.getNextY());
 				if(tempx == -1 || tempy == -1){wolfhood[v] = false;}
 				else{wolfhood[v] = current[tempx][tempy];}
 				} 
