@@ -17,9 +17,9 @@
 
 public class mbot extends cell{
 	// describe the cell's neighborhood
-	int dim = 2;//dimensionality
+	int dim = -1;//dimensionality
 	int radius = 1;// neighborhood radius
-	
+	brush map;
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -59,6 +59,8 @@ public class mbot extends cell{
 	
 	//constructors
 	public mbot(){
+		map = new threebrush();
+		neighbors = new boolean[9];
 		//dim = 2;
 		//radius = 1;
 		active = false;
@@ -77,10 +79,12 @@ public class mbot extends cell{
 		mat = 1;
 		born = new boolean[9];
 		survives = new boolean[9];
-		neighborhood = new boolean[3][3];
+		//neighborhood = new boolean[3][3];
 		}
 		
 		public mbot(String type){
+			map = new threebrush();
+			neighbors = new boolean[9];
 		//dim = 2;
 		//radius = 1;
 		active = false;
@@ -99,7 +103,7 @@ public class mbot extends cell{
 		mat = 1;
 		born = new boolean[9];
 		survives = new boolean[9];
-		neighborhood = new boolean[3][3];
+		//neighborhood = new boolean[3][3];
 		
 		for(int n = 0; n < 9; n++){
 			born[n] = false; survives[n] = false;
@@ -138,6 +142,11 @@ public class mbot extends cell{
 		if(name =="Live Free or Die"){name = "L.F.O.D.";}
 		
 	}
+		
+		//initilization
+		public void setLocation(int x, int y){
+			map.locate(x,y);
+		}
 		
 		//Get and set controls and options
 		
@@ -192,6 +201,9 @@ public class mbot extends cell{
 		@Override public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "NextX"){return map.getNextX();}
+			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Mat"){ return mat;}
@@ -205,8 +217,8 @@ public class mbot extends cell{
 			if(paramname == "Fade"){fade = a;}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
-			if(paramname == "MirrX"){hoodx = a;}
-			if(paramname == "MirrY"){hoody = a;}
+			if(paramname == "MirrX"){hoodx = a;if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
 			}
 			
 		@Override public void setRule(int a, boolean b){if(a < 9){born[a] = b;}else{if(a < 18){survives[a-9] =b;}}}
@@ -228,11 +240,9 @@ public class mbot extends cell{
 		
 		 private void calculate(){
 			int cellstate = 0;
-			for (int y = 0; y < 3; y++){
-				for(int x = 0; x < 3; x++){
-					if(x == 1 && y == 1){self = neighborhood[x][y];}
-					else{if (neighborhood[x][y]){cellstate += 1;}}
-				}}
+			for (int v = 0; v < neighbors.length; v++){
+				if(v == 4){self = neighbors[v];}else{if(neighbors[v]){cellstate += 1;}}
+				}
 				if(self){active = survives[cellstate];} else{active = born[cellstate];}
 			}
 		
