@@ -54,7 +54,7 @@ public class randCell extends cell{
 	
 	//constructor
 	public randCell(){
-		dim = 0;
+		dim = -1;
 		radius = 0;
 		active = false;
 		state = 0;
@@ -69,7 +69,10 @@ public class randCell extends cell{
 		matcount = 0;
 		bombadil = new Random();
 		}
-		
+			//initilization
+		public void setLocation(int x, int y){
+			
+		}
 		//Get and set controls and options
 		
 		public boolean getControls(String control){
@@ -89,6 +92,9 @@ public class randCell extends cell{
 		public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return 0;}
+			if(paramname == "NextX"){return -1;}
+			if(paramname == "NextY"){return -1;}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
