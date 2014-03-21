@@ -260,7 +260,8 @@ class cellBrain  implements Runnable{
 					if(x <= 0){x=0;}
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
-					culture[x][y] = wilbur;}
+					culture[x][y] = wilbur;
+					culture[x][y].setLocation(x,y);}
 				
 				
 					
@@ -319,6 +320,20 @@ class cellBrain  implements Runnable{
 				else{wolfhood[v] = current[tempx][tempy];}
 				} 
 				return wolfhood;
+			}
+			
+			//general-purpose neighborhood
+			public void getNeighbors(int x, int y){
+				int reps = culture[x][y].getParameter("HoodSize");
+				if(reps == 0){return;}
+				boolean[] info = new boolean[reps];
+				for(int d = 0; d <= reps-1; d++){
+					int tempx = checkAddress("X", culture[x][y].getParameter("NextX"));
+					int tempy = checkAddress("Y", culture[x][y].getParameter("NextY"));
+					if(tempx == -1 || tempy == -1){info[d] = false;}
+					else{info[d] = current[tempx][tempy];}
+				}
+				culture[x][y].setNeighbors(info);
 			}
 		
 		//Automaton-level rules
@@ -391,6 +406,7 @@ class cellBrain  implements Runnable{
 					for(y=0;y<=ysiz-1;y++){
 						for(x=0;x<=xsiz-1;x++){
 							switch(culture[x][y].getParameter("Dim")){
+								case -1: getNeighbors(x,y); break;
 								case 0: if(culture[x][y].getOption("Mirror")){culture[x][y].setSelf(getSelf(culture[x][y].getParameter("MirrX"),culture[x][y].getParameter("MirrY")));}
 										else{culture[x][y].setSelf(getSelf(x,y));}break;
 								case 1:  if(culture[x][y].getOption("Mirror")){culture[x][y].setNeighbors(getWolfram(culture[x][y].getParameter("MirrX"),culture[x][y].getParameter("MirrY"),culture[x][y].getParameter("Dir")));}
