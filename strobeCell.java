@@ -47,7 +47,7 @@ public class strobeCell extends cell{
 	
 	//constructor
 	public strobeCell(){
-		dim = 0;
+		dim = -1;
 		radius = 0;
 		active = false;
 		state = 0;
@@ -60,7 +60,10 @@ public class strobeCell extends cell{
 		self = false;
 		mystate = 0;
 		}
+			//initilization
+		public void setLocation(int x, int y){
 		
+		}
 		//Get and set controls and options
 		
 		public boolean getControls(String control){
@@ -76,6 +79,9 @@ public class strobeCell extends cell{
 		public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return 0;}
+			if(paramname == "NextX"){return -1;}
+			if(paramname == "NextY"){return -1;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
 			return -1;}
