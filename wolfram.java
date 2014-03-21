@@ -19,6 +19,7 @@ public class wolfram extends cell{
 	// describe the cell's neighborhood
 	int dim;//dimensionality
 	int radius;
+	brush map;
 	
 	// describe the current state of the cell
 	boolean active;
@@ -59,7 +60,8 @@ public class wolfram extends cell{
 	
 	//constructor
 	public wolfram(){
-		dim = 1;
+		map = new spinbrush();
+		dim = -1;
 		radius = 1;
 		active = false;
 		state = 0;
@@ -79,7 +81,10 @@ public class wolfram extends cell{
 		rule = new boolean[8];
 		neighbors = new boolean[3];
 		}
-		
+		//initilization
+		public void setLocation(int x, int y){
+			map.locate(x,y);
+		}
 		
 		//Get and set controls and options
 		
@@ -123,6 +128,9 @@ public class wolfram extends cell{
 		@Override public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "NextX"){return map.getNextX();}
+			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Dir"){ return direction;}
@@ -137,11 +145,11 @@ public class wolfram extends cell{
 		@Override public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
 			if(paramname == "Fade"){fade = a;}
-			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction %= 4;}}
+			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 3){direction %= 4;}map.setOrientation(direction);}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
-			if(paramname == "MirrX"){hoodx = a;}
-			if(paramname == "MirrY"){hoody = a;}
+			if(paramname == "MirrX"){hoodx = a;if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
 			}
 			
 		public void setRule(int a, boolean b){if(a < 8){rule[a] = b;}}
@@ -163,7 +171,7 @@ public class wolfram extends cell{
 			}
 		
 		private void calculate(){int cellstate = 0; if(neighbors[2]){cellstate ++;}else{} 
-					if(neighbors[1]){cellstate += 2;}else{}  if(neighbors[0]){cellstate += 4;}else{} 
+					if(neighbors[1]){cellstate += 2;}else{}  if(neighbors[0]){cellstate +=4;}else{} 
 					active = rule[cellstate];
 					
 				}
@@ -182,7 +190,8 @@ public class wolfram extends cell{
 		// neighborhood setting methods
 		public void setSelf(boolean b){ self = b;}
 		
-		public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
+		public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;//boolean temp = neighbors[0]; neighbors[0] = neighbors[2]; neighbors[2] = temp;
+		}
 		
 		public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
 		
