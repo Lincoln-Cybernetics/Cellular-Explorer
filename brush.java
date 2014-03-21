@@ -213,16 +213,16 @@ class spinbrush extends brush{
 		ylocs = new int[bristles][4];
 		//orient 0
 		xlocs[0][0] = 0; xlocs[1][0] = 0; xlocs[2][0] = 0;
-		ylocs[0][0] = 0; ylocs[1][0] = -1; ylocs[2][0] = 1;
+		ylocs[0][0] = -1; ylocs[1][0] = 0; ylocs[2][0] = 1;
 		//orient 1
-		xlocs[0][1] = 0; xlocs[1][1] = -1; xlocs[2][1] = 1;
-		ylocs[0][1] = 0; ylocs[1][1] = 1; ylocs[2][0] = -1;
+		xlocs[0][1] = -1; xlocs[1][1] = 0; xlocs[2][1] = 1;
+		ylocs[0][1] = 1; ylocs[1][1] = 0; ylocs[2][0] = -1;
 		//orient 2
-		xlocs[0][2] = 0; xlocs[1][2] = -1; xlocs[2][2] = 1;
+		xlocs[0][2] = -1; xlocs[1][2] = 0; xlocs[2][2] = 1;
 		ylocs[0][2] = 0; ylocs[1][2] = 0; ylocs[2][2] = 0;
 		//orient 3
-		xlocs[0][3] = 0; xlocs[1][3] = -1; xlocs[2][3] = 1;
-		ylocs[0][3] = 0; ylocs[1][3] = -1; ylocs[2][0] = 1;
+		xlocs[0][3] = -1; xlocs[1][3] = 0; xlocs[2][3] = 1;
+		ylocs[0][3] = -1; ylocs[1][3] = 0; ylocs[2][0] = 1;
 		}
 		
 	@Override public void setOrientation(int a){
