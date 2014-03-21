@@ -19,7 +19,7 @@ public class symmetriCell extends cell{
 	// describe the cell's neighborhood
 	int dim;//dimensionality
 	int radius;
-	
+	brush map;
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -59,7 +59,8 @@ public class symmetriCell extends cell{
 	
 	//constructor
 	public symmetriCell(){
-		dim = 2;
+		map = new threebrush();
+		dim = -1;
 		radius = 1;
 		active = false;
 		state = 0;
@@ -78,9 +79,13 @@ public class symmetriCell extends cell{
 		ages = false;
 		fade = -1;
 		fades = false;
-		neighborhood = new boolean[3][3];
+		neighbors = new boolean[9];
+		//neighborhood = new boolean[3][3];
 		}
-		
+		//initilization
+		public void setLocation(int x, int y){
+			map.locate(x,y);
+		}
 		
 		//Get and set controls and options
 		
@@ -113,6 +118,9 @@ public class symmetriCell extends cell{
 		@Override public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "NextX"){return map.getNextX();}
+			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Dir"){ return direction;}
@@ -129,8 +137,8 @@ public class symmetriCell extends cell{
 			 if(direction > 3){direction %= 4;}any = false; all = false;}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
-			if(paramname == "MirrX"){hoodx = a;}
-			if(paramname == "MirrY"){hoody = a;}
+			if(paramname == "MirrX"){hoodx = a;if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
 			}
 			
 		
@@ -152,30 +160,35 @@ public class symmetriCell extends cell{
 			}
 		
 		private void calculate(){int astate; int bstate; boolean[] symms = new boolean[4];
+				//y-axis
 				if(direction == 0 || any || all){ astate = 0; bstate = 0; symms[0] = false;
-					if(neighborhood[0][0]){astate += 1;} if(neighborhood[2][0]){bstate += 1;}
-					if(neighborhood[0][1]){astate += 2;} if(neighborhood[2][1]){bstate += 2;}
-					if(neighborhood[0][2]){astate += 4;} if(neighborhood[2][2]){bstate += 4;}
+					if(neighbors[0]){astate += 1;} if(neighbors[2]){bstate += 1;}
+					if(neighbors[3]){astate += 2;} if(neighbors[5]){bstate += 2;}
+					if(neighbors[6]){astate += 4;} if(neighbors[8]){bstate += 4;}
 					if(astate == bstate){symms[0] = true;}
 					}
+				//LL-UR
 				if(direction == 1 || any || all){astate = 0; bstate = 0; symms[1] = false;
-					if(neighborhood[1][0]){astate += 1;} if(neighborhood[2][1]){bstate += 1;}
-					if(neighborhood[0][0]){astate += 2;} if(neighborhood[2][2]){bstate += 2;}
-					if(neighborhood[0][1]){astate += 4;} if(neighborhood[1][2]){bstate += 4;}
+					if(neighbors[1]){astate += 1;} if(neighbors[5]){bstate += 1;}
+					if(neighbors[0]){astate += 2;} if(neighbors[8]){bstate += 2;}
+					if(neighbors[3]){astate += 4;} if(neighbors[7]){bstate += 4;}
 					if(astate == bstate){symms[1] = true;}
 				}
+				//x-axis
 				if(direction == 2 || any || all){astate = 0; bstate = 0; symms[2] = false;
-					if(neighborhood[0][0]){astate += 1;} if(neighborhood[0][2]){bstate += 1;}
-					if(neighborhood[1][0]){astate += 2;} if(neighborhood[1][2]){bstate += 2;}
-					if(neighborhood[2][0]){astate += 4;} if(neighborhood[2][2]){bstate += 4;}
+					if(neighbors[0]){astate += 1;} if(neighbors[6]){bstate += 1;}
+					if(neighbors[1]){astate += 2;} if(neighbors[7]){bstate += 2;}
+					if(neighbors[2]){astate += 4;} if(neighbors[8]){bstate += 4;}
 					if(astate == bstate){symms[2] = true;}
 				}
+				//UL-LR
 				if(direction == 3 || any || all){astate = 0; bstate = 0; symms[3] = false;
-					if(neighborhood[0][1]){astate += 1;} if(neighborhood[1][0]){bstate += 1;}
-					if(neighborhood[0][2]){astate += 2;} if(neighborhood[2][0]){bstate += 2;}
-					if(neighborhood[1][2]){astate += 4;} if(neighborhood[2][1]){bstate += 4;}
+					if(neighbors[3]){astate += 1;} if(neighbors[1]){bstate += 1;}
+					if(neighbors[6]){astate += 2;} if(neighbors[2]){bstate += 2;}
+					if(neighbors[7]){astate += 4;} if(neighbors[5]){bstate += 4;}
 					if(astate == bstate){symms[3] = true;}
 				}
+				
 				if(any){active = false;if(symms[0] || symms[1] || symms[2] || symms[3]){active = true;}}
 				else{ active = symms[direction];}
 				if(all){active = false;if(symms[0] && symms[1] && symms[2] && symms[3]){active = true;}}
