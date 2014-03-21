@@ -19,7 +19,7 @@ public class conveyorCell extends cell{
 	// describe the cell's neighborhood
 	int dim;//dimensionality
 	int radius;
-	
+	brush map;
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -59,7 +59,8 @@ public class conveyorCell extends cell{
 	
 	//constructor
 	public conveyorCell(){
-		dim = 2;
+		map = new threebrush();
+		dim = -1;
 		radius = 1;
 		active = false;
 		state = 0;
@@ -76,10 +77,13 @@ public class conveyorCell extends cell{
 		ages = false;
 		fade = -1;
 		fades = false;
-		neighborhood = new boolean[3][3];
+		//neighborhood = new boolean[3][3];
+		neighbors = new boolean[9];
 		}
 		
-		
+		//initilization
+		public void setLocation(int x, int y){
+			map.locate(x,y);}
 		//Get and set controls and options
 		
 		@Override public boolean getControls(String control){
@@ -102,6 +106,9 @@ public class conveyorCell extends cell{
 		@Override public int getParameter(String paramname){ 
 			if(paramname == "Dim"){ return dim;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "NextX"){return map.getNextX();}
+			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "Dir"){ return direction;}
@@ -137,14 +144,14 @@ public class conveyorCell extends cell{
 		
 		private void calculate(){
 			switch(direction){
-				case 0 : active = neighborhood[1][2]; break;
-				case 1 : active = neighborhood[0][2]; break;
-				case 2 : active = neighborhood[0][1]; break;
-				case 3 : active = neighborhood[0][0]; break;
-				case 4 : active = neighborhood[1][0]; break;
-				case 5 : active = neighborhood[2][0]; break;
-				case 6 : active = neighborhood[2][1]; break;
-				case 7 : active = neighborhood[2][2]; break;
+				case 0 : active = neighbors[7]; break;
+				case 1 : active = neighbors[6]; break;
+				case 2 : active = neighbors[3]; break;
+				case 3 : active = neighbors[0]; break;
+				case 4 : active = neighbors[1]; break;
+				case 5 : active = neighbors[2]; break;
+				case 6 : active = neighbors[5]; break;
+				case 7 : active = neighbors[8]; break;
 			}
 				}
 		
