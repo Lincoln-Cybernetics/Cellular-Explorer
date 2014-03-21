@@ -19,7 +19,7 @@ public class cell{
 	// describe the cell's neighborhood
 	int dim;//dimensionality
 	int radius;
-	
+	brush map;
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -49,6 +49,7 @@ public class cell{
 	
 	//constructor
 	public cell(){
+		map = new onebrush();
 		dim = 0;
 		radius = 0;
 		active = false;
@@ -63,6 +64,11 @@ public class cell{
 		ages = false;
 		fade = -1;
 		fades = false;}
+		
+		//initilization
+		public void setLocation(int x, int y){
+			map.locate(x,y);
+		}
 		
 		//Get and set controls and options
 		
@@ -85,8 +91,11 @@ public class cell{
 			}
 		
 		public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
+			if(paramname == "Dim"){ return -1;}
 			if(paramname == "Rad"){ return radius;}
+			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "NextX"){return map.getNextX();}
+			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "MirrX"){ return hoodx;}
@@ -96,8 +105,8 @@ public class cell{
 		public void setParameter(String paramname, int a){
 			if(paramname == "Age"){ age = a;}
 			if(paramname == "Fade"){fade = a;}
-			if(paramname == "MirrX"){hoodx = a;}
-			if(paramname == "MirrY"){hoody = a;}
+			if(paramname == "MirrX"){hoodx = a; if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
 			}
 		
 		public void setRule(int a, boolean b){}
@@ -115,7 +124,7 @@ public class cell{
 			 if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
-		private void calculate(){if(self){active = true;}else{active = false;}}
+		private void calculate(){if(neighbors[0]){active = true;}else{active = false;}}
 		
 		public void purgeState(){ active = false; state = 0;}
 		
