@@ -24,13 +24,13 @@ public class cellComponent extends JComponent
 	int ydim;
 	int magnify;
 	int mode = 1;
-	boolean[][] cstate;
+	int[][] cstate;
 	boolean[][] selection;
 	boolean selectionflag = false;// shows, hides selections
 	int[][] species;// colors cells by type
 	//int[][] lifespan;// outlines cells based on Maturity setting
 	int[][] age;
-	int[][] ageclass;//determines the color in ulticolor
+	int[][] ageclass;//determines the color in multicolor
 	int[][] hilite; // hilights cells
 	int hlx = 0;//hilight cell x
 	int hly = 0;// highlight cell y
@@ -50,7 +50,7 @@ public class cellComponent extends JComponent
 		xdim = 500;
 		ydim = 300;
 		magnify = 5;
-		cstate = new boolean[xdim][ydim];
+		cstate = new int[xdim][ydim];
 		selection = new boolean[xdim][ydim];
 		species = new int[xdim][ydim];
 		//lifespan = new int[xdim][ydim];
@@ -64,7 +64,7 @@ public class cellComponent extends JComponent
 		xdim = x;
 		ydim = y;
 		magnify = 5;
-		cstate = new boolean[xdim][ydim];
+		cstate = new int[xdim][ydim];
 		selection = new boolean[xdim][ydim];
 		species = new int[xdim][ydim];
 		//lifespan = new int[xdim][ydim];
@@ -77,9 +77,14 @@ public class cellComponent extends JComponent
 	
 	
 	// set variables
-	public void setState(boolean update[][]){
+	//main boolean state
+	public void setState(int update[][]){
 		cstate = update;
 		repaint();}
+		
+	//boolean state of one cell
+	public void setAState(int x, int y, int b){
+		cstate[x][y] = b;}
 	
 	// selects and deselects cells	
 	public void setSelection(int x, int y, boolean z){
@@ -124,22 +129,9 @@ public class cellComponent extends JComponent
 	//public void setLifespan(int a, int b, int c){
 		//lifespan[a][b] = c;}
 		
-	public void setAge(int x, int y, int a){
-		age[x][y] = a;
-		if(mode == 4){
-		if (age[x][y] >= 0){ageclass[x][y] = 0;}
-		if (age[x][y] >= 1){ageclass[x][y] = 1;}
-		if (age[x][y] >= 2){ageclass[x][y] = 2;}
-		if (age[x][y] >= 4){ageclass[x][y] = 3;}
-		if (age[x][y] >= 8){ageclass[x][y] = 4;}
-		if(age[x][y] >= 16){ageclass[x][y] = 5;}
-		if(age[x][y] >= 32){ageclass[x][y] = 6;}
-		if(age[x][y] >= 64){ageclass[x][y] = 7;}
-	}
-	}
 	
-public void setAgeClass(int a, int b, int c){
-	ageclass[a][b] = c;}
+	
+
 
 //get variables
 
@@ -179,14 +171,14 @@ public void paintComponent( Graphics g){
 						
 							//normal rendering
 							if (mode == 1){
-								g.setColor(cstate[x][y] ? Color.green : Color.black);
+								g.setColor(cstate[x][y] > 0 ? Color.green : Color.black);
 								g.fillRect(x*magnify,y*magnify,magnify,magnify);}
 						
 							//state editing
 							if (mode == 2){
 								if(magnify>4){schmagnify = magnify-1;}
 								else{schmagnify = magnify;}
-								g.setColor(cstate[x][y] ? Color.green : Color.black);
+								g.setColor(cstate[x][y] > 0 ? Color.green : Color.black);
 								g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);}
 								
 							// cell editing
@@ -233,18 +225,15 @@ public void paintComponent( Graphics g){
 							
 							//multicolor rendering
 							if (mode == 4){
-								if(cstate[x][y] && ageclass[x][y] == 0){ageclass[x][y] = 1;}
-								if(cstate[x][y] == false && ageclass[x][y] != 0){ageclass[x][y] = 0;}
-								switch(ageclass[x][y]){
-									case 0: g.setColor(Color.black);break;
-									case 1: g.setColor(Color.white);break;
-									case 2: g.setColor(Color.green);break;
-									case 3: g.setColor(Color.yellow);break;
-									case 4: g.setColor(Color.orange);break;
-									case 5: g.setColor(Color.red);break;
-									case 6: g.setColor(new Color(156,21,7));break;
-									case 7: g.setColor(new Color(144,68,21));break;
-									default: g.setColor(Color.black);break;}
+									if(cstate[x][y] <= 0){g.setColor(Color.black);}
+									if(cstate[x][y] == 1){g.setColor(Color.white);}
+									if(cstate[x][y] > 1 && cstate[x][y] < 4){g.setColor(Color.green);}
+									if(cstate[x][y] > 3 && cstate[x][y] < 8){g.setColor(Color.yellow);}
+									if(cstate[x][y] > 7 && cstate[x][y] < 16){g.setColor(Color.orange);}
+									if(cstate[x][y] > 15 && cstate[x][y] < 32){g.setColor(Color.red);}
+									if(cstate[x][y] > 31 && cstate[x][y] < 64){g.setColor(new Color(156,21,7));}
+									if(cstate[x][y] > 63 ){g.setColor(new Color(144,68,21));}
+									
 								
 								g.fillRect(x*magnify,y*magnify,magnify,magnify);}
 						
@@ -263,7 +252,7 @@ public void paintComponent( Graphics g){
 									case 3: g.setColor(Color.orange); break;
 									case 4: if(selection[x][y]){g.setColor(Color.cyan);}else{g.setColor(Color.red);} break;
 									case 5: g.setColor(Color.white);
-											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y]){g.setColor(Color.black);} }
+											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y] > 0){g.setColor(Color.black);} }
 											if(mode == 3){ if( species[x][y] == 4 /*|| lifespan[x][y] == 1*/){g.setColor(Color.black);}}
 											if(mode == 4 && ageclass[x][y] == 1){g.setColor(Color.black);} break;
 									default: g.setColor(Color.red); break;}
