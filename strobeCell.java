@@ -31,10 +31,10 @@ public class strobeCell extends cell{
 	boolean mirror;
 	
 	// neighborhood variables
-	boolean self;
-	boolean[] neighbors;
-	boolean[][] neighborhood;
-	boolean[][][] environment;
+	//boolean self;
+	//boolean[] neighbors;
+	//boolean[][] neighborhood;
+	//boolean[][][] environment;
 	
 	int mystate;
 	int[] neighborstate;
@@ -120,13 +120,13 @@ public class strobeCell extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		public void setSelf(boolean b){ self = b;}
+		//public void setSelf(boolean b){ self = b;}
 		
-		public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
+		//public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
 		
-		public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		
-		public void setEnvironment( boolean[][][] biome){environment = biome;}
+		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
+		//
+		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
