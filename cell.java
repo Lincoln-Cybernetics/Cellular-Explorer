@@ -33,8 +33,8 @@ public class cell{
 	// neighborhood variables
 	boolean self;
 	boolean[] neighbors;
-	boolean[][] neighborhood;
-	boolean[][][] environment;
+	//boolean[][] neighborhood;
+	//boolean[][][] environment;
 	
 	int mystate;
 	int[] neighborstate;
@@ -63,7 +63,8 @@ public class cell{
 		age = 0;
 		ages = false;
 		fade = -1;
-		fades = false;}
+		fades = false;
+		neighbors = new boolean[1];}
 		
 		//initilization
 		public void setLocation(int x, int y){
@@ -140,11 +141,14 @@ public class cell{
 		// neighborhood setting methods
 		public void setSelf(boolean b){ self = b;}
 		
-		public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
+		public void setNeighbors( int[] truckdrivin){
+		//if(truckdrivin.length == 1){if(truckdrivin[0] < 1){neighbors[0] = false;}else{neighbors[0] = true;}}
+		for(int g = 0; g <= truckdrivin.length-1; g++){if(truckdrivin[g] > 0){neighbors[g] = true;}
+		else{neighbors[g] = false;}}}
 		
-		public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
+		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
 		
-		public void setEnvironment( boolean[][][] biome){environment = biome;}
+		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
