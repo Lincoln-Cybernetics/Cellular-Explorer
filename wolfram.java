@@ -35,10 +35,10 @@ public class wolfram extends cell{
 	//from the center cell towards the least significant bit in the neighborhood
 	
 	// neighborhood variables
-	boolean self;
-	boolean[] neighbors;
-	boolean[][] neighborhood;
-	boolean[][][] environment;
+//	boolean self;
+//	boolean[] neighbors;
+//	boolean[][] neighborhood;
+	//boolean[][][] environment;
 	
 	int mystate;
 	int[] neighborstate;
@@ -188,14 +188,14 @@ public class wolfram extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		public void setSelf(boolean b){ self = b;}
+	//	public void setSelf(boolean b){ self = b;}
 		
-		public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;//boolean temp = neighbors[0]; neighbors[0] = neighbors[2]; neighbors[2] = temp;
-		}
+	//	public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;//boolean temp = neighbors[0]; neighbors[0] = neighbors[2]; neighbors[2] = temp;
+	//	}
 		
-		public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
+	//	public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
 		
-		public void setEnvironment( boolean[][][] biome){environment = biome;}
+	//	public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
