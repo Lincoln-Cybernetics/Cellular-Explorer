@@ -65,9 +65,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		//buttons[6] = new JButton("Selection Tools");
 		//buttons[7] = new JButton("Brushes");
 		//buttons[8] = new JButton("About");
-		checks[0] = new Checkbox("Compass Chaos");
-		checks[1] = new Checkbox("Boredom(1)");
-		checks[2] = new Checkbox("Boredom(2)");
+		checks[0] = new Checkbox("Boredom(1)");
+		checks[1] = new Checkbox("Boredom(2)");
+		checks[2] = new Checkbox("Compass Chaos");
 		throttle = new JSlider(0,1000);
 		rtsetter[0] = new JSlider(1,100);
 		rtsetter[1] = new JSlider(1,100);
@@ -195,7 +195,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	}
 		
 	//public void setWB(){remove(wrapbox);remove(cidButton);wrapbox = new controlBox(2);add(wrapbox);add(cidButton);}
-	public void setCFLAG(boolean b){cflag = b;}
+	public void setCFLAG(boolean b){cflag = b;if(b){cntrl = 9; fireucEvent();}}
 	public void actionPerformed(ActionEvent e){
 		//create a new automaton
 		if(e.getSource() == buttons[0]){if(!cflag){ cntrl = 1;  fireucEvent();}}
@@ -235,7 +235,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			if(e.getSource() == rtsetter[r]){ rtslab[r].setText(Integer.toString(rtsetter[r].getValue()));
 			rtval = rtsetter[r].getValue(); }
 			//double time length for boredom(2)
-			if(e.getSource() == rtsetter[2]){rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));}
+			if(e.getSource() == rtsetter[1]){rtslab[1].setText(Integer.toString(rtsetter[1].getValue()*2));}
 			cntrl = 13; fireucEvent();
 		}
 		}
@@ -323,12 +323,122 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	}
 	
 	//variable getters
-	public int getRN(){
-		return rulnum;}
+	public String getRName(){
+		 switch(rulnum){
+			 case 0: return "B1";
+			 case 1: return "B2";
+			 case 2: return "CC";
+		 }
+		 return "ERROR";
+		 }
 		
 	public int getRT(){
 		return rtval;}
 		
 	public boolean getRV(){
 		return rulval;}
+}
+//End of Master Control
+//Component to control wrap and display mode options
+ class controlBox extends JComponent implements ActionListener, ItemListener{
+	
+	JLabel name;
+	Component[] settings = new Component[2];
+	int type = 1;
+	boolean[] selecto = new boolean[2];
+	GroupLayout cblayout;
+	
+// relate to sending command events
+	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
+	int cntrl = 1;
+
+public controlBox(int a){
+	cblayout = new GroupLayout(this);
+	cblayout.setAutoCreateGaps(false);
+	cblayout.setAutoCreateContainerGaps(true);
+	type = a;
+	selecto[0] = false; selecto[1] = false;
+	switch(a){
+		case 1:
+		JRadioButton[] dispmod = new JRadioButton[2];
+		name = new JLabel("Display Type");
+		dispmod[0] = new JRadioButton("Classic");
+		dispmod[1] = new JRadioButton("Multicolor");
+		ButtonGroup dselector = new ButtonGroup();
+		dselector.add(dispmod[0]); dispmod[0].addActionListener(this);
+		dselector.add(dispmod[1]); dispmod[1].addActionListener(this);
+		dispmod[0].setSelected(true);
+		settings[0] = dispmod[0];  settings[1] = dispmod[1];
+		break;
+		
+		case 2:
+		Checkbox[] wrapmod = new Checkbox[2];
+		name = new JLabel("Wrap Edges");
+		wrapmod[0] = new Checkbox("X-wrap");
+		wrapmod[1] = new Checkbox("Y-wrap");
+		wrapmod[0].addItemListener(this);
+		wrapmod[1].addItemListener(this);
+		settings[0] = wrapmod[0];
+		settings[1] = wrapmod[1];
+		break;
+		
+		default : break;
+	}
+	cblayout.setHorizontalGroup(
+		cblayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		.addComponent(name)
+		.addGroup(cblayout.createSequentialGroup()
+			.addComponent(settings[0])
+			.addComponent(settings[1]))
+			);
+			
+		cblayout.setVerticalGroup(
+		cblayout.createSequentialGroup()
+		.addComponent(name)
+		.addGroup(cblayout.createParallelGroup()
+			.addComponent(settings[0])
+			.addComponent(settings[1]))
+			);
+	setLayout(cblayout);
+	setBorder(BorderFactory.createLoweredBevelBorder());
+}
+
+	public void actionPerformed(ActionEvent e){
+		switch(type){
+		case 1:
+		if(e.getSource() == settings[0]){cntrl = 1; fireucEvent();}
+		if(e.getSource() == settings[1]){cntrl = 4; fireucEvent();}
+		break;
+			}
+		}
+		
+	public void itemStateChanged(ItemEvent e){
+		switch(type){
+			case 2:
+			if(e.getSource() == settings[0]){selecto[0] = !selecto[0];if(selecto[0]){cntrl = 1;}else{cntrl = 0;}}
+			if(e.getSource() == settings[1]){selecto[1] = !selecto[1];if(selecto[1]){cntrl = 3;}else{cntrl = 2;}}
+			fireucEvent();
+			break;
+				}
+		}
+
+	//control event generation
+		//adds listeners for command events
+		public synchronized void adducListener(ucListener listener){
+		_audience.add(listener);}
+	
+		//removes listeners for command events	
+		public synchronized void removeucListener(ucListener listener){
+		_audience.remove(listener);}
+	
+		
+		//notifies application when a command is sent	
+		private synchronized void fireucEvent(){
+		ucEvent cmd = new ucEvent(this);
+		cmd.setCommand(cntrl);
+		Iterator i = _audience.iterator();
+		while(i.hasNext()){
+		((ucListener) i.next()).handleControl(cmd);}
+		}
+
 }
