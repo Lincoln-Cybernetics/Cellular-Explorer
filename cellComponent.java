@@ -28,9 +28,7 @@ public class cellComponent extends JComponent
 	boolean[][] selection;
 	boolean selectionflag = false;// shows, hides selections
 	int[][] species;// colors cells by type
-	//int[][] lifespan;// outlines cells based on Maturity setting
-	int[][] age;
-	int[][] ageclass;//determines the color in multicolor
+	
 	int[][] hilite; // hilights cells
 	int hlx = 0;//hilight cell x
 	int hly = 0;// highlight cell y
@@ -52,10 +50,7 @@ public class cellComponent extends JComponent
 		magnify = 5;
 		cstate = new int[xdim][ydim];
 		selection = new boolean[xdim][ydim];
-		species = new int[xdim][ydim];
-		//lifespan = new int[xdim][ydim];
-		age = new int[xdim][ydim];
-		ageclass = new int[xdim][ydim];
+		species = new int[xdim][ydim];	
 		hilite = new int[xdim][ydim];
 		setPreferredSize(new Dimension(xdim*magnify, ydim*magnify));
 	}
@@ -66,10 +61,7 @@ public class cellComponent extends JComponent
 		magnify = 5;
 		cstate = new int[xdim][ydim];
 		selection = new boolean[xdim][ydim];
-		species = new int[xdim][ydim];
-		//lifespan = new int[xdim][ydim];
-		age = new int[xdim][ydim];
-		ageclass = new int[xdim][ydim];
+		species = new int[xdim][ydim];	
 		hilite = new int[xdim][ydim];
 		setPreferredSize(new Dimension(xdim*magnify, ydim*magnify));
 
@@ -126,8 +118,7 @@ public class cellComponent extends JComponent
 	public void setSpecies(int a, int b, int c){
 		species[a][b] = c;}
 		
-	//public void setLifespan(int a, int b, int c){
-		//lifespan[a][b] = c;}
+	
 		
 	
 	
@@ -138,11 +129,7 @@ public class cellComponent extends JComponent
 	public int getMode(){
 		return mode;}
 		
-	public int getAgeClass(int a, int b){
-		return ageclass[a][b];}
-		
-	public int getAge(int a, int b){
-		return age[a][b];}
+	
 		
 	public boolean getSelect(){
 		return selectionflag;}
@@ -209,18 +196,7 @@ public void paintComponent( Graphics g){
 									
 									default: g.setColor(Color.black);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
 								}
-								//outline each cell according to its maturity setting
-								//switch(lifespan[x][y]){
-									//case 1: g.setColor(Color.white); break;
-									//case 2: g.setColor(Color.red); break;
-									//case 3: g.setColor(Color.blue); break;
-									//case 4: g.setColor(Color.black); break;
-									//case 8: g.setColor(Color.yellow); break;
-									//case 16: g.setColor(Color.cyan); break;
-									//case 32: g.setColor(Color.magenta); break;
-									//default: g.setColor(Color.green); break;
-								//}
-								//g.drawRect(x*magnify,y*magnify,magnify,magnify);
+								
 							}
 							
 							//multicolor rendering
@@ -254,7 +230,7 @@ public void paintComponent( Graphics g){
 									case 5: g.setColor(Color.white);
 											if(mode == 1){ g.setColor(Color.green); if(cstate[x][y] > 0){g.setColor(Color.black);} }
 											if(mode == 3){ if( species[x][y] == 4 /*|| lifespan[x][y] == 1*/){g.setColor(Color.black);}}
-											if(mode == 4 && ageclass[x][y] == 1){g.setColor(Color.black);} break;
+											if(mode == 4 && cstate[x][y] == 1){g.setColor(Color.black);} break;
 									default: g.setColor(Color.red); break;}
 									if(hilite[x][y] != 0){g.drawRect(x*magnify, y*magnify, magnify, magnify);}
 									
