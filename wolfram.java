@@ -17,8 +17,7 @@
 
 public class wolfram extends cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	brush map;
 	
 	// describe the current state of the cell
@@ -35,15 +34,11 @@ public class wolfram extends cell{
 	//from the center cell towards the least significant bit in the neighborhood
 	
 	// neighborhood variables
-//	boolean self;
-//	boolean[] neighbors;
-//	boolean[][] neighborhood;
-	//boolean[][][] environment;
+
 	
-	int mystate;
+	
 	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+
 	
 	//Wolfram rule
 	boolean[] rule;
@@ -61,8 +56,7 @@ public class wolfram extends cell{
 	//constructor
 	public wolfram(){
 		map = new spinbrush();
-		dim = -1;
-		radius = 1;
+	
 		active = false;
 		state = 0;
 		name = "Wolfram";
@@ -71,7 +65,7 @@ public class wolfram extends cell{
 		mirror = false;
 		direction = 0;
 		self = false;
-		mystate = 0;
+		//mystate = 0;
 		mat = 1;
 		matcount = 0;
 		age = 0;
@@ -126,8 +120,7 @@ public class wolfram extends cell{
 			}
 		
 		@Override public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return map.getBrushLength();}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
@@ -188,22 +181,13 @@ public class wolfram extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-	//	public void setSelf(boolean b){ self = b;}
-		
-	//	public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;//boolean temp = neighbors[0]; neighbors[0] = neighbors[2]; neighbors[2] = temp;
-	//	}
-		
-	//	public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		
-	//	public void setEnvironment( boolean[][][] biome){environment = biome;}
+	
 		
 		public void setState( int a){ state = a;}
 		
 		public void setNeighborState( int[] address){ neighborstate = address;}
 		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
 		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
 		
 		
 		
