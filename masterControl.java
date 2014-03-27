@@ -339,6 +339,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		return rulval;}
 }
 //End of Master Control
+
+
 //Component to control wrap and display mode options
  class controlBox extends JComponent implements ActionListener, ItemListener{
 	
@@ -442,3 +444,120 @@ public controlBox(int a){
 		}
 
 }
+//End controlBox
+
+
+//Component to create new Brain/automata
+class newControl extends JComponent implements ActionListener, ChangeListener, ItemListener{
+	JSlider xsli;
+	JSlider ysli;
+	JLabel xlab;
+	JLabel ylab;
+	JButton cre;
+	int xval;
+	int yval;
+	Checkbox sqr;
+	boolean sqrflag;
+	
+	// relate to sending command events
+	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
+	int cntrl = 0;
+	
+	public newControl(){
+		xsli = new JSlider(1,400); 
+		ysli = new JSlider(1,150);
+		xlab = new JLabel();
+		ylab = new JLabel();
+		cre = new JButton("Create");
+		sqr = new Checkbox("Square");
+		
+		GroupLayout ncLayout = new GroupLayout(this);
+		ncLayout.setAutoCreateGaps(false);
+		ncLayout.setAutoCreateContainerGaps(true);
+		
+		ncLayout.setHorizontalGroup(
+			ncLayout.createSequentialGroup()
+				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(xsli)
+					.addComponent(ysli))
+				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(cre))
+				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(xlab)
+					.addComponent(ylab))
+				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(sqr))
+					);
+					
+			ncLayout.setVerticalGroup(
+				ncLayout.createSequentialGroup()
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(xsli)
+						.addComponent(xlab))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(sqr))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(ysli)
+						.addComponent(ylab))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(cre))
+						);
+						
+					setLayout(ncLayout);
+						
+				xlab.setText("X :" + Integer.toString(xsli.getValue()));
+				xval = xsli.getValue();
+				ylab.setText("Y :" + Integer.toString(ysli.getValue()));
+				yval = ysli.getValue();
+				xsli.addChangeListener(this); ysli.addChangeListener(this);
+				cre.addActionListener(this);
+				sqrflag = sqr.getState();
+				sqr.addItemListener(this);
+					}
+					
+		public void actionPerformed(ActionEvent e){
+			if(e.getSource() == cre){cntrl = 1; fireucEvent();}
+			}
+		
+		public void stateChanged(ChangeEvent e){
+			if(e.getSource() == xsli){
+			if(sqrflag){if(xsli.getValue() > 150){xsli.setValue(150);}ysli.setValue(xsli.getValue()); yval = ysli.getValue(); setYLAB();}
+			 setXLAB(); xval = xsli.getValue();}
+			if(e.getSource() == ysli){
+				if(sqrflag){xsli.setValue(ysli.getValue()); xval = xsli.getValue(); setXLAB();}
+				 setYLAB(); yval = ysli.getValue();}
+			}
+			
+		public void itemStateChanged(ItemEvent e){
+			if(e.getSource() == sqr){sqrflag = sqr.getState();if(sqrflag){xsli.setValue(ysli.getValue());setXLAB();xval = xsli.getValue();}}
+		}
+		
+		private void setXLAB(){xlab.setText("X: " + Integer.toString(xsli.getValue()));}
+		
+		private void setYLAB(){ylab.setText("Y: "+Integer.toString(ysli.getValue()));}
+		
+		public int getXVAL(){ return xval;}
+		
+		public int getYVAL(){ return yval;}
+		
+		//control event generation
+		//adds listeners for command events
+		public synchronized void adducListener(ucListener listener){
+		_audience.add(listener);}
+	
+		//removes listeners for command events	
+		public synchronized void removeucListener(ucListener listener){
+		_audience.remove(listener);}
+	
+		
+		//notifies application when a command is sent	
+		private synchronized void fireucEvent(){
+		ucEvent cmd = new ucEvent(this);
+		cmd.setCommand(cntrl);
+		Iterator i = _audience.iterator();
+		while(i.hasNext()){
+		((ucListener) i.next()).handleControl(cmd);}
+		}
+		
+	
+	}
