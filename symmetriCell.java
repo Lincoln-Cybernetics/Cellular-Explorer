@@ -17,8 +17,7 @@
 
 public class symmetriCell extends cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -36,15 +35,11 @@ public class symmetriCell extends cell{
 	boolean all;
 	
 	// neighborhood variables
-	//boolean self;
-	//boolean[] neighbors;
-	//boolean[][] neighborhood;
-	//boolean[][][] environment;
+	
 	
 	int mystate;
 	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
 	
 	
 	// maturity setting
@@ -60,8 +55,7 @@ public class symmetriCell extends cell{
 	//constructor
 	public symmetriCell(){
 		map = new threebrush();
-		dim = -1;
-		radius = 1;
+	
 		active = false;
 		state = 0;
 		name = "Symmetrical";
@@ -72,7 +66,7 @@ public class symmetriCell extends cell{
 		any = false;
 		all = false;
 		self = false;
-		mystate = 0;
+		
 		mat = 1;
 		matcount = 0;
 		age = 0;
@@ -80,7 +74,7 @@ public class symmetriCell extends cell{
 		fade = -1;
 		fades = false;
 		neighbors = new boolean[9];
-		//neighborhood = new boolean[3][3];
+
 		}
 		//initilization
 		public void setLocation(int x, int y){
@@ -116,8 +110,7 @@ public class symmetriCell extends cell{
 			}
 		
 		@Override public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return map.getBrushLength();}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
@@ -206,22 +199,13 @@ public class symmetriCell extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		//public void setSelf(boolean b){ self = b;}
 		
-	//	public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
-		
-		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		
-		//public void setEnvironment( boolean[][][] biome){environment = biome;}
+	
 		
 		public void setState( int a){ state = a;}
 		
 		public void setNeighborState( int[] address){ neighborstate = address;}
-		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
-		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
-		
+	
 		
 		
 		
