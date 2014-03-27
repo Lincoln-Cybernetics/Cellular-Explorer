@@ -17,8 +17,7 @@
 
 public class cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -33,13 +32,11 @@ public class cell{
 	// neighborhood variables
 	boolean self;
 	boolean[] neighbors;
-	//boolean[][] neighborhood;
-	//boolean[][][] environment;
+	
 	
 	int mystate;
 	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
 	
 	//age and fade rule variables
 	int age;
@@ -50,8 +47,7 @@ public class cell{
 	//constructor
 	public cell(){
 		map = new onebrush();
-		dim = 0;
-		radius = 0;
+		
 		active = false;
 		state = 0;
 		name = "Cell";
@@ -59,7 +55,7 @@ public class cell{
 		hoody = -1;
 		mirror = false;
 		self = false;
-		mystate = 0;
+		
 		age = 0;
 		ages = false;
 		fade = -1;
@@ -92,8 +88,7 @@ public class cell{
 			}
 		
 		public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return -1;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return map.getBrushLength();}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
@@ -136,27 +131,21 @@ public class cell{
 		
 		public int getState(){ return state;}
 		
+		public void setState( int a){ state = a;}
+		
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		public void setSelf(boolean b){ self = b;}
+	
 		
 		public void setNeighbors( int[] truckdrivin){
-		//if(truckdrivin.length == 1){if(truckdrivin[0] < 1){neighbors[0] = false;}else{neighbors[0] = true;}}
 		for(int g = 0; g <= truckdrivin.length-1; g++){if(truckdrivin[g] > 0){neighbors[g] = true;}
 		else{neighbors[g] = false;}}}
 		
-		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
 		
-		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
-		public void setState( int a){ state = a;}
 		
-		public void setNeighborState( int[] address){ neighborstate = address;}
 		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
-		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
 		
 		
 		
