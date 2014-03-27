@@ -17,8 +17,7 @@
 
 public class mbot extends cell{
 	// describe the cell's neighborhood
-	int dim = -1;//dimensionality
-	int radius = 1;// neighborhood radius
+	
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -31,15 +30,10 @@ public class mbot extends cell{
 	boolean mirror;
 	
 	// neighborhood variables
-	//boolean self;
-	//boolean[] neighbors;
-	//boolean[][] neighborhood;
-	//boolean[][][] environment;
+	
 	
 	int mystate;
-	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
 	
 	// maturity setting
 	int mat;
@@ -61,8 +55,7 @@ public class mbot extends cell{
 	public mbot(){
 		map = new threebrush();
 		neighbors = new boolean[9];
-		//dim = 2;
-		//radius = 1;
+		
 		active = false;
 		state = 0;
 		name = "M.B.O.T.";
@@ -70,7 +63,7 @@ public class mbot extends cell{
 		hoody = -1;
 		mirror = false;
 		self = false;
-		mystate = 0;
+		
 		age = 0;
 		ages = false;
 		fade = -1;
@@ -79,14 +72,13 @@ public class mbot extends cell{
 		mat = 1;
 		born = new boolean[9];
 		survives = new boolean[9];
-		//neighborhood = new boolean[3][3];
+		
 		}
 		
 		public mbot(String type){
 			map = new threebrush();
 			neighbors = new boolean[9];
-		//dim = 2;
-		//radius = 1;
+		
 		active = false;
 		state = 0;
 		name = type;
@@ -94,7 +86,7 @@ public class mbot extends cell{
 		hoody = -1;
 		mirror = false;
 		self = false;
-		mystate = 0;
+		
 		age = 0;
 		ages = false;
 		fade = -1;
@@ -103,7 +95,7 @@ public class mbot extends cell{
 		mat = 1;
 		born = new boolean[9];
 		survives = new boolean[9];
-		//neighborhood = new boolean[3][3];
+		
 		
 		for(int n = 0; n < 9; n++){
 			born[n] = false; survives[n] = false;
@@ -199,8 +191,7 @@ public class mbot extends cell{
 			}
 		
 		@Override public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return map.getBrushLength();}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
@@ -260,21 +251,13 @@ public class mbot extends cell{
 		
 		
 		// neighborhood setting methods
-		//public void setSelf(boolean b){ self = b;}
 		
-		//public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
-		
-		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		
-		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
 		public void setNeighborState( int[] address){ neighborstate = address;}
 		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
 		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
 		
 		
 		
