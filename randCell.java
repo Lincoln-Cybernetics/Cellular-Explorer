@@ -17,8 +17,7 @@ import java.util.Random;
 
 public class randCell extends cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	
 	// describe the current state of the cell
 	boolean active;
@@ -30,15 +29,10 @@ public class randCell extends cell{
 	int hoody;
 	
 	// neighborhood variables
-	//boolean self;
-	//boolean[] neighbors;
-	//boolean[][] neighborhood;
-	//boolean[][][] environment;
+	
 	
 	int mystate;
-	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
 	
 	// maturity setting
 	int mat;
@@ -54,15 +48,14 @@ public class randCell extends cell{
 	
 	//constructor
 	public randCell(){
-		dim = -1;
-		radius = 0;
+		
 		active = false;
 		state = 0;
 		name = "Random";
 		hoodx = -1;
 		hoody = -1;
 		self = false;
-		mystate = 0;
+		//mystate = 0;
 		age = 0;
 		ages = false;
 		mat = 1;
@@ -90,8 +83,7 @@ public class randCell extends cell{
 			}
 		
 		public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return 0;}
 			if(paramname == "NextX"){return -1;}
 			if(paramname == "NextY"){return -1;}
@@ -137,21 +129,12 @@ public class randCell extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		//public void setSelf(boolean b){ self = b;}
-		
-		//public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
-		
-		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		
-		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
 		public void setNeighborState( int[] address){ neighborstate = address;}
 		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
 		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
 		
 		
 		
