@@ -17,8 +17,7 @@
 
 public class conveyorCell extends cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -38,10 +37,8 @@ public class conveyorCell extends cell{
 	// neighborhood variables
 	
 	
-	int mystate;
-	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
+	
 	
 	
 	// maturity setting
@@ -57,8 +54,7 @@ public class conveyorCell extends cell{
 	//constructor
 	public conveyorCell(){
 		map = new threebrush();
-		dim = -1;
-		radius = 1;
+	
 		active = false;
 		state = 0;
 		name = "Conveyor";
@@ -67,14 +63,14 @@ public class conveyorCell extends cell{
 		mirror = false;
 		direction = 0;
 		self = false;
-		mystate = 0;
+		
 		mat = 1;
 		matcount = 0;
 		age = 0;
 		ages = false;
 		fade = -1;
 		fades = false;
-		//neighborhood = new boolean[3][3];
+		
 		neighbors = new boolean[9];
 		}
 		
@@ -101,8 +97,7 @@ public class conveyorCell extends cell{
 			}
 		
 		@Override public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+
 			if(paramname == "HoodSize"){return map.getBrushLength();}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
