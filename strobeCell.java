@@ -17,8 +17,7 @@
 
 public class strobeCell extends cell{
 	// describe the cell's neighborhood
-	int dim;//dimensionality
-	int radius;
+	
 	
 	// describe the current state of the cell
 	boolean active;
@@ -31,15 +30,11 @@ public class strobeCell extends cell{
 	boolean mirror;
 	
 	// neighborhood variables
-	//boolean self;
-	//boolean[] neighbors;
-	//boolean[][] neighborhood;
-	//boolean[][][] environment;
 	
-	int mystate;
+	
+	//int mystate;
 	int[] neighborstate;
-	int[][] hoodstate;
-	int[][][] envirostate;
+	
 	
 	//maturity variables
 	int mat;
@@ -47,8 +42,7 @@ public class strobeCell extends cell{
 	
 	//constructor
 	public strobeCell(){
-		dim = -1;
-		radius = 0;
+		
 		active = false;
 		state = 0;
 		name = "Strobe";
@@ -58,7 +52,7 @@ public class strobeCell extends cell{
 		hoody = -1;
 		mirror = false;
 		self = false;
-		mystate = 0;
+		//mystate = 0;
 		}
 			//initilization
 		public void setLocation(int x, int y){
@@ -77,8 +71,7 @@ public class strobeCell extends cell{
 			}
 		
 		public int getParameter(String paramname){ 
-			if(paramname == "Dim"){ return dim;}
-			if(paramname == "Rad"){ return radius;}
+			
 			if(paramname == "HoodSize"){return 0;}
 			if(paramname == "NextX"){return -1;}
 			if(paramname == "NextY"){return -1;}
@@ -120,21 +113,13 @@ public class strobeCell extends cell{
 		public String getName(){ return name;}
 		
 		// neighborhood setting methods
-		//public void setSelf(boolean b){ self = b;}
 		
-		//public void setNeighbors( boolean[] truckdrivin){neighbors = truckdrivin;}
-		
-		//public void setNeighborhood( boolean[][] spozak){neighborhood = spozak;}
-		//
-		//public void setEnvironment( boolean[][][] biome){environment = biome;}
 		
 		public void setState( int a){ state = a;}
 		
 		public void setNeighborState( int[] address){ neighborstate = address;}
 		
-		public void setHoodState( int[][] zipcode){ hoodstate = zipcode;}
-		
-		public void setEnvironmentState( int[][][] planet){envirostate = planet;}
+	
 		
 		
 		
