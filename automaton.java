@@ -197,7 +197,7 @@ public void invokeRule(String rulnam){
 				
 //Add cells
 public void addCell(cell ecoli, int x, int y){
-		culture[x][y] = ecoli; culture[x][y].setLocation(x,y);}
+		culture[x][y] = ecoli; if(ecoli.getOption("Mirror")){}else{ culture[x][y].setLocation(x,y);}}
 				 
 //General info
 public int getParameter(String pname){
