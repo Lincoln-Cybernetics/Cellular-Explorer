@@ -35,6 +35,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	JButton cidButton;
 	JMenuItem[] winitem = new JMenuItem[7];
 	JMenu winmen;
+	JMenuItem[] disitem = new JMenuItem[4];
+	JMenu dismen;
 	JMenuBar mainbar;
 	
 	// relate to sending command events
@@ -86,6 +88,11 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		winitem[5] = new JMenuItem("Cell Info");
 		winitem[6] = new JMenuItem("About");
 		winmen = new JMenu("Window");
+		disitem[0] = new JMenuItem("Classic");
+		disitem[1] = new JMenuItem("Multicolor");
+		disitem[2] = new JMenuItem("State Edit");
+		disitem[3] = new JMenuItem("Cell Edit");
+		dismen = new JMenu("Display");
 		mainbar = new JMenuBar();
 		
 		setPreferredSize(new Dimension(675,165));
@@ -182,8 +189,11 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	// menu bar
 	for(int s = 0; s < winitem.length; s++){
 		winmen.add(winitem[s]); winitem[s].addActionListener(this);}
+	for(int m = 0; m < disitem.length; m++){
+		dismen.add(disitem[m]); disitem[m].addActionListener(this);}
 	
 	mainbar.add(winmen);
+	mainbar.add(dismen);
 		}
 		
 	public void init(){ 
@@ -205,23 +215,32 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			 *  1 = New
 			 *  2 = Play/Pause
 			 *  3 = Step
-			 *  4 = Edit State
-			 *  5 = Edit Cells
-			 *  6 = Cell Picker
-			 *  7 = Selection Tools
-			 *  8 = Brushes
+			 *  4 = Edit State window
+			 *  5 = Edit Cells window
+			 *  6 = Cell Picker window
+			 *  7 = Selection Tools window
+			 *  8 = Brushes window
 			 *  9 = Set Iteration Speed
 			 * 10 = Set Display Type
 			 * 11 = Set Wrap Type
 			 * 12 = show cell info
 			 * 13 = set automaton rules
+			 * 14 = general mode setting for the edit engine
 			 */ 
+			 
+			 // Window Menu
 			 for(int r = 0; r < winitem.length-1; r++){int c[] = new int[]{4,5,6,7,8,12};
-			 if(e.getSource() == winitem[r]){ cntrl = c[r]; fireucEvent();}}
+			 if(e.getSource() == winitem[r]){ cntrl = c[r]; fireucEvent(); break;}}
 			 if(e.getSource() == winitem[6]){aboutMe();}
 			 
+			 //Display Menu
+			 if(e.getSource() == disitem[0]){ disptype = 1;cntrl = 14; fireucEvent();}
+			 if(e.getSource() == disitem[1]){ disptype = 4;cntrl = 14; fireucEvent();}
+			 if(e.getSource() == disitem[2]){ disptype = 2;cntrl = 14; fireucEvent();}
+			 if(e.getSource() == disitem[3]){ disptype = 3;cntrl = 14; fireucEvent();}
+			 
 			for( int cnum = 1; cnum < buttons.length; cnum++){
-				if(e.getSource() == buttons[cnum]){ cntrl = cnum+1; fireucEvent();}
+				if(e.getSource() == buttons[cnum]){ cntrl = cnum+1; fireucEvent(); break;}
 			}
 		if(e.getSource() == cidButton){ cntrl = 12; fireucEvent();}
 			
@@ -299,7 +318,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
 		String noticea = "Cellular Explorer Prototype v. 0.0.7 (Daylight 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
-  String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n Special thanks to:  James Woody, Brian Prentice, and Alex V.\n for the feedback and ideas that have made this program possible. \n\n";
+  String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n Special thanks to:  James Woody, Brian Prentice, and Alexander Viasov\n for the feedback and ideas that have made this program possible. \n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
   String noticee=  "the Free Software Foundation,\neither version 3 of the License, or";
