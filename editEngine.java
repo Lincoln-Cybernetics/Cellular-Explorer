@@ -270,7 +270,7 @@ public void handleControl(ucEvent e){
 	public void setMode(int m){
 		/*Modes:
 		 * 0 = revert to previously selected display mode
-		 * 1 = Normal Running
+		 * 1 = Normal Running (Classic)
 		 * 2 = State Editing
 		 * 3 = Cell Editing
 		 * 4 = Multicolor
