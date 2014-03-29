@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Window;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -83,6 +84,7 @@ public class cellularExplorer implements ucListener{
 					case 11: v1.setWrap(Alice.getWrapType());break;//set edge wrapping
 					case 12: v1.showCI(); break; //shows cell info
 					case 13: v1.setAutomatonRule(Alice.getRName(), Alice.getRV(),Alice.getRT());  break;//Automaton rules
+					case 14:  v1.setMode(Alice.getDispType()); break;//Mode setting
 					default: break;
 				}
 			}
