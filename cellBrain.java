@@ -37,9 +37,10 @@ class cellBrain  {
 
 	int opmode = 1;
 	/*operation modes:
-	 * 1 = normal running
+	 * 1 = classicly rendered normal running mode
 	 * 2 = state editing
 	 * 3 = cell editing
+	 * 4 = multicolor rendered normal running mode
 	 * */
 	//int dt = 1;//display type
 	boolean xwrap = false;//edge wrapping x-axis
@@ -108,8 +109,8 @@ class cellBrain  {
 				public void setOpMode(int mode){
 					switch(mode){
 						case 1: pete.setEnabled(true); opmode = 1;  break;// normal running
-						case 2: pete.setEnabled(false); opmode = 2; break;// state editing
-						case 3: pete.setEnabled(false); opmode = 3; break;// cell editing
+						case 2: pete.setEnabled(false); pete.pause(); opmode = 2; break;// state editing
+						case 3: pete.setEnabled(false); pete.pause(); opmode = 3; break;// cell editing
 						case 4: pete.setEnabled(true); opmode = 4;  break;// multicolor
 					}
 					}
