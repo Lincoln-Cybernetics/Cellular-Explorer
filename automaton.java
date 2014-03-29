@@ -102,6 +102,8 @@ public automaton( int a, int b){
 			else{ pause = !pause;}
 			}
 			
+		//Pause
+		public void pause(){ pause = true;}
 		
 
 // Automaton options and rules
