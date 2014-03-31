@@ -38,6 +38,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	JMenuItem[] disitem = new JMenuItem[4];
 	JMenu dismen;
 	JMenuBar mainbar;
+	JSlider magsetter;//slider to set cell size in the display
+	JLabel maglab;
+	JLabel magvallab;
 	
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -53,6 +56,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	boolean cflag = false;
 	// sets the display type
 	int disptype = 1;
+	// sets the size of the cells in the display
+	int mag = 5;
 	// sets edge wrapping
 	int wraptype = 0;
 	
@@ -94,6 +99,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		disitem[3] = new JMenuItem("Cell Edit");
 		dismen = new JMenu("Display");
 		mainbar = new JMenuBar();
+		magsetter = new JSlider(1,30);
+		maglab = new JLabel("Magnification");
+		magvallab = new JLabel("5");
 		
 		setPreferredSize(new Dimension(675,165));
 		
@@ -109,7 +117,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(buttons[0])
 				.addComponent(buttons[1])
 				.addComponent(throttle)
-				.addComponent(buttons[2]))
+				.addComponent(buttons[2])
+				.addComponent(cidButton))
 			/*.addGroup(mclayout.createSequentialGroup()
 				.addComponent(buttons[3])
 				.addComponent(buttons[4])
@@ -120,7 +129,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				//.addComponent(buttons[8])
 				.addComponent(dispbox)
 				.addComponent(wrapbox)
-				.addComponent(cidButton))
+				.addComponent(maglab)
+				.addComponent(magsetter)
+				.addComponent(magvallab))
 			.addGroup(mclayout.createSequentialGroup()
 				.addComponent(checks[0])
 				.addComponent(rtsetter[0])
@@ -141,7 +152,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(buttons[0])
 				.addComponent(buttons[1])
 				.addComponent(throttle)
-				.addComponent(buttons[2]))
+				.addComponent(buttons[2])
+				.addComponent(cidButton))
 			/*.addGroup(mclayout.createParallelGroup()
 				.addComponent(buttons[3])
 				.addComponent(buttons[4])
@@ -152,7 +164,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				//.addComponent(buttons[8])
 				.addComponent(dispbox)
 				.addComponent(wrapbox)
-				.addComponent(cidButton))
+				.addComponent(maglab)
+				.addComponent(magsetter)
+				.addComponent(magvallab))
 			.addGroup(mclayout.createParallelGroup()
 				.addComponent(checks[0])
 				.addComponent(rtsetter[0])
@@ -181,10 +195,12 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	 rtslab[a].setText(Integer.toString(rtsetter[a].getValue()));
 		}
 		
+	//Misc	
     rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));
 	 dispbox.adducListener(this);
 	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
 	 cidButton.addActionListener(this);
+	 magsetter.addChangeListener(this); magsetter.setValue(5);
 		
 	// menu bar
 	for(int s = 0; s < winitem.length; s++){
@@ -226,6 +242,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			 * 12 = show cell info
 			 * 13 = set automaton rules
 			 * 14 = general mode setting for the edit engine
+			 * 15 = set cell size (mag) in the display
 			 */ 
 			 
 			 // Window Menu
@@ -257,6 +274,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			if(e.getSource() == rtsetter[1]){rtslab[1].setText(Integer.toString(rtsetter[1].getValue()*2));}
 			cntrl = 13; fireucEvent();
 		}
+		if(e.getSource() == magsetter){ mag = magsetter.getValue(); magvallab.setText(Integer.toString(magsetter.getValue()));
+			cntrl = 15; fireucEvent();}
 		}
 		}
 		
@@ -356,6 +375,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 	public boolean getRV(){
 		return rulval;}
+		
+	public int getMag(){ return mag;}
 }
 //End of Master Control
 
