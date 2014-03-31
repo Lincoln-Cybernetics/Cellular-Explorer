@@ -113,7 +113,9 @@ public class cellComponent extends JComponent
 		 */}
 		
 	public void setMag(int a){
-		magnify = a; repaint();}
+		magnify = a;
+		setPreferredSize(new Dimension(xdim*magnify, ydim*magnify));
+		 repaint();}
 		
 	public void setSpecies(int a, int b, int c){
 		species[a][b] = c;}
