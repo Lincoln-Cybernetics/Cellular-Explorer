@@ -85,6 +85,7 @@ public class cellularExplorer implements ucListener{
 					case 12: v1.showCI(); break; //shows cell info
 					case 13: v1.setAutomatonRule(Alice.getRName(), Alice.getRV(),Alice.getRT());  break;//Automaton rules
 					case 14:  v1.setMode(Alice.getDispType()); break;//Mode setting
+					case 15: v1.setParameter("Magnify", Alice.getMag()); break;//Sets the size of cells in the display
 					default: break;
 				}
 			}
