@@ -32,7 +32,7 @@ int[] anchory = new int[]{0,0,0,0};//anchor coordinate y for mirrors using the r
 JFrame disp; // window for the automaton
 selector sedna;
 //parameter names
-String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH", "SDT", "SFT", "CDT", "CFT", "SDP", "SFP", "CDP", "CFP"};
+String[] parameters = new String[]{"CDO", "CFO", "SDO", "SFO","WSX","WSY","WH", "SDT", "SFT", "CDT", "CFT", "SDP", "SFP", "CDP", "CFP","Magnify"};
 int sdo = 0; //state drawing option
 boolean interactflag = false;
 int sfo = 0; //state fill option
@@ -53,6 +53,7 @@ int wh = 0; // window height
 boolean rcflag = false;//right click flag
 boolean rectflag = false;//flag for making rectangles
 cicomp mercury; JFrame barnabus;
+JScrollPane mypane;//for holding the display
 
 public  editEngine(){
 	xaut = 1;
@@ -92,7 +93,8 @@ public void initialize(int xmx, int ymx){
 		}}
 							setEditBrush(1);
 						  disp = new JFrame("Cellular Explorer");
-						  disp.getContentPane().add(new JScrollPane(outputs[0][0]));
+						  mypane = new JScrollPane(outputs[0][0]);
+						  disp.getContentPane().add(mypane);
 						  disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 						  disp.setSize(800,wh);
 						  disp.setLocation(wsx,wsy);
@@ -210,6 +212,11 @@ public void handleControl(ucEvent e){
 			  case 12: paramval[1] = a; break;
 			  case 13: paramval[2] = a; break;
 			  case 14: paramval[3] = a; break;
+			  
+			  //Magnify (cell size in the cell component)
+			  case 15: outputs[0][0].setMag(a); //mypane.setPreferredSize(new Dimension(xmax*a, ymax*a));
+			  mypane.setViewportView(outputs[0][0]);
+			   break;
 		 }
 		 
 	 }
