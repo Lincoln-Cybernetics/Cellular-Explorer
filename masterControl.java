@@ -196,7 +196,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		}
 		
 	//Misc	
-    rtslab[2].setText(Integer.toString(rtsetter[2].getValue()*2));
+    rtslab[1].setText(Integer.toString(rtsetter[2].getValue()*2));
 	 dispbox.adducListener(this);
 	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
 	 cidButton.addActionListener(this);
@@ -268,12 +268,15 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			if(cflag){
 			if(e.getSource() == throttle) { cntrl = 9; fireucEvent();}
 			for(int r = 0; r < rtsetter.length; r++){
-			if(e.getSource() == rtsetter[r]){ rtslab[r].setText(Integer.toString(rtsetter[r].getValue()));
-			rtval = rtsetter[r].getValue(); }
-			//double time length for boredom(2)
-			if(e.getSource() == rtsetter[1]){rtslab[1].setText(Integer.toString(rtsetter[1].getValue()*2));}
-			cntrl = 13; fireucEvent();
+			if(e.getSource() == rtsetter[r]){ 
+				//double time length for boredom(2)
+				if(r == 1){rtslab[1].setText(Integer.toString(rtsetter[1].getValue()*2));}
+				else{rtslab[r].setText(Integer.toString(rtsetter[r].getValue()));}
+			rtval = rtsetter[r].getValue(); 
+			cntrl = 13; fireucEvent(); break;
+			}
 		}
+		
 		if(e.getSource() == magsetter){ mag = magsetter.getValue(); magvallab.setText(Integer.toString(magsetter.getValue()));
 			cntrl = 15; fireucEvent();}
 		}
@@ -288,8 +291,8 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 					rulnum = w; rulval = checks[w].getState(); rtval = rtsetter[w].getValue(); cntrl = 13; fireucEvent();}
 				}
 				//Boredom(1) and Boredom(2) are mutually exclusive
-				if(e.getSource() == checks[1]){if(checks[2].getState()){checks[2].setState(false);}}
-				if(e.getSource() == checks[2]){if(checks[1].getState()){checks[1].setState(false);}}
+				if(e.getSource() == checks[0]){if(checks[1].getState()){checks[2].setState(false);}}
+				if(e.getSource() == checks[1]){if(checks[0].getState()){checks[1].setState(false);}}
 			}
 		}
 		
