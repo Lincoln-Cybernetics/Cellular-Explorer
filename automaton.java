@@ -180,6 +180,7 @@ public void invokeRule(String rulnam){
 		//Compass Chaos
 		case 2: rulestates[2] += 1;
 				if(rulestates[2] >= rulevalues[2]){
+					rulestates[2] = 0;
 					for(int y = 0; y <= ysiz-1; y++){
 						for(int x = 0; x <= xsiz-1; x++){
 							Random ukulele = new Random();
