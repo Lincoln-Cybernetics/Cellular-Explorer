@@ -87,16 +87,16 @@ public selectionControl(){
 			if(e.getSource() == butts[a]){buttnum  = a;}
 		}
 		switch(buttnum){
-			case 0:command = 0; fireucEvent(); break;
-			case 1:command = 1; fireucEvent(); break;
-			case 2:command = 2; fireucEvent(); break;
-			case 3:command = 3; fireucEvent(); break;
-			case 4:command = 4; fireucEvent(); break;
+			case 0:command = 300; fireucEvent(); break;//Select by Brush
+			case 1:command = 301; fireucEvent(); break;//Select Rectangle
+			case 2:command = 302; fireucEvent(); break;//select all
+			case 3:command = 303; fireucEvent(); break;//invert selection
+			case 4:command = 304; fireucEvent(); break;//deselect
 		}
 		}
 	
 	public void itemStateChanged(ItemEvent e){
-		if(e.getSource() == hide){command = 5; boolo = hide.getState(); fireucEvent(); }
+		if(e.getSource() == hide){command = 305; boolo = hide.getState(); fireucEvent(); }// show/hide selection
 		}
 
 //event generation
