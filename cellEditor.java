@@ -157,13 +157,13 @@ public void actionPerformed(ActionEvent e){
 	if(buttflag){	
 	switch(buttnum){
 		// Cell editing mode
-		case 0: command = 0; fireucEvent(); break;
+		case 0: command = 200; fireucEvent(); break;
 		// cell fill
-		case 1: command = 1; fireucEvent(); break;
+		case 1: command = 201; fireucEvent(); break;
 		//set border
-		case 2: command = 2; fireucEvent(); break;
+		case 2: command = 202; fireucEvent(); break;
 		//Cell draw
-		case 3: command = 7; fireucEvent(); break;
+		case 3: command = 207; fireucEvent(); break;
 	}}
 	if(e.getSource() == dtPick){
 		//drawing tools
@@ -189,7 +189,7 @@ public void actionPerformed(ActionEvent e){
 			case 5: dtool = 2; dslid.setEnabled(true); dslid.setMinimum(1); dslid.setMaximum(1024); dslid.setMajorTickSpacing(64); 
 			dslid.setPaintTicks(true); break;
 		}
-		command = 8; fireucEvent();
+		command = 208; fireucEvent();
 		}
 	if(e.getSource() == ftPick){
 		// Fill Tools
@@ -215,7 +215,7 @@ public void actionPerformed(ActionEvent e){
 			case 5: ftool = 2; fslid.setEnabled(true); fslid.setMinimum(1); fslid.setMaximum(1024); fslid.setMajorTickSpacing(64); 
 			fslid.setPaintTicks(true); break;
 		}
-		command = 9; fireucEvent();
+		command = 209; fireucEvent();
 		}
 	}
 	
@@ -269,13 +269,13 @@ public void itemStateChanged(ItemEvent e){
 	}
 	switch(checknum){
 		// check draw
-		case 0: command = 3; cdoSet(); fireucEvent(); break;
+		case 0: command = 203; cdoSet(); fireucEvent(); break;
 		// rand draw
-		case 1: command = 4; cdoSet(); fireucEvent(); break;
+		case 1: command = 204; cdoSet(); fireucEvent(); break;
 		// check fill
-		case 2: command = 5; cfoSet(); fireucEvent(); break;
+		case 2: command = 205; cfoSet(); fireucEvent(); break;
 		// rand fill
-		case 3: command = 6; cfoSet(); fireucEvent(); break;
+		case 3: command = 206; cfoSet(); fireucEvent(); break;
 	}
 	}
 
