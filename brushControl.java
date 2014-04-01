@@ -139,14 +139,16 @@ public void init(){
 public void actionPerformed(ActionEvent e){
 	if(e.getSource() == brushPicker){
 	for(int ind = 0; ind < brushes.length; ind++){
-		if(brushPicker.getSelectedItem() == brushes[ind]){command = 1; bruush = ind+1; setGonzo(bruush); toggleControls(); break;}
+		//Set Editing Brush type
+		if(brushPicker.getSelectedItem() == brushes[ind]){command = 401; bruush = ind+1; setGonzo(bruush); toggleControls(); break;}
 	}
 	 
 	}
 	
 	for(int indy = 0; indy< orients.length; indy++){
+		//Set Brush Orientation
 		if(e.getSource() == orients[indy]){
-			command = 2;
+			command = 402;
 			brushdir = indy;
 			 break;
 		}
@@ -156,9 +158,10 @@ public void actionPerformed(ActionEvent e){
 	public void itemStateChanged(ItemEvent e){
 		int opnum = 0;
 		for(int i = 0; i < option.length; i++){
+			//Set Brush Options
 			if(e.getSource() == option[i]){ opnum = i; opname = optstr[i];opval = option[i].getState();}
 		}
-		command = 3;
+		command = 403;
 		fireucEvent();
 	}
 
