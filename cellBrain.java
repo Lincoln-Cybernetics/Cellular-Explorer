@@ -92,7 +92,7 @@ class cellBrain  {
 						state[x][y] = update[x][y];}}
 			}
 			//when an automaton iterates, it calls this
-			public void iterateReport(){refreshState();}
+			public void iterateReport(){refreshState();controller.iterateNotify();}
 			//end of stubs
 			public void playPause(){ pete.pP();}
 		
