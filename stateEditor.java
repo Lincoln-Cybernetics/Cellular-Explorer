@@ -165,15 +165,15 @@ public void actionPerformed(ActionEvent e){
 	if(buttflag){
 	switch(buttnum){
 		//state edit mode
-		case 0: control = 0; fireucEvent(); break;
+		case 0: control = 100; fireucEvent(); break;
 		//fill button
-		case 1: control = 1;  sfoSet(); fireucEvent(); break;
+		case 1: control = 101;  sfoSet(); fireucEvent(); break;
 		//clear
-		case 2: control = 2; clearflag = true; sfoSet(); fireucEvent(); break;
+		case 2: control = 102; clearflag = true; sfoSet(); fireucEvent(); break;
 		//invert
-		case 3: control = 3; invflag = true; sfoSet(); fireucEvent(); break;
+		case 3: control = 103; invflag = true; sfoSet(); fireucEvent(); break;
 		// State Draw
-		case 4: control = 9; fireucEvent(); break;
+		case 4: control = 109; fireucEvent(); break;
 	}
 	}
 	
@@ -185,7 +185,7 @@ public void actionPerformed(ActionEvent e){
 				case 1: dtt = 2;  drsl.setEnabled(true); dlbl.setText(Integer.toString(drsl.getValue())); break;
 				case 2: dtt = 2; drsl.setEnabled(true); dlbl.setText(Integer.toString(drsl.getValue())); break;
 			}
-			control = 10; fireucEvent();
+			control = 110; fireucEvent();
 		}
 	
 	if(e.getSource() == fillbox){
@@ -196,7 +196,7 @@ public void actionPerformed(ActionEvent e){
 				case 1: ftt = 2; flsl.setEnabled(true); flbl.setText(Integer.toString(flsl.getValue()));  break;
 				case 2: ftt = 2; flsl.setEnabled(true); flbl.setText(Integer.toString(flsl.getValue()));  break;
 			}
-			control = 11; fireucEvent();
+			control = 111; fireucEvent();
 		}
 	}
 
@@ -207,15 +207,15 @@ public void itemStateChanged(ItemEvent e){
 	}
 	switch(checknum){
 		//interactive
-		case 0: control = 4; fireucEvent(); break;
+		case 0: control = 104; fireucEvent(); break;
 		//draw random
-		case 1: control = 5; sdoSet(); fireucEvent(); break;
+		case 1: control = 105; sdoSet(); fireucEvent(); break;
 		//draw check
-		case 2: control = 6; sdoSet(); fireucEvent(); break;
+		case 2: control = 106; sdoSet(); fireucEvent(); break;
 		// fill random
-		case 3: control = 7; sfoSet(); fireucEvent(); break;
+		case 3: control = 107; sfoSet(); fireucEvent(); break;
 		// fill check
-		case 4: control = 8; sfoSet(); fireucEvent(); break;
+		case 4: control = 108; sfoSet(); fireucEvent(); break;
 	}
 }
 
