@@ -556,7 +556,8 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 					}
 					
 		public void actionPerformed(ActionEvent e){
-			if(e.getSource() == cre){cntrl = 1; fireucEvent();}
+			//control 16 = Make new board
+			if(e.getSource() == cre){cntrl = 16; fireucEvent();}
 			}
 		
 		public void stateChanged(ChangeEvent e){
