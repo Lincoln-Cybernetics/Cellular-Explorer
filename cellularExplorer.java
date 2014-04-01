@@ -66,11 +66,8 @@ public class cellularExplorer implements ucListener{
 		}
 		
 		public void handleControl(ucEvent e){
-			
-			
-			//Master Control
-			if (e.getSource() == Alice){
 				switch(e.getCommand()){
+					//Controls 1 - 99 Master Control
 					case 1: if(whiteRabbit == null){makeWin(2);}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
@@ -86,92 +83,52 @@ public class cellularExplorer implements ucListener{
 					case 13: v1.setAutomatonRule(Alice.getRName(), Alice.getRV(),Alice.getRT());  break;//Automaton rules
 					case 14:  v1.setMode(Alice.getDispType()); break;//Mode setting
 					case 15: v1.setParameter("Magnify", Alice.getMag()); break;//Sets the size of cells in the display
+					case 16: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL());
+					npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint(); break;//Create new Board
+					
+					//Controls 100 - 199 State Editing
+					case 100: if(v1.getMode() != 2){v1.setMode(2);}else{v1.setMode(0);} break;// enter/exit the state editing mode
+					case 101:  v1.setParameter("SFO",Dan.getSFO());v1.fillState(); break;//State Fill
+					case 102:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;//Clear the state
+					case 103:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;//Invert the state
+					case 104:v1.setInteract(Dan.getBSET());if(Dan.getBSET() == false){v1.setMouseAction("None");} break;//set interactive mode
+					case 105: v1.setParameter("SDO",Dan.getSDO()); break;// set the random option for state drawing
+					case 106: v1.setParameter("SDO",Dan.getSDO()); break;// set the check option for thate drawing
+					case 107: v1.setParameter("SFO",Dan.getSFO()); break;//set the random option for state fills
+					case 108: v1.setParameter("SFO",Dan.getSFO()); break;// set the check option for state fills
+					case 109: if(v1.getMode() != 3 && v1.getInteract()){v1.setMouseAction("SDraw");} 
+						if(v1.getMode() == 2){v1.setMouseAction("SDraw");}break;// activate state drawing
+					case 110: v1.setTool(0, Dan.getTool(0), Dan.getTString(0), Dan.getToolVal(0)); break;//set draw tool
+					case 111: v1.setTool(1, Dan.getTool(1), Dan.getTString(1), Dan.getToolVal(1)); break;//set fill tool
+					
+					//Controls 200 - 299 Cell Editing
+					case 200: if(v1.getMode() != 3){v1.setMode(3);}else{v1.setMode(0);} break;//enter cell editing mode
+					case 201: v1.fillCellinit(); break;//cell fill
+					case 202: v1.setBorder(); break;//set border
+					case 203: v1.setParameter("CDO",Emily.cdoGet()); break;//cell check draw
+					case 204: v1.setParameter("CDO",Emily.cdoGet()); break;//cell random draw
+					case 205: v1.setParameter("CFO",Emily.cfoGet()); break;//cell check fill
+					case 206: v1.setParameter("CFO",Emily.cfoGet()); break;//cell random fill
+					case 207: if(v1.getMode() == 3){v1.setMouseAction("CDraw");} break;//Cell Drawing
+					case 208: v1.setTool(2,Emily.getTool(2),Emily.getTstr(2),Emily.getTval(2)); break;//set drawing tool
+					case 209: v1.setTool(3,Emily.getTool(3),Emily.getTstr(3),Emily.getTval(3)); break;//setFilltool
+					
+					//Controls 300 - 399 Selection Tools
+					case 300: if(Hank.butts[0].getText() != seldon){Hank.butts[0].setText(seldon);v1.setMouseAction("BSel");}
+								 else{Hank.butts[0].setText("Select by Brush");v1.outputs[0][0].remHilite();
+								 if(v1.getMode() == 3){v1.setMouseAction("CDraw");}else{v1.setMouseAction("SDraw");}} break;//select by brush
+					case 301: v1.setMouseAction("SRect"); break;//select rectangle	
+					case 302: v1.sedna.selectAll(); v1.refreshSel(); break;//select all
+					case 303: v1.sedna.invertSel(); v1.refreshSel(); break;//invert selection
+					case 304: v1.sedna.deselect(); v1.refreshSel(); break;//deselect
+					case 305: v1.outputs[0][0].setSelect(!Hank.getBoolo()); break;// show/hide selection
+					
+					//Controls 400-499 Brush Controls
+					case 401: v1.setEditBrush(Inez.getBrush()); break;//Set Editing Brush type
+					case 402: v1.sigmund.setOrientation(Inez.getBrushDir()); break;//Set Brush Orientation
+					case 403: v1.sigmund.setOption(Inez.getOPNAM(), Inez.getOPVAL()); break;//Set Brush Options
 					default: break;
 				}
-			}
-			
-			//new automaton
-			if(e.getSource() == whiteRabbit){
-				if(e.getCommand() == 1){ v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL());
-				npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint();} 
-			}
-			
-			//State Editor
-			if(e.getSource() == Dan){
-				switch(e.getCommand()){
-					// enter/exit the state editing mode
-					case 0: if(v1.getMode() != 2){v1.setMode(2);}
-							else{v1.setMode(0);} break;
-					//State Fill
-					case 1:  v1.setParameter("SFO",Dan.getSFO());v1.fillState(); break;
-					//Clear the state
-					case 2:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;
-					//Invert the state
-					case 3:  v1.setParameter("SFO",Dan.getSFO());v1.fillState();break;
-					//set interactive mode
-					case 4:v1.setInteract(Dan.getBSET());if(Dan.getBSET() == false){v1.setMouseAction("None");} break;
-					// set the random option for state drawing
-					case 5: v1.setParameter("SDO",Dan.getSDO()); break;
-					// set the check option for thate drawing
-					case 6: v1.setParameter("SDO",Dan.getSDO()); break;
-					//set the random option for state fills
-					case 7: v1.setParameter("SFO",Dan.getSFO()); break;
-					// set the check option for state fills
-					case 8: v1.setParameter("SFO",Dan.getSFO()); break;
-					// activate state drawing
-					case 9: if(v1.getMode() != 3 && v1.getInteract()){v1.setMouseAction("SDraw");} 
-						if(v1.getMode() == 2){v1.setMouseAction("SDraw");}break;
-					//set draw tool
-					case 10: v1.setTool(0, Dan.getTool(0), Dan.getTString(0), Dan.getToolVal(0)); break;
-					//set fill tool
-					case 11: v1.setTool(1, Dan.getTool(1), Dan.getTString(1), Dan.getToolVal(1)); break;
-				}
-			}
-			//Cell Editor
-			if(e.getSource() == Emily){
-				switch(e.getCommand()){
-					case 0: if(v1.getMode() != 3){v1.setMode(3);}
-							else{v1.setMode(0);} break;//enter cell editing mode
-					case 1: v1.fillCellinit(); break;//cell fill
-					case 2: v1.setBorder(); break;//set border
-					case 3: v1.setParameter("CDO",Emily.cdoGet()); break;//cell check draw
-					case 4: v1.setParameter("CDO",Emily.cdoGet()); break;//cell random draw
-					case 5: v1.setParameter("CFO",Emily.cfoGet()); break;//cell check fill
-					case 6: v1.setParameter("CFO",Emily.cfoGet()); break;//cell random fill
-					case 7: if(v1.getMode() == 3){v1.setMouseAction("CDraw");} break;//Cell Drawing
-					case 8: v1.setTool(2,Emily.getTool(2),Emily.getTstr(2),Emily.getTval(2)); break;//set drawing tool
-					case 9: v1.setTool(3,Emily.getTool(3),Emily.getTstr(3),Emily.getTval(3)); break;//setFilltool
-				}
-				}
-				
-				//Selection Controls
-				if(e.getSource() == Hank){
-					switch(e.getCommand()){
-						//select by brush
-						case 0: if(Hank.butts[0].getText() != seldon){Hank.butts[0].setText(seldon);v1.setMouseAction("BSel");}
-								 else{Hank.butts[0].setText("Select by Brush");v1.outputs[0][0].remHilite();
-								 if(v1.getMode() == 3){v1.setMouseAction("CDraw");}else{v1.setMouseAction("SDraw");}} break;
-						//select rectangle		 
-						case 1: v1.setMouseAction("SRect"); break;
-						//select all
-						case 2: v1.sedna.selectAll(); v1.refreshSel(); break;
-						//invert selection
-						case 3: v1.sedna.invertSel(); v1.refreshSel(); break;
-						//deselect
-						case 4: v1.sedna.deselect(); v1.refreshSel(); break;
-						// hide selection
-						case 5: v1.outputs[0][0].setSelect(!Hank.getBoolo()); break;
-					}
-				}
-				//brush control
-				if(e.getSource() == Inez){
-					switch(e.getCommand()){
-						case 1: v1.setEditBrush(Inez.getBrush()); break;
-						case 2: v1.sigmund.setOrientation(Inez.getBrushDir()); break;
-						case 3: v1.sigmund.setOption(Inez.getOPNAM(), Inez.getOPVAL()); break;
-					}
-				}
-				
 		}
 		
 			private void makeWin(int n){
