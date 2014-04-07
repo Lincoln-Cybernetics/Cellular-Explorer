@@ -24,6 +24,7 @@ public class brush{
 	int ycount = 0;
 	int bristles;
 	int orientation = 0;
+	int xf = 1;//expansion factor
 	
 	//constructor
 	public brush(){ 
@@ -52,6 +53,14 @@ public class brush{
 			
 		//used for setting options
 		public void setOption(String opname, boolean b){
+		}
+		
+		//used to set parameters
+		public void setParameter(String parnam, int h){}
+		
+		//get parameter values
+		public int getParameter(String pname){
+			return -1;
 		}
 		
 		//returns the x coordinates of each of the affected cells in turn	
@@ -141,6 +150,27 @@ class threebrush extends brush{
 		xlocs[6][0] = -1; xlocs[7][0] = 0; xlocs[8][0] = 1;
 		ylocs[6][0] = 1; ylocs[7][0] = 1; ylocs[8][0] = 1;
 		}
+		
+		//used to set parameters
+		public void setParameter(String parnam, int h){
+			if(parnam == "Xfact"){ xf = h; setXF();}
+			}
+		
+		//get parameter values
+		public int getParameter(String pname){
+			if(pname == "Xfact"){return xf;}
+			return -1;
+		}
+			
+		//sets expansion factor
+		private void setXF(){ 
+			xlocs[0][0] = -1*xf; xlocs[1][0] = 0; xlocs[2][0] = xf;
+			ylocs[0][0] = -1*xf; ylocs[1][0] = -1*xf;ylocs[2][0] = -1*xf;
+			xlocs[3][0] = -1*xf; xlocs[4][0] = 0; xlocs[5][0] = xf;
+			ylocs[3][0] = 0; ylocs[4][0] = 0; ylocs[5][0] = 0;
+			xlocs[6][0] = -1*xf; xlocs[7][0] = 0; xlocs[8][0] = xf;
+			ylocs[6][0] = xf; ylocs[7][0] = xf; ylocs[8][0] = xf;
+		}
 	
 		//calculates the x-coordinates for each cell the brush affects
 		private int calculateX(){
@@ -223,6 +253,33 @@ class spinbrush extends brush{
 		//orient 3
 		xlocs[0][3] = -1; xlocs[1][3] = 0; xlocs[2][3] = 1;
 		ylocs[0][3] = -1; ylocs[1][3] = 0; ylocs[2][0] = 1;
+		}
+		
+		//used to set parameters
+		public void setParameter(String parnam, int h){
+			if(parnam == "Xfact"){ xf = h; setXF();}
+			}
+			
+		//get parameter values
+		public int getParameter(String pname){
+			if(pname == "Xfact"){return xf;}
+			return -1;
+		}
+			
+		//sets expansion factor
+		private void setXF(){ 
+			//orient 0
+		xlocs[0][0] = 0; xlocs[1][0] = 0; xlocs[2][0] = 0;
+		ylocs[0][0] = -1*xf; ylocs[1][0] = 0; ylocs[2][0] = xf;
+		//orient 1
+		xlocs[0][1] = -1*xf; xlocs[1][1] = 0; xlocs[2][1] = xf;
+		ylocs[0][1] = xf; ylocs[1][1] = 0; ylocs[2][0] = -1*xf;
+		//orient 2
+		xlocs[0][2] = -1*xf; xlocs[1][2] = 0; xlocs[2][2] = xf;
+		ylocs[0][2] = 0; ylocs[1][2] = 0; ylocs[2][2] = 0;
+		//orient 3
+		xlocs[0][3] = -1*xf; xlocs[1][3] = 0; xlocs[2][3] = xf;
+		ylocs[0][3] = -1*xf; ylocs[1][3] = 0; ylocs[2][0] = xf;
 		}
 		
 	@Override public void setOrientation(int a){
