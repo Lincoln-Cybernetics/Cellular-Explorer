@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class randCell extends cell{
 	// describe the cell's neighborhood
-	
+	int inmode;//input mode 0 = no input
 	
 	// describe the current state of the cell
 	boolean active;
@@ -48,7 +48,7 @@ public class randCell extends cell{
 	
 	//constructor
 	public randCell(){
-		
+		inmode = 0;
 		active = false;
 		state = 0;
 		name = "Random";
@@ -90,6 +90,7 @@ public class randCell extends cell{
 			if(paramname == "Age"){ return age;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
+			if(paramname == "InMode"){return inmode;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
@@ -117,7 +118,7 @@ public class randCell extends cell{
 		
 		private void calculate(){if(bombadil.nextBoolean()){active = true;}else{active = false;}}
 		
-		public void purgeState(){ active = false; state = 0;}
+		public void purgeState(){ active = false; state = 0;age = 0;}
 		
 		public void activate(){ active = true; state = 1;}
 		
@@ -131,12 +132,6 @@ public class randCell extends cell{
 		// neighborhood setting methods
 		
 		public void setState( int a){ state = a;}
-		
-		public void setNeighborState( int[] address){ neighborstate = address;}
-		
-		
-		
-		
 		
 		
 }
