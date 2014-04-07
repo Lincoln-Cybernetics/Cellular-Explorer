@@ -17,7 +17,7 @@
 
 public class mbot extends cell{
 	// describe the cell's neighborhood
-	
+	int inmode;//input mode 0 = no input, 1 = binary, 2 = int;
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -31,7 +31,7 @@ public class mbot extends cell{
 	
 	// neighborhood variables
 	
-	
+	boolean[] neighbors;
 	int mystate;
 	
 	
@@ -55,7 +55,7 @@ public class mbot extends cell{
 	public mbot(){
 		map = new threebrush();
 		neighbors = new boolean[9];
-		
+		inmode = 1;
 		active = false;
 		state = 0;
 		name = "M.B.O.T.";
@@ -78,7 +78,7 @@ public class mbot extends cell{
 		public mbot(String type){
 			map = new threebrush();
 			neighbors = new boolean[9];
-		
+		if(type == "OnCell" || name == "OffCell" || name == "BlinkCell"){inmode = 0;} else{inmode = 1;}
 		active = false;
 		state = 0;
 		name = type;
@@ -151,6 +151,7 @@ public class mbot extends cell{
 			if(control == "Born"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
 			if(control == "Survives"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
 			if(control == "Mirror"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
+			if(control == "Xfact"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return false;}else{ return true;}}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
@@ -192,7 +193,7 @@ public class mbot extends cell{
 		
 		@Override public int getParameter(String paramname){ 
 			
-			if(paramname == "HoodSize"){return map.getBrushLength();}
+			if(paramname == "HoodSize"){if(name == "OnCell" || name == "OffCell" || name == "BlinkCell"){return 0;} else{return map.getBrushLength();}}
 			if(paramname == "NextX"){return map.getNextX();}
 			if(paramname == "NextY"){return map.getNextY();}
 			if(paramname == "Age"){ return age;}
@@ -201,6 +202,8 @@ public class mbot extends cell{
 			if(paramname == "Matcount"){ return matcount;}
 			if(paramname == "MirrX"){ return hoodx;}
 			if(paramname == "MirrY"){ return hoody;}
+			if(paramname == "InMode"){return inmode;}
+			if(paramname == "Xfact"){return map.getParameter("Xfact");}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
@@ -210,6 +213,7 @@ public class mbot extends cell{
 			if(paramname == "Matcount"){ matcount = a;}
 			if(paramname == "MirrX"){hoodx = a;if(mirror){setLocation(hoodx, hoody);}}
 			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "Xfact"){map.setParameter("Xfact", a);}
 			}
 			
 		@Override public void setRule(int a, boolean b){if(a < 9){born[a] = b;}else{if(a < 18){survives[a-9] =b;}}}
@@ -230,7 +234,7 @@ public class mbot extends cell{
 			}
 		
 		 private void calculate(){
-			int cellstate = 0;
+			int cellstate = 0;if(name == "BlinkCell"){ neighbors[4] = active;}
 			for (int v = 0; v < neighbors.length; v++){
 				if(v == 4){self = neighbors[v];}else{if(neighbors[v]){cellstate += 1;}}
 				}
@@ -239,7 +243,7 @@ public class mbot extends cell{
 		
 		
 		
-		public void purgeState(){ active = false; state = 0;}
+		public void purgeState(){ active = false; state = 0;age = 0;}
 		
 		public void activate(){ active = true; state = 1;}
 		
@@ -251,7 +255,9 @@ public class mbot extends cell{
 		
 		
 		// neighborhood setting methods
-		
+		@Override public void setNeighbors( int[] truckdrivin){
+			for(int g = 0; g <= truckdrivin.length-1; g++){if(truckdrivin[g] > 0){neighbors[g] = true;}
+		else{neighbors[g] = false;}}}
 		
 		public void setState( int a){ state = a;}
 		
