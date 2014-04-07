@@ -17,7 +17,12 @@
 
 public class cell{
 	// describe the cell's neighborhood
-	
+	int inmode;//input mode
+	/*Input Modes
+	 * 0 = no input
+	 * 1 = binary
+	 * 2 = Integer
+	 */
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -47,7 +52,7 @@ public class cell{
 	//constructor
 	public cell(){
 		map = new onebrush();
-		
+		inmode = 1;
 		active = false;
 		state = 0;
 		name = "Cell";
@@ -60,7 +65,9 @@ public class cell{
 		ages = false;
 		fade = -1;
 		fades = false;
-		neighbors = new boolean[1];}
+		neighbors = new boolean[1];
+		neighborstate = new int[1];
+		}
 		
 		//initilization
 		public void setLocation(int x, int y){
@@ -73,6 +80,7 @@ public class cell{
 			if(control == "Age"){ return true;}
 			if(control == "Fade"){ return true;}
 			if(control == "Mirror"){ return true;}
+			if(control == "InMode"){return true;}
 			 return false;}
 		
 		public boolean getOption(String opname){ 
@@ -82,8 +90,12 @@ public class cell{
 			return false;}
 		
 		public void setOption(String opname, boolean b){
-			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			
+			if(inmode != 2){
+			if(opname == "Ages"){ages = b;if(b == false){ fades = false; if(active){age = 1;}else{age = 0;}}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
+			}
+			
 			if(opname == "Mirror"){mirror = b; if(b){hoodx = -1; hoody = 0; name  ="Mirror";}else{hoodx = -1; hoody = -1; name = "Cell";}}
 			}
 		
@@ -96,6 +108,7 @@ public class cell{
 			if(paramname == "Fade"){ return fade;}
 			if(paramname == "MirrX"){ return hoodx;}
 			if(paramname == "MirrY"){ return hoody;}
+			if(paramname == "InMode"){return inmode;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
@@ -103,6 +116,7 @@ public class cell{
 			if(paramname == "Fade"){fade = a;}
 			if(paramname == "MirrX"){hoodx = a; if(mirror){setLocation(hoodx, hoody);}}
 			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
+			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}}
 			}
 		
 		public void setRule(int a, boolean b){}
@@ -116,13 +130,18 @@ public class cell{
 		public void iterate(){
 			 calculate(); 
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
-			 else{if(active){state = 1;}else{state = 0;}}
 			 if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
-		private void calculate(){if(neighbors[0]){active = true;}else{active = false;}}
+		private void calculate(){
+			switch(inmode){
+				case 0: break;
+				case 1: if(neighborstate[0] == 1){active = true;state = 1;}else{active = false; state = 0;}break;
+				case 2: state = neighborstate[0]; if(state < 1){active = false;} else{active = true;}break;
+				default:state = neighborstate[0]; if(state < 1){active = false;} else{active = true;} break;}
+			}
 		
-		public void purgeState(){ active = false; state = 0;}
+		public void purgeState(){ active = false; state = 0; age = 0;}
 		
 		public void activate(){ active = true; state = 1;}
 		
@@ -139,8 +158,17 @@ public class cell{
 	
 		
 		public void setNeighbors( int[] truckdrivin){
-		for(int g = 0; g <= truckdrivin.length-1; g++){if(truckdrivin[g] > 0){neighbors[g] = true;}
-		else{neighbors[g] = false;}}}
+			
+		for(int g = 0; g <= truckdrivin.length-1; g++){
+		switch(inmode){
+			case 0: neighborstate[g] = 0; break;	
+			case 1: if(truckdrivin[g] > 0){neighborstate[g] = 1;}
+					else{neighborstate[g] = 0;} break;
+			case 2: neighborstate[g] = truckdrivin[g]; break;
+			default: neighborstate[g] = truckdrivin[g]; break; 
+			}
+			}
+		}
 		
 		
 		
