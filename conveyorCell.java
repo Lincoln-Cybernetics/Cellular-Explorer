@@ -17,7 +17,7 @@
 
 public class conveyorCell extends cell{
 	// describe the cell's neighborhood
-	
+	int inmode; // Input mode: 0 = no input, 1 = binary, 2 = integer
 	brush map;
 	// describe the current state of the cell
 	boolean active;
@@ -35,7 +35,7 @@ public class conveyorCell extends cell{
 	
 	
 	// neighborhood variables
-	
+	int [] neighborstate;
 	
 	
 	
@@ -54,7 +54,7 @@ public class conveyorCell extends cell{
 	//constructor
 	public conveyorCell(){
 		map = new threebrush();
-	
+		inmode = 1;
 		active = false;
 		state = 0;
 		name = "Conveyor";
@@ -70,7 +70,7 @@ public class conveyorCell extends cell{
 		ages = false;
 		fade = -1;
 		fades = false;
-		
+		neighborstate = new int[9];
 		neighbors = new boolean[9];
 		}
 		
@@ -84,6 +84,8 @@ public class conveyorCell extends cell{
 			if(control == "Fade"){return true;}
 			if(control == "Mat"){ return true;}
 			if(control == "Dir"){ return true;}
+			if(control == "InMode"){return true;}
+			if(control == "Xfact"){return true;}
 			 return false;}
 		
 		@Override public boolean getOption(String opname){ 
@@ -106,6 +108,8 @@ public class conveyorCell extends cell{
 			if(paramname == "Dir"){ return direction;}
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
+			if(paramname == "InMode"){return inmode;}
+			if(paramname == "Xfact"){return map.getParameter("Xfact");}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
@@ -114,6 +118,8 @@ public class conveyorCell extends cell{
 			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 7){direction %= 8;}}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
+			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}}
+			if(paramname == "Xfact"){map.setParameter("Xfact", a);}
 			
 			}
 			
@@ -130,24 +136,40 @@ public class conveyorCell extends cell{
 			 if(matcount >= mat){matcount = 0;
 			 calculate(); }
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
-			 else{if(active){state = 1;}else{state = 0;}}
 			  if(fades){ if( age >= fade){ purgeState(); age = 0;}}
 			}
 		
 		private void calculate(){
-			switch(direction){
-				case 0 : active = neighbors[7]; break;
-				case 1 : active = neighbors[6]; break;
-				case 2 : active = neighbors[3]; break;
-				case 3 : active = neighbors[0]; break;
-				case 4 : active = neighbors[1]; break;
-				case 5 : active = neighbors[2]; break;
-				case 6 : active = neighbors[5]; break;
-				case 7 : active = neighbors[8]; break;
-			}
+			switch(inmode){
+				case 0 : break;
+				case 1: active = false; state = 0;
+					switch(direction){
+						case 0 : if(neighborstate[7] == 1){active = true; state = 1;} break;
+						case 1 : if(neighborstate[6] == 1){active = true; state = 1;} break;
+						case 2 : if(neighborstate[3] == 1){active = true; state = 1;} break;
+						case 3 : if(neighborstate[0] == 1){active = true; state = 1;} break;
+						case 4 : if(neighborstate[1] == 1){active = true; state = 1;} break;
+						case 5 : if(neighborstate[2] == 1){active = true; state = 1;} break;
+						case 6 : if(neighborstate[5] == 1){active = true; state = 1;} break;
+						case 7 : if(neighborstate[8] == 1){active = true; state = 1;} break;
+						}break;
+				case 2:
+					switch(direction){
+						case 0 : state = neighborstate[7]; break;
+						case 1 : state = neighborstate[6]; break;
+						case 2 : state = neighborstate[3]; break;
+						case 3 : state = neighborstate[0]; break;
+						case 4 : state = neighborstate[1]; break;
+						case 5 : state = neighborstate[2]; break;
+						case 6 : state = neighborstate[5]; break;
+						case 7 : state = neighborstate[8]; break;
+					}
+					if(state < 1){active = false;}else{active = true;}
+					break;
+					default : break;}
 				}
 		
-		public void purgeState(){ active = false; state = 0;}
+		public void purgeState(){ active = false; state = 0;age = 0;}
 		
 		public void activate(){ active = true; state = 1;}
 		
@@ -161,10 +183,20 @@ public class conveyorCell extends cell{
 		// neighborhood setting methods
 		public void setSelf(boolean b){ self = b;}
 		
-		
-		
 		public void setState( int a){ state = a;}
 		
+		public void setNeighbors( int[] truckdrivin){
+			
+		for(int g = 0; g <= truckdrivin.length-1; g++){
+		switch(inmode){
+			case 0: neighborstate[g] = 0; break;	
+			case 1: if(truckdrivin[g] > 0){neighborstate[g] = 1;}
+					else{neighborstate[g] = 0;} break;
+			case 2: neighborstate[g] = truckdrivin[g]; break;
+			default: neighborstate[g] = truckdrivin[g]; break; 
+			}
+			}
+		}
 		
 		
 		
