@@ -9,10 +9,10 @@ int xlocal = 0;// used for mouse events
 int ylocal = 0;// used for mouse events
 int xmax;//x-dimension size of the automaton
 int ymax;// y-dimension size of the automaton
-int xaut;// x-dimension size of automaton array
-int yaut;// y-dimension size of automaton array
-int xaw; //working xaut
-int yaw; // working y aut
+//int xaut;// x-dimension size of automaton array
+//int yaut;// y-dimension size of automaton array
+//int xaw; //working xaut
+//int yaw; // working y aut
 int zt = 500;// speed setting
 brush sigmund;// editing brush
 int brushtype;
@@ -56,10 +56,12 @@ cicomp mercury; JFrame barnabus;
 JScrollPane mypane;//for holding the display
 
 public  editEngine(){
-	xaut = 1;
-	yaut = 1;
-	pistons = new cellBrain[xaut][yaut];
-	outputs = new cellComponent[xaut][yaut];
+	//xaut = 1;
+	//yaut = 1;
+	//pistons = new cellBrain[xaut][yaut];
+	//outputs = new cellComponent[xaut][yaut];
+	//mainBrain = new cellBrain();
+	//viewer = new cellComponent();
 	sigmund = new onebrush();
 	brushtype = 1;
 	castor = new cellOptionHandler();
@@ -69,10 +71,12 @@ public  editEngine(){
 	}
 	
 public editEngine(int cbx, int cby){
-	xaut = cbx;
-	yaut = cby;
-	pistons = new cellBrain[xaut][yaut];
-	outputs = new cellComponent[xaut][yaut];
+	//xaut = cbx;
+	//yaut = cby;
+	//pistons = new cellBrain[xaut][yaut];
+	//outputs = new cellComponent[xaut][yaut];
+	//mainBrain = new cellBrain();
+	//viewer = new cellComponent();
 	sigmund = new brush();
 	brushtype = 1;
 	castor = new cellOptionHandler();
@@ -83,17 +87,19 @@ public editEngine(int cbx, int cby){
 	
 public void initialize(int xmx, int ymx){
 	xmax = xmx; ymax = ymx; 
-	for(int y = 0; y <= yaut-1; y++){
-		for(int x = 0; x <= xaut-1; x++){
-	pistons[x][y] = new cellBrain(xmx,ymx, this);
-	 outputs[x][y] = new cellComponent(xmx,ymx);
-	  outputs[x][y].addMouseMotionListener(this);	
-		outputs[x][y].addMouseListener(this); 
+	//for(int y = 0; y <= yaut-1; y++){
+		//for(int x = 0; x <= xaut-1; x++){
+		mainBrain = new cellBrain(xmx,ymx,this);
+	viewer = new cellComponent(xmx,ymx);
+	//pistons[x][y] = new cellBrain(xmx,ymx, this);
+	// outputs[x][y] = new cellComponent(xmx,ymx);
+	  viewer.addMouseMotionListener(this);	
+		viewer.addMouseListener(this); 
 		
-		}}
+		//}}
 							setEditBrush(1);
 						  disp = new JFrame("Cellular Explorer");
-						  mypane = new JScrollPane(outputs[0][0]);
+						  mypane = new JScrollPane(viewer);
 						  disp.getContentPane().add(mypane);
 						  disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 						  disp.setSize(800,wh);
@@ -125,12 +131,12 @@ public void handleControl(ucEvent e){
 	//start/stop the automaton
 	public void playPause(){
 		if(mode == 2 || mode == 3){}
-		else{pistons[0][0].playPause();} }
+		else{mainBrain.playPause();} }
 		
 	// step forward one generation						
 	public void step(int a){
 		for (int n = 0; n < a; n++){
-			pistons[0][0].iterate();}
+			mainBrain.iterate();}
 		}
 
 	// recieves a signal from an interrupted cellBrain
@@ -138,7 +144,7 @@ public void handleControl(ucEvent e){
 	
 	//speed settings
 	public void setMasterSpeed(int a){
-		pistons[0][0].setZT(a); zt = a;}
+		mainBrain.setZT(a); zt = a;}
 		
 	public int getMasterSpeed(){
 		return zt;}
@@ -214,8 +220,8 @@ public void handleControl(ucEvent e){
 			  case 14: paramval[3] = a; break;
 			  
 			  //Magnify (cell size in the cell component)
-			  case 15: outputs[0][0].setMag(a); //mypane.setPreferredSize(new Dimension(xmax*a, ymax*a));
-			  mypane.setViewportView(outputs[0][0]);
+			  case 15: viewer.setMag(a); //mypane.setPreferredSize(new Dimension(xmax*a, ymax*a));
+			  mypane.setViewportView(viewer);
 			   break;
 		 }
 		 
@@ -284,19 +290,19 @@ public void handleControl(ucEvent e){
 		 */
 		 switch(m){
 			 case 0: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
-						mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
+						mode = dmode; mainBrain.setOpMode(dmode); viewer.setDispMode(dmode);  break;
 						
 			 case 1: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
-						mode = 1; dmode = 1; pistons[0][0].setOpMode(1); outputs[0][0].setDispMode(1);  break;
+						mode = 1; dmode = 1; mainBrain.setOpMode(1); viewer.setDispMode(1);  break;
 						
-			 case 2: setMouseAction("None");mode = 2; pistons[0][0].setOpMode(2); outputs[0][0].setDispMode(2);  break;
+			 case 2: setMouseAction("None");mode = 2; mainBrain.setOpMode(2); viewer.setDispMode(2);  break;
 			 
-			 case 3: setMouseAction("None");mode = 3; pistons[0][0].setOpMode(3); outputs[0][0].setDispMode(3);  break;
+			 case 3: setMouseAction("None");mode = 3; mainBrain.setOpMode(3); viewer.setDispMode(3);  break;
 			 
 			 case 4: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
-						mode = 4; dmode = 4; pistons[0][0].setOpMode(4); outputs[0][0].setDispMode(4);  break;
+						mode = 4; dmode = 4; mainBrain.setOpMode(4); viewer.setDispMode(4);  break;
 						
-			 default:  setMouseAction("None"); mode = dmode; pistons[0][0].setOpMode(dmode); outputs[0][0].setDispMode(dmode);  break;
+			 default:  setMouseAction("None"); mode = dmode; mainBrain.setOpMode(dmode); viewer.setDispMode(dmode);  break;
 		 }
 		}
 		
@@ -314,10 +320,10 @@ public void handleControl(ucEvent e){
 		//sets automaton topology
 		public void setWrap(int a){
 			switch(a){
-				case 0: pistons[0][0].setXYwrap(false, false); break;
-				case 1: pistons[0][0].setXYwrap(true, false); break;
-				case 2: pistons[0][0].setXYwrap(false, true); break;
-				case 3: pistons[0][0].setXYwrap(true, true); break;
+				case 0: mainBrain.setXYwrap(false, false); break;
+				case 1: mainBrain.setXYwrap(true, false); break;
+				case 2: mainBrain.setXYwrap(false, true); break;
+				case 3: mainBrain.setXYwrap(true, true); break;
 			}
 		}
 		
@@ -337,18 +343,18 @@ public void handleControl(ucEvent e){
 		
 		//Sets automaton-level rules
 		public void setAutomatonRule(String rn, boolean b, int t){
-			pistons[0][0].setRule(rn, b, t);}
+			mainBrain.setRule(rn, b, t);}
 			
 		
 
 	// refreshes the selection in the display
 					public void refreshSel(){
 						sedna.detectSelection();
-						for(int y=0;y<= pistons[0][0].ysiz-1;y++){
-						for(int x=0;x<= pistons[0][0].xsiz-1;x++){
-							outputs[0][0].setSelection(x,y,sedna.getSelection(x,y));
+						for(int y=0;y<= mainBrain.ysiz-1;y++){
+						for(int x=0;x<= mainBrain.xsiz-1;x++){
+							viewer.setSelection(x,y,sedna.getSelection(x,y));
 							}}
-							outputs[0][0].repaint();
+							viewer.repaint();
 						}
 						
 						
@@ -382,9 +388,9 @@ public void handleControl(ucEvent e){
 						if(thisx == -1 || thisy == -1){}
 						else{
 						if(!sedna.getSelected() ||sedna.getSelection(thisx,thisy)){
-						outputs[xaw][yaw].setHiLite(thisx, thisy, 5);}
+						viewer.setHiLite(thisx, thisy, 5);}
 						}}
-						outputs[xaw][yaw].repaint();
+						viewer.repaint();
 					}
 					
 					// applies the brush to a point in the automaton
@@ -416,7 +422,7 @@ public void handleControl(ucEvent e){
 							
 							// cell selection
 						if(maction == "BSel"){
-							outputs[xaw][yaw].setSelect(true);
+							viewer.setSelect(true);
 							 if(rcflag){sedna.removeCell(thisx,thisy);}
 							 else{sedna.selectCell(thisx,thisy);}
 						}
@@ -450,15 +456,15 @@ public void handleControl(ucEvent e){
 								if(mirrefflag[c] == 3 && ed.getOption("Mirror")){
 									int myx = anchorx[c] - a; int myy = anchory[c] - b;
 									myx = mirrefx[c]-myx; myy = mirrefy[c]-myy;
-									if(myx > xmax-1){if(pistons[xaw][yaw].getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
-									if(myx < 0){if(pistons[xaw][yaw].getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
-									if(myy > ymax-1){if(pistons[xaw][yaw].getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
-									if(myy < 0){if(pistons[xaw][yaw].getWrap("Y")){myy = myy+ymax;}else{myy = 0;}}
+									if(myx > xmax-1){if(mainBrain.getWrap("X")){myx = myx-xmax;}else{myx = xmax-1;}} 
+									if(myx < 0){if(mainBrain.getWrap("X")){ myx = myx+xmax;}else{myx = 0;}}
+									if(myy > ymax-1){if(mainBrain.getWrap("Y")){myy = myy-ymax;}else{myy = ymax-1;}}
+									if(myy < 0){if(mainBrain.getWrap("Y")){myy = myy+ymax;}else{myy = 0;}}
 									ed.setParameter("MirrX",myx); ed.setParameter("MirrY",myy);}
 								
-								pistons[xaw][yaw].addCell(a,b,ed);
-						outputs[xaw][yaw].setSpecies(a,b,decider.getCT());
-						//outputs[xaw][yaw].setLifespan(a,b,ed.getParameter("Mat")); 
+								mainBrain.addCell(a,b,ed);
+						viewer.setSpecies(a,b,decider.getCT());
+						
 						
 					}}
 					
@@ -489,14 +495,14 @@ public void handleControl(ucEvent e){
 							if(cellfillflag){
 								switch(cft){
 									case 0: populate(x,y,1); break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[3], opval[3]); break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[3], paramval[3]); break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[3], opval[3]); break;
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[3], paramval[3]); break;
 									default: populate(x,y,1); break;}
 								}
 							else{ switch(cdt){
 									case 0: populate(x,y,1);break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[2], opval[2]); break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[2], paramval[2]); break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[2], opval[2]); break;
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[2], paramval[2]); break;
 									default: populate(x,y,1); break;}
 								}
 									}}
@@ -506,18 +512,14 @@ public void handleControl(ucEvent e){
 							if(cellfillflag){
 								switch(cft){
 									case 0: populate(x,y,2); break;
-									case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[3], opval[3]);
-									 break;
-									case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[3], paramval[3]);
-									 break;
+									case 1:  break;
+									case 2: break;
 									default: populate(x,y,2); break;}
 								}
 							else{ switch(cdt){
 									case 0: populate(x,y,2);break;
-									case 1: //pistons[xaw][yaw].culture[x][y].setOption(toolstring[2], opval[2]); 
-									break;
-									case 2: //pistons[xaw][yaw].culture[x][y].setParameter(toolstring[2], paramval[2]);
-									 break;
+									case 1: break;
+									case 2: break;
 									default: populate(x,y,2); break;}
 								}
 							}} 
@@ -529,19 +531,19 @@ public void handleControl(ucEvent e){
 								int nose = randToolNum(3);
 								switch(cft){
 									case 0: populate(x,y,3); break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[3], snail.nextBoolean());
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[3], snail.nextBoolean());
 									 break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[3], nose);
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[3], nose);
 									 break;
 									default: populate(x,y,3); break;}
 								}
 							else{ 
 								int elbow = randToolNum(2);
 								switch(cdt){
-									case 0: populate(x,y,2);break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[2], snail.nextBoolean()); 
+									case 0: populate(x,y,3);break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[2], snail.nextBoolean()); 
 									break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[2], elbow);
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[2], elbow);
 									 break;
 									default: populate(x,y,3); break;}
 								}
@@ -571,15 +573,15 @@ public void handleControl(ucEvent e){
 						
 					// cell filling methods
 					public void fillCellinit(){
-						if(pistons[xaw][yaw].pete.pause){fillCell();}
-						else{ pistons[xaw][yaw].pete.Interrupt(2);}
+						if(mainBrain.pete.pause){fillCell();}
+						else{ mainBrain.pete.Interrupt(2);}
 					}
 					
 					// gateway method
 					public void fillCell(){
 						cellfillflag = true;
-						for(int y=0;y<= pistons[xaw][yaw].ysiz-1;y++){
-						for(int x=0;x<= pistons[xaw][yaw].xsiz-1;x++){
+						for(int y=0;y<= mainBrain.ysiz-1;y++){
+						for(int x=0;x<= mainBrain.xsiz-1;x++){
 						switch(cfo){
 							case 0: cellDraw(x,y); break;
 							case 1: cellCheckDraw(x,y,false); break;
@@ -587,7 +589,7 @@ public void handleControl(ucEvent e){
 							case 3: cellRCDraw(x,y); break;
 							default: cellDraw(x,y); break;}
 						}}
-						if( mode == 3){outputs[xaw][yaw].repaint();}
+						if( mode == 3){viewer.repaint();}
 						cellfillflag = false;
 							}
 						
@@ -597,21 +599,21 @@ public void handleControl(ucEvent e){
 						// sets the cells around the outside edge of the automaton 
 						public void setBorder(){	
 							cellfillflag = true;
-						for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
+						for(int x = 0; x <= mainBrain.xsiz-1; x++){
 							switch(cfo){
-								case 0: cellDraw(x,0); cellDraw(x, pistons[xaw][yaw].ysiz-1); break;
-								case 1: cellCheckDraw(x,0, false); cellCheckDraw(x,pistons[xaw][yaw].ysiz-1, false); break;
-								case 2: cellRandDraw(x,0); cellRandDraw(x, pistons[xaw][yaw].ysiz-1); break;
-								case 3: cellRCDraw(x,0); cellRCDraw(x, pistons[xaw][yaw].ysiz-1);break;
-								default: cellDraw(x,0); cellDraw(x, pistons[xaw][yaw].ysiz-1); break;}}
-						for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
+								case 0: cellDraw(x,0); cellDraw(x, mainBrain.ysiz-1); break;
+								case 1: cellCheckDraw(x,0, false); cellCheckDraw(x,mainBrain.ysiz-1, false); break;
+								case 2: cellRandDraw(x,0); cellRandDraw(x, mainBrain.ysiz-1); break;
+								case 3: cellRCDraw(x,0); cellRCDraw(x, mainBrain.ysiz-1);break;
+								default: cellDraw(x,0); cellDraw(x, mainBrain.ysiz-1); break;}}
+						for(int y = 0; y<= mainBrain.ysiz-1; y++){
 							switch(cfo){
-								case 0: cellDraw(0,y); cellDraw(pistons[xaw][yaw].xsiz-1, y); break;
-								case 1: cellCheckDraw(0,y, false); cellCheckDraw(pistons[xaw][yaw].xsiz-1,y, false); break;
-								case 2: cellRandDraw(0,y); cellRandDraw(pistons[xaw][yaw].xsiz-1, y); break;
-								case 3: cellRCDraw(0,y); cellRCDraw(pistons[xaw][yaw].xsiz-1, y); break;
-								default: cellDraw(0,y); cellDraw(pistons[xaw][yaw].xsiz-1, y); break;}}
-								if(mode == 3){outputs[xaw][yaw].repaint();}
+								case 0: cellDraw(0,y); cellDraw(mainBrain.xsiz-1, y); break;
+								case 1: cellCheckDraw(0,y, false); cellCheckDraw(mainBrain.xsiz-1,y, false); break;
+								case 2: cellRandDraw(0,y); cellRandDraw(mainBrain.xsiz-1, y); break;
+								case 3: cellRCDraw(0,y); cellRCDraw(mainBrain.xsiz-1, y); break;
+								default: cellDraw(0,y); cellDraw(mainBrain.xsiz-1, y); break;}}
+								if(mode == 3){viewer.repaint();}
 								cellfillflag = false;
 					}
 					
@@ -645,17 +647,17 @@ public void handleControl(ucEvent e){
 						
 						if(statefillflag){
 							switch(sft){
-								case 0: pistons[xaw][yaw].setCellState(x,y,1);outputs[0][0].setAState(x,y,1); break;
-								case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[1], opval[1]); break;
-								case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[1], paramval[1]); break;
-								default: pistons[xaw][yaw].setCellState(x,y,1);outputs[0][0].setAState(x,y,1); break;}
+								case 0: mainBrain.setCellState(x,y,1);viewer.setAState(x,y,1); break;
+								case 1: mainBrain.pete.culture[x][y].setOption(toolstring[1], opval[1]); break;
+								case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[1], paramval[1]); break;
+								default: mainBrain.setCellState(x,y,1);viewer.setAState(x,y,1); break;}
 							}
 							else{
 								switch(sdt){
-									case 0: pistons[xaw][yaw].setCellState(x,y,1);outputs[0][0].setAState(x,y,1); break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[0], opval[0]); break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[0], paramval[0]); break;
-									default: pistons[xaw][yaw].setCellState(x,y,1);outputs[0][0].setAState(x,y,1); break;}
+									case 0: mainBrain.setCellState(x,y,1);viewer.setAState(x,y,1); break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[0], opval[0]); break;
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[0], paramval[0]); break;
+									default: mainBrain.setCellState(x,y,1);viewer.setAState(x,y,1); break;}
 								}
 							}
 						}
@@ -667,21 +669,21 @@ public void handleControl(ucEvent e){
 					if(!sedna.getSelected() ||sedna.getSelection(x,y)){
 						if(statefillflag){
 							switch(sft){
-								case 0: pistons[xaw][yaw].setCellState(x,y,0);outputs[0][0].setAState(x,y,0); break;
-								case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[1], false);
+								case 0: mainBrain.setCellState(x,y,0);viewer.setAState(x,y,0); break;
+								case 1: mainBrain.pete.culture[x][y].setOption(toolstring[1], false);
 								 break;
-								case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[1], 0);
+								case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[1], 0);
 								 break;
-								default: pistons[xaw][yaw].setCellState(x,y,0);outputs[0][0].setAState(x,y,0); break;}
+								default: mainBrain.setCellState(x,y,0);viewer.setAState(x,y,0); break;}
 							}
 							else{
 								switch(sdt){
-									case 0: pistons[xaw][yaw].setCellState(x,y,0);outputs[0][0].setAState(x,y,0); break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[0], false);
+									case 0: mainBrain.setCellState(x,y,0);viewer.setAState(x,y,0); break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[0], false);
 									 break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[0], 0);
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[0], 0);
 									 break;
-									 default: pistons[xaw][yaw].setCellState(x,y,0);outputs[0][0].setAState(x,y,0); break;
+									 default: mainBrain.setCellState(x,y,0);viewer.setAState(x,y,0); break;
 								}
 							}
 						}}
@@ -695,22 +697,22 @@ public void handleControl(ucEvent e){
 						if(twig){twog = foghorn.nextInt(256)+1;}else{twog = 0;}
 						if(statefillflag){
 							switch(sft){
-								case 0: pistons[xaw][yaw].setCellState(x,y,twog);outputs[0][0].setAState(x,y,twog); break;
-								case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[1], foghorn.nextBoolean());
+								case 0: mainBrain.setCellState(x,y,twog);viewer.setAState(x,y,twog); break;
+								case 1: mainBrain.pete.culture[x][y].setOption(toolstring[1], foghorn.nextBoolean());
 								 break;
-								case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[1], dunebuggy);
+								case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[1], dunebuggy);
 								 break;
-								default: pistons[xaw][yaw].setCellState(x,y,twog);outputs[0][0].setAState(x,y,twog); break;}
+								default: mainBrain.setCellState(x,y,twog);viewer.setAState(x,y,twog); break;}
 							}
 							else{
 								int pickaxe = randToolNum(0);
 								switch(sdt){
-									case 0: pistons[xaw][yaw].setCellState(x,y,twog);outputs[0][0].setAState(x,y,twog); break;
-									case 1: pistons[xaw][yaw].pete.culture[x][y].setOption(toolstring[0], foghorn.nextBoolean());
+									case 0: mainBrain.setCellState(x,y,twog);viewer.setAState(x,y,twog); break;
+									case 1: mainBrain.pete.culture[x][y].setOption(toolstring[0], foghorn.nextBoolean());
 									 break;
-									case 2: pistons[xaw][yaw].pete.culture[x][y].setParameter(toolstring[0], pickaxe);
+									case 2: mainBrain.pete.culture[x][y].setParameter(toolstring[0], pickaxe);
 									 break;
-									 default: pistons[xaw][yaw].setCellState(x,y,twog);outputs[0][0].setAState(x,y,twog); break;
+									 default: mainBrain.setCellState(x,y,twog);viewer.setAState(x,y,twog); break;
 								}
 							}
 						}
@@ -729,8 +731,8 @@ public void handleControl(ucEvent e){
 				
 				//gateway method
 				public void fillState(){
-					if(pistons[xaw][yaw].pete.pause){stateFillSelect();}
-					else{ pistons[xaw][yaw].pete.Interrupt(1);}
+					if(mainBrain.pete.pause){stateFillSelect();}
+					else{ mainBrain.pete.Interrupt(1);}
 					}
 				
 					
@@ -761,7 +763,7 @@ public void handleControl(ucEvent e){
 					for(int y=0;y<= ymax-1;y++){
 					for(int x=0;x<= xmax-1;x++){
 						stateDraw(x,y);}}
-						if(mode != 3){pistons[xaw][yaw].refreshState();}
+						if(mode != 3){mainBrain.refreshState();}
 					} 
 						
 				private void stateRandFill(){
@@ -769,14 +771,14 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 						stateRandDraw(x,y);
 					}} 
-					if( mode != 3){ pistons[xaw][yaw].refreshState();}
+					if( mode != 3){ mainBrain.refreshState();}
 					}
 					
 				private void stateClearFill(){
 					for(int y=0;y<= ymax-1;y++){
 					for(int x=0;x<= xmax-1;x++){
-						pistons[xaw][yaw].state[x][y] = 0; pistons[xaw][yaw].pete.culture[x][y].purgeState();}}
-						if(mode != 3){pistons[xaw][yaw].refreshState();}
+						mainBrain.state[x][y] = 0; mainBrain.pete.culture[x][y].purgeState();}}
+						if(mode != 3){mainBrain.refreshState();}
 						}
 					
 				private void stateCheckFill(){
@@ -784,7 +786,7 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 					stateCheckDraw(x,y, true);
 					}} 
-					if(mode != 3){pistons[xaw][yaw].refreshState();}
+					if(mode != 3){mainBrain.refreshState();}
 					}
 					
 				private void stateRCFill(){
@@ -792,71 +794,58 @@ public void handleControl(ucEvent e){
 					for(int x=0;x<= xmax-1;x++){
 						if( y % 2 == 1 || x % 2 == 1){stateCheckDraw(x,y,true);}
 						else{stateRandDraw(x,y);}}}
-						if(mode != 3){pistons[xaw][yaw].refreshState();}
+						if(mode != 3){mainBrain.refreshState();}
 					}
 				
 				private void stateInvert(){
 					for(int y = 0; y<= ymax-1; y++){
 						for(int x=0; x<= xmax-1; x++){
 							if(!sedna.getSelected() ||sedna.getSelection(x,y)){
-								int f = 0;
-								if(pistons[xaw][yaw].state[x][y] > 0){f = 1;}
-								pistons[xaw][yaw].setCellState(x,y,f);}}}
-					if(mode != 3){pistons[xaw][yaw].refreshState();}
+								if(mainBrain.state[x][y] == 0){mainBrain.setCellState(x,y,-1);}
+								mainBrain.setCellState(x,y,mainBrain.state[x][y]*-1);}}}
+					if(mode != 3){mainBrain.refreshState();}
 				}		
-				
 			
-						
 			
-
-	// mouse interaction methods
-					private void setWorkAut(MouseEvent o){
-						for(int y = 0; y <= yaut-1; y++){
-							for(int x = 0; x <= xaut-1; x++){
-								if(o.getSource() == outputs[x][y]){
-									xaw = x; yaw = y;}
-								}}
-							}
-							
-					
+			//Mouse Interaction Methods		
 	
 					public void mouseMoved( MouseEvent e){
-						setWorkAut(e);
-						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						//setWorkAut(e);
+						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/viewer.magnify;}
+						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[xaw][yaw].pete.culture[xlocal][ylocal]);}
-						outputs[xaw][yaw].remHilite();
+						if(mercury != null){mercury.setCell(mainBrain.pete.culture[xlocal][ylocal]);}
+						viewer.remHilite();
 						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
 					}
 						 // draws rectangle during rectangle selection
-						 if(maction == "SRaction"){for(int y = 0; y <= pistons[xaw][yaw].ysiz-1; y++){
-												for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
-													outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
-							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }
+						 if(maction == "SRaction"){for(int y = 0; y <= mainBrain.ysiz-1; y++){
+												for(int x = 0; x <= mainBrain.xsiz-1; x++){
+													viewer.setSelection(x,y,sedna.getSelection(x,y));}}
+							 viewer.finishRect(xlocal,ylocal); }
 							 
 						 if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 							}
 						}
 						
 						}
 						
 					public void mouseDragged(MouseEvent e) {
-						setWorkAut(e);
-						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						//setWorkAut(e);
+						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/viewer.magnify;}
+						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[xaw][yaw].pete.culture[xlocal][ylocal]);}
-						outputs[xaw][yaw].remHilite();
+						if(mercury != null){mercury.setCell(mainBrain.pete.culture[xlocal][ylocal]);}
+						viewer.remHilite();
 						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
@@ -864,52 +853,52 @@ public void handleControl(ucEvent e){
 					else{
 						 //  rectangle selection
 						 if(maction == "SRaction"){
-						 for(int y = 0; y <= pistons[xaw][yaw].ysiz-1; y++){
-							for(int x = 0; x <= pistons[xaw][yaw].xsiz-1; x++){
-								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
-							 outputs[xaw][yaw].finishRect(xlocal,ylocal); }}
+						 for(int y = 0; y <= mainBrain.ysiz-1; y++){
+							for(int x = 0; x <= mainBrain.xsiz-1; x++){
+								viewer.setSelection(x,y,sedna.getSelection(x,y));}}
+							 viewer.finishRect(xlocal,ylocal); }}
 							 
 							  if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 								}
 							}
 							 
 							}
 							
 					public void mouseEntered(MouseEvent e){
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
-						outputs[xaw][yaw].remHilite();
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
+						viewer.remHilite();
 						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
 						}
 						
 						 if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 							}
 						}
 						
 						}
 					
 					public void mouseExited(MouseEvent e){
-						outputs[xaw][yaw].remHilite();
+						viewer.remHilite();
 						}
 					
 					public void mousePressed(MouseEvent e){
-						setWorkAut(e);
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						//setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[xaw][yaw].pete.culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(mainBrain.pete.culture[xlocal][ylocal]);}
 						
 						if(isMouseUsed()){
 							
@@ -921,28 +910,28 @@ public void handleControl(ucEvent e){
 						//rectangle selection
 						if(maction == "SRect"){
 						sedna.startRect(xlocal,ylocal, !rcflag);
-						 outputs[xaw][yaw].remHilite();outputs[xaw][yaw].beginRect(xlocal,ylocal,!rcflag); maction = "SRaction";}
+						 viewer.remHilite();viewer.beginRect(xlocal,ylocal,!rcflag); maction = "SRaction";}
 						 
 					 }
 					 
 					  if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 							}
 						}
 						
 						}
 					
 					public void mouseReleased(MouseEvent e){
-						setWorkAut(e);
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						//setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[xaw][yaw].pete.culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(mainBrain.pete.culture[xlocal][ylocal]);}
 						
 						if(isMouseUsed()){ 
 							
@@ -953,19 +942,19 @@ public void handleControl(ucEvent e){
 						//rectangle selection
 						if(maction == "SRaction"){
 						sedna.endRect(xlocal,ylocal); 
-							for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
-							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
-								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
-								outputs[xaw][yaw].repaint(); sedna.detectSelection();
+							for(int y = 0; y<= mainBrain.ysiz-1; y++){
+							for(int x = 0; x<= mainBrain.xsiz-1; x++){
+								viewer.setSelection(x,y,sedna.getSelection(x,y));}}
+								viewer.repaint(); sedna.detectSelection();
 								
 									setMouseAction(remaction); remaction = "None";
 								}
 							}
 							
 							 if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 							}
 						}
 						
@@ -973,14 +962,14 @@ public void handleControl(ucEvent e){
 						
 					
 					public void mouseClicked(MouseEvent e){
-						setWorkAut(e);
-						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/outputs[xaw][yaw].magnify;}
-						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/outputs[xaw][yaw].magnify;}
-						if (xlocal > pistons[xaw][yaw].xsiz-1){xlocal = pistons[xaw][yaw].xsiz-1;}
-						if (ylocal > pistons[xaw][yaw].ysiz-1){ylocal = pistons[xaw][yaw].ysiz-1;}
+						//setWorkAut(e);
+						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
+						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
+						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
+						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
 						// send info to cell info display
-						if(mercury != null){mercury.setCell(pistons[xaw][yaw].pete.culture[xlocal][ylocal]);}
+						if(mercury != null){mercury.setCell(mainBrain.pete.culture[xlocal][ylocal]);}
 						//
 						if(isMouseUsed()){
 							
@@ -994,16 +983,16 @@ public void handleControl(ucEvent e){
 							rectflag = true;
 							maction = "SRaction";
 							sedna.startRect(xlocal,ylocal, !rcflag);
-							 outputs[xaw][yaw].remHilite();outputs[xaw][yaw].beginRect(xlocal,ylocal,!rcflag);
+							 viewer.remHilite();viewer.beginRect(xlocal,ylocal,!rcflag);
 							  
 						}
 						
 						if(maction == "SRaction" && rectflag == false){
 						sedna.endRect(xlocal,ylocal); 
-							for(int y = 0; y<= pistons[xaw][yaw].ysiz-1; y++){
-							for(int x = 0; x<= pistons[xaw][yaw].xsiz-1; x++){
-								outputs[xaw][yaw].setSelection(x,y,sedna.getSelection(x,y));}}
-								outputs[xaw][yaw].repaint(); sedna.detectSelection();
+							for(int y = 0; y<= mainBrain.ysiz-1; y++){
+							for(int x = 0; x<= mainBrain.xsiz-1; x++){
+								viewer.setSelection(x,y,sedna.getSelection(x,y));}}
+								viewer.repaint(); sedna.detectSelection();
 								setMouseAction(remaction); remaction = "None";
 							}
 						rectflag = false;
@@ -1016,8 +1005,8 @@ public void handleControl(ucEvent e){
 							switch(mirrefflag[1]){
 							case 0:	
 							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
-							outputs[xaw][yaw].setHiLite(xlocal, ylocal, 1);setMouseAction(remaction); break;
-							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; outputs[xaw][yaw].setHiLite(xlocal, ylocal, 3);
+							viewer.setHiLite(xlocal, ylocal, 1);setMouseAction(remaction); break;
+							case 1: mirrefflag[1] = 2; mirrefx[1] = xlocal; mirrefy[1] = ylocal; viewer.setHiLite(xlocal, ylocal, 3);
 							setMouseAction(remaction); break;
 						}}
 							//secondary cell
@@ -1025,8 +1014,8 @@ public void handleControl(ucEvent e){
 								switch(mirrefflag[2]){
 							case 0:	
 							castor.setInt("MirrX", xlocal);castor.setInt("MirrY", ylocal);
-							outputs[0][0].setHiLite(xlocal, ylocal, 2);setMouseAction(remaction); break;
-							case 1: mirrefflag[2] = 2; mirrefx[2] = xlocal; mirrefy[2] = ylocal; outputs[0][0].setHiLite(xlocal, ylocal, 4);
+							viewer.setHiLite(xlocal, ylocal, 2);setMouseAction(remaction); break;
+							case 1: mirrefflag[2] = 2; mirrefx[2] = xlocal; mirrefy[2] = ylocal; viewer.setHiLite(xlocal, ylocal, 4);
 							setMouseAction(remaction); break;
 						}}
 						
@@ -1035,9 +1024,9 @@ public void handleControl(ucEvent e){
 						
 				}
 					 if(mode == 3){
-							 if(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getOption("Mirror")){
-							 outputs[xaw][yaw].setHiLite(pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrX"), 
-							 pistons[xaw][yaw].pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
+							 if(mainBrain.pete.culture[xlocal][ylocal].getOption("Mirror")){
+							 viewer.setHiLite(mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrX"), 
+							 mainBrain.pete.culture[xlocal][ylocal].getParameter("MirrY"), 4);
 							}
 						}
 				
