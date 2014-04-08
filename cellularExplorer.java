@@ -115,13 +115,13 @@ public class cellularExplorer implements ucListener{
 					
 					//Controls 300 - 399 Selection Tools
 					case 300: if(Hank.butts[0].getText() != seldon){Hank.butts[0].setText(seldon);v1.setMouseAction("BSel");}
-								 else{Hank.butts[0].setText("Select by Brush");v1.outputs[0][0].remHilite();
+								 else{Hank.butts[0].setText("Select by Brush");v1.viewer.remHilite();
 								 if(v1.getMode() == 3){v1.setMouseAction("CDraw");}else{v1.setMouseAction("SDraw");}} break;//select by brush
 					case 301: v1.setMouseAction("SRect"); break;//select rectangle	
 					case 302: v1.sedna.selectAll(); v1.refreshSel(); break;//select all
 					case 303: v1.sedna.invertSel(); v1.refreshSel(); break;//invert selection
 					case 304: v1.sedna.deselect(); v1.refreshSel(); break;//deselect
-					case 305: v1.outputs[0][0].setSelect(!Hank.getBoolo()); break;// show/hide selection
+					case 305: v1.viewer.setSelect(!Hank.getBoolo()); break;// show/hide selection
 					
 					//Controls 400-499 Brush Controls
 					case 401: v1.setEditBrush(Inez.getBrush()); break;//Set Editing Brush type
