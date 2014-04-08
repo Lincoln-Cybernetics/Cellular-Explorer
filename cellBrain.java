@@ -80,7 +80,7 @@ class cellBrain  {
 		
 		//gets the current state
 		public void refreshState(){
-			controller.outputs[0][0].setState(state);}
+			controller.viewer.setState(state);}
 			
 			//Stubs for new structure
 			//iterate interrupt reciever
@@ -179,7 +179,6 @@ class cellBrain  {
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
 					if(b > 0){pete.culture[x][y].activate();} else{pete.culture[x][y].purgeState();}
-					//if(opmode == 4){controller.outputs[0][0].setAge(x,y, pete.culture[x][y].getState());}
 					state[x][y] = b;
 					
 				}
