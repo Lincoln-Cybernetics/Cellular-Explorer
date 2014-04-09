@@ -56,7 +56,9 @@ JLabel dirlabel;//direction label
 JButton mirbutt;// button to set mirror
 JButton refsetbutt;//button to set mirror reference point
 
-
+JSlider xfslider;//Neighborhood expansion factor
+JLabel xflabel;//Labels the slider
+JLabel xfind;//displays current value of xfslider
 
 // relate to sending command events
 int ct = 0; //cell-type
@@ -128,6 +130,11 @@ public cellPicker(){
 	//Any & All
 	opts[29] = new Checkbox("Any");
 	opts[30] = new Checkbox("All");
+	
+	//Expansion Factor
+	xfslider = new JSlider(1,8);
+	xfind = new JLabel("");
+	xflabel = new JLabel("Expansion Factor");
 	
 	
 	GroupLayout cpLayout = new GroupLayout(this);
@@ -231,6 +238,11 @@ public cellPicker(){
 				.addComponent(opts[28])
 				.addComponent(mirbutt)
 				.addComponent(refsetbutt))
+				//expansion Factor
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(xflabel)
+				.addComponent(xfslider)
+				.addComponent(xfind))
 				);
 				
 	cpLayout.setVerticalGroup(
@@ -330,6 +342,11 @@ public cellPicker(){
 				.addComponent(opts[28])
 				.addComponent(mirbutt)
 				.addComponent(refsetbutt))
+			//Expansion Factor
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(xflabel)
+				.addComponent(xfslider)
+				.addComponent(xfind))
 				);	
 		setLayout(cpLayout);
 		setPreferredSize(new Dimension(325,200));
@@ -369,6 +386,11 @@ public cellPicker(){
 		//init mirror
 		mirbutt.setVisible(false); mirbutt.setEnabled(false); mirbutt.addActionListener(this);
 		refsetbutt.setVisible(false); refsetbutt.setEnabled(false); refsetbutt.addActionListener(this);
+		
+		//Expansion Factor
+		xflabel.setVisible(false); xfslider.setVisible(false); xfslider.setEnabled(false);xfslider.setValue(1);
+		 xfslider.addChangeListener(this);xfslider.setMaximumSize(new Dimension(100,15));
+		xfind.setText("1"); xfind.setVisible(false);
 		
 	//init MBOT picker
 	MBOTPick.setVisible(false);
@@ -461,6 +483,8 @@ public void stateChanged(ChangeEvent e){
 	if(e.getSource() == fadeslider){gate.setInt("Fade", fadeslider.getValue()); fadelabel.setText(Integer.toString(fadeslider.getValue()));}
 	//set maturity setting
 	if(e.getSource() == matslider){gate.setInt("Mat", matslider.getValue()); matlabel.setText("Maturity: "+Integer.toString(matslider.getValue()));}
+	//Expansion Factor
+	if(e.getSource() == xfslider){gate.setInt("Xfact", xfslider.getValue()); xfind.setText(Integer.toString(xfslider.getValue()));}
 	}
 
 private void setCType(){
@@ -477,7 +501,7 @@ private void setCell(){
 
 private void setOpts(cell darwin){
 	boolean visifier = false;
-	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All", "Dir"};
+	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All", "Dir","Xfact"};
 	for(int concount = 0; concount< names.length; concount++){
 		 visifier =  darwin.getControls(names[concount]); 
 		switch(concount){
@@ -505,6 +529,7 @@ private void toggleControl(int a, boolean b){
 		case 8: opts[29].setVisible(b); opts[29].setEnabled(b); break;
 		case 9: opts[30].setVisible(b); opts[30].setEnabled(b); break;
 		case 10: for(int c = 0; c < 8; c++){dirs[c].setVisible(b); dirs[c].setEnabled(b);}dirlabel.setVisible(b); break;
+		case 11: xflabel.setVisible(b); xfslider.setVisible(b);xfslider.setEnabled(b);xfind.setVisible(b);if(b){xfslider.setValue(1);gate.setInt("Xfact",1);xfind.setText("1");} break;
 	}
 }
 
