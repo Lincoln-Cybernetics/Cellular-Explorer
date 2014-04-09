@@ -23,9 +23,10 @@ int direction = 0;
 boolean inver = false;
 boolean parity = false;
 boolean recursive = false;
-int mirrorx = 0;
-int mirrory = 0;
+int mirrorx = 0;//Mirror x-coordinate
+int mirrory = 0;//Mirror y-coordinate
 int dir = 0;//direction
+int xfactor = 1;//Neighborhood expansion factor
 boolean omni = false;//any orientation (symmetriCell)
 boolean total = false;//all orientation(symmetriCell)
 boolean[] rule = new boolean[8];//wolfram rules
@@ -67,6 +68,7 @@ public void setInt(String a, int b){
 	if(a == "Dir"){dir = b;}
 	if(a == "Fade"){fadenum = b;}
 	if(a == "Mat"){maturity = b;}
+	if(a == "Xfact"){xfactor = b;}
 }
 
 public void setBool(String a, boolean b){
@@ -132,6 +134,7 @@ public cell generateCell(){
 		if(tiamat.getControls("All")){ tiamat.setOption("All", total);}
 		if(tiamat.getControls("Any")){ tiamat.setOption("Any", omni);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
+		if(tiamat.getControls("Xfact")){ tiamat.setParameter("Xfact", xfactor);}
  return tiamat;
 }
 
@@ -238,6 +241,9 @@ class randcellOptionHandler extends cellOptionHandler{
 		if(tiamat.getControls("Fade")){
 		tiamat.setOption("Fades", shovel.nextBoolean());tiamat.setParameter("Fade", shovel.nextInt(256));}
 		
+		//Neighborhood Expansion factor
+		if(tiamat.getControls("Xfact")){
+			if(shovel.nextBoolean()){tiamat.setParameter("Xfact", 1);}else{tiamat.setParameter("Xfact", shovel.nextInt(4)+1);}}
 		 
 		
 		return tiamat;
