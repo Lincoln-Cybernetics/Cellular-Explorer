@@ -1044,15 +1044,15 @@ cell xerxes;
 public cicomp(){
 	//field name labels
 	fields[0] = new JLabel("Cell Type: ");
-	fields[1] = new JLabel("Age: ");
-	fields[2] = new JLabel("Fades: ");
-	fields[3] = new JLabel("Direction: ");
-	fields[4] = new JLabel("Maturity: ");
+	fields[1] = new JLabel("Age : ");
+	fields[2] = new JLabel("Fades : ");
+	fields[3] = new JLabel("Direction : ");
+	fields[4] = new JLabel("Maturity : ");
 	fields[5] = new JLabel("Wolfram Rule :");
 	fields[6] = new JLabel("B ");
 	fields[7] = new JLabel("/S ");
-	fields[8] = new JLabel("Mirror x: ");
-	fields[9] = new JLabel("Mirror y: ");
+	fields[8] = new JLabel("Mirror : ");
+	fields[9] = new JLabel("Neighborhood expansion : ");
 	//labels to hold the values
 	info[0] = new JLabel("Long-winded Moniker");
 	info[1] = new JLabel("999");
@@ -1196,9 +1196,13 @@ public void refCell(){
 	if(xerxes.getControls("WolfRule")){fields[5].setVisible(true);info[5].setText(Integer.toString(xerxes.getParameter("WolfRule")));info[5].setVisible(true);}
 	else{fields[5].setVisible(false);info[5].setVisible(false);}
 	//labels for Mirroring
-	if(xerxes.getOption("Mirror")){fields[8].setVisible(true); info[8].setText(Integer.toString(xerxes.getParameter("MirrX"))); info[8].setVisible(true); 
-		fields[9].setVisible(true); info[9].setText(Integer.toString(xerxes.getParameter("MirrY"))); info[9].setVisible(true);}
-	else{fields[8].setVisible(false); info[8].setVisible(false); fields[9].setVisible(false); info[9].setVisible(false);}
+	if(xerxes.getOption("Mirror")){fields[8].setVisible(true); 
+		info[8].setText(Integer.toString(xerxes.getParameter("MirrX"))+","+Integer.toString(xerxes.getParameter("MirrY")));
+		 info[8].setVisible(true);}
+	else{fields[8].setVisible(false); info[8].setVisible(false); }
+	//labels for neighborhood expansion
+	if(xerxes.getControls("Xfact")){fields[9].setVisible(true); info[9].setText(Integer.toString(xerxes.getParameter("Xfact")));info[9].setVisible(true);}
+	else{fields[9].setVisible(false);info[9].setVisible(false);}
 	
 	}
 
