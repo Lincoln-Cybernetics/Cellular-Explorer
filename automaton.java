@@ -21,7 +21,10 @@ String[] rulenames = new String[]{"B1", "B2", "CC"};//names for the rules
 boolean[] rules;//automaton-level rules (0- Boredom(1) 1- Boredom(2) 2- Compass Chaos)
 int[] rulevalues;//a settable value for each rule (a timer for rules 0,1,2)
 int[] rulestates;//current state for each rule (a counter for rules 0,1,2) Rule 2 borrows rulestates[1] while active
-boolean[][] boredboard;
+boolean[][] boredboard;//used to determine if the automaton's state has stagnated
+int[] bpol;//border policies 0 = closed; 1 = wrap; 2 = open;
+//border #s follow the cell direction convention: 0 = top; 1 = top-right; 2 = right; 3 = lower right; 4 = bottom;
+// 5 = lower-left; 6 = left; 7 = upper-left;
 
 //Automaton State
 boolean pause;//is the automaton paused? also controls pausing
@@ -64,6 +67,7 @@ public automaton( int a, int b){
 		rulevalues = new int[3];
 		rulestates = new int[3];
 		boredboard = new boolean[x][y];
+		bpol = new int[8];
 		firstflag = true;
 		mothership = new cellBrain();
 		combobulate = new Thread(this);
@@ -110,8 +114,11 @@ public automaton( int a, int b){
 
 				// set edge-wrap settings
 				public void setWrap(String d, boolean e){
-					if(d == "X"){xwrap = e;}
-					if(d == "Y"){ywrap = e;}
+					int s; if(e){s = 1;}else{s = 0;}
+					if(d == "X"){xwrap = e;bpol[2] = s; bpol[6] = s;}
+					if(d == "Y"){ywrap = e;bpol[0] = s; bpol[4] = s;}
+					if(xwrap && ywrap){bpol[1] = 1; bpol[3] = 1; bpol[5] = 1; bpol[7] = 1;}
+					else{bpol[1] = 0; bpol[3] = 0; bpol[5] = 0; bpol[7] = 0;}
 				}
 				
 				// get wrap settings
@@ -206,6 +213,7 @@ public void addCell(cell ecoli, int x, int y){
 public int getParameter(String pname){
 			if(pname == "Xloc"){return xmin;}
 			if(pname == "Yloc"){return ymin;}
+			if(pname == "ZT"){return ztime;}
 			return -1;}
 			
 public void setParameter(String name, int a){
@@ -238,14 +246,38 @@ public boolean convertBin(int s){
 				//edge wrapping does apply for neighborhoods
 				private int checkAddress(String axis, int value){
 					if(axis == "X"){ 
-						if(value >= xsiz){if(xwrap){return value - xsiz;}else{return -1;}}
-						if(value < 0){if(xwrap){return xsiz + value;} else{return -1;}}
+						if(value >= xsiz){//if(bpol[2] == 1){return value - xsiz;}else{return -1;}
+							switch(bpol[2]){
+								case 0: return -1;
+								case 1: return value - xsiz;
+								case 2: return mothership.checkLoc("X", value);
+							}
+							}
+						if(value < 0){//if(bpol[6] == 1){return xsiz + value;} else{return -1;}
+							switch(bpol[6]){
+								case 0: return -1;
+								case 1: return xsiz + value;
+								case 2: return mothership.checkLoc("X", value);
+							}
+							}
 						return value;
 					}
 					
 					if(axis == "Y"){
-						if(value >= ysiz){if(ywrap){return value - ysiz;}else{return -1;}}
-						if(value < 0){if(ywrap){return ysiz + value;}else{return -1;}}
+						if(value >= ysiz){//if(bpol[4] == 1){return value - ysiz;}else{return -1;}
+							switch(bpol[4]){
+								case 0: return -1;
+								case 1: return value - ysiz;
+								case 2: return mothership.checkLoc("Y", value);
+							}
+							}
+						if(value < 0){//if(bpol[0] == 1){return ysiz + value;}else{return -1;}
+							switch(bpol[0]){
+								case 0: return -1;
+								case 1: return ysiz + value;
+								case 2: return mothership.checkLoc("Y", value);
+							}
+							}
 						return value;
 					}
 					return -1;
