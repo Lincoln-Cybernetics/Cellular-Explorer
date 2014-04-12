@@ -1045,7 +1045,7 @@ public cicomp(){
 	//field name labels
 	fields[0] = new JLabel("Cell Type: ");
 	fields[1] = new JLabel("Age : ");
-	fields[2] = new JLabel("Fade : ");
+	fields[2] = new JLabel("Fades : ");
 	fields[3] = new JLabel("Direction : ");
 	fields[4] = new JLabel("Maturity : ");
 	fields[5] = new JLabel("Wolfram Rule :");
