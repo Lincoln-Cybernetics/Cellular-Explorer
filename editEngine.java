@@ -1036,8 +1036,8 @@ public void handleControl(ucEvent e){
 
 //Cell information viewer
 class cicomp extends JComponent{
-JLabel[] fields = new JLabel[10];
-JLabel[] info = new JLabel[10];
+JLabel[] fields = new JLabel[11];
+JLabel[] info = new JLabel[11];
 
 cell xerxes;
 
@@ -1045,7 +1045,7 @@ public cicomp(){
 	//field name labels
 	fields[0] = new JLabel("Cell Type: ");
 	fields[1] = new JLabel("Age : ");
-	fields[2] = new JLabel("Fades : ");
+	fields[2] = new JLabel("Fade : ");
 	fields[3] = new JLabel("Direction : ");
 	fields[4] = new JLabel("Maturity : ");
 	fields[5] = new JLabel("Wolfram Rule :");
@@ -1053,6 +1053,7 @@ public cicomp(){
 	fields[7] = new JLabel("/S ");
 	fields[8] = new JLabel("Mirror : ");
 	fields[9] = new JLabel("Neighborhood expansion : ");
+	fields[10] = new JLabel("Input Mode : ");
 	//labels to hold the values
 	info[0] = new JLabel("Long-winded Moniker");
 	info[1] = new JLabel("999");
@@ -1064,6 +1065,7 @@ public cicomp(){
 	info[7] = new JLabel("012345678");
 	info[8] = new JLabel("999");
 	info[9] = new JLabel("999");
+	info[10] = new JLabel("Integer");
 	
 	xerxes = new cell();
 	
@@ -1076,6 +1078,9 @@ public cicomp(){
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[0])
 				.addComponent(info[0]))
+			.addGroup(ccl.createSequentialGroup()
+				.addComponent(fields[10])
+				.addComponent(info[10]))
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[1])
 				.addComponent(info[1]))
@@ -1110,9 +1115,12 @@ public cicomp(){
 				.addComponent(fields[0])
 				.addComponent(info[0]))
 			.addGroup(ccl.createParallelGroup()
+				.addComponent(fields[10])
+				.addComponent(info[10]))
+			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[1])
 				.addComponent(info[1]))
-			.addGroup(ccl.createSequentialGroup()
+			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[2])
 				.addComponent(info[2]))
 			.addGroup(ccl.createParallelGroup()
@@ -1148,6 +1156,8 @@ public void init(){
 		fields[h].setVisible(false);
 		info[h].setVisible(false);}
 		info[0].setText("");
+		fields[10].setVisible(true); info[10].setVisible(true);
+		info[10].setText("");
 	}
 	
 public void setCell(cell hammurabi){
@@ -1156,6 +1166,11 @@ public void setCell(cell hammurabi){
 	
 public void refCell(){
 	info[0].setText(xerxes.getName());
+	//Input Mode
+	switch(xerxes.getParameter("InMode")){
+	case 0: info[10].setText("No Input"); break;
+	case 1: info[10].setText("Binary"); break;
+	case 2: info[10].setText("Integer"); break;}
 	// set labels for Aging
 	if(xerxes.getOption("Ages")){fields[1].setVisible(true); info[1].setText(Integer.toString(xerxes.getParameter("Age"))); info[1].setVisible(true);}
 	else{fields[1].setVisible(false); info[1].setVisible(false);}
