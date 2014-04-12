@@ -42,11 +42,14 @@ class cellBrain  {
 	 * 3 = cell editing
 	 * 4 = multicolor rendered normal running mode
 	 * */
-	//int dt = 1;//display type
+	
 	boolean xwrap = false;//edge wrapping x-axis
 	boolean ywrap = false;// edge wrapping y-axis
-	//Thread t = new Thread(this);
 	
+	int[] borpol;// border polcies 0 = closed; 1 = wrap 
+	//border #s follow the cell direction convention: 0 = top; 1 = top-right; 2 = right; 3 = lower right; 4 = bottom;
+	// 5 = lower-left; 6 = left; 7 = upper-left;
+
 	
 	// constructors
 	
@@ -56,11 +59,12 @@ class cellBrain  {
 		xsiz = 400;
 		ysiz = 150;
 		state = new int[xsiz][ysiz];
+		borpol = new int[8];	
 		//pete = new automaton(xsiz,ysiz);
 		//pete.locate(0,0);
 		//setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
-			
+	
 		
 			}
 	
@@ -70,12 +74,14 @@ class cellBrain  {
 		xsiz = a;
 		ysiz = b;
 		state = new int[xsiz][ysiz];
+		borpol = new int[8];
 		pete = new automaton(xsiz,ysiz);
 		pete.locate(0,0);
 		pete.imprint(this);
 		pete.setEnabled(true);
 		setXYwrap(false,false);
-		ztime = controller.getMasterSpeed();	
+		ztime = controller.getMasterSpeed();
+			
 			}
 		
 		//gets the current state
@@ -119,6 +125,12 @@ class cellBrain  {
 				
 				// set edge-wrapping
 				public void setXYwrap(boolean xwr, boolean ywr){xwrap = xwr; ywrap = ywr; 
+					int xpol; if(xwr){xpol = 1;}else{xpol = 0;}
+					int ypol; if(ywr){ypol = 1;}else{ypol = 0;}
+					borpol[2] = xpol; borpol[6] = xpol;
+					borpol[0] = ypol; borpol[4] = ypol;
+					if(xwr && ywr){borpol[1] = 1; borpol[3] = 1; borpol[5] = 1; borpol[7] = 1;}
+					else{borpol[1] = 0; borpol[3] = 0; borpol[5] = 0; borpol[7] = 0;}
 				pete.setWrap("X", xwr); pete.setWrap("Y", ywr);
 				}
 				 
@@ -131,16 +143,16 @@ class cellBrain  {
 				
 				//checks for out of bounds points, 
 				//edge wrapping does apply for neighborhoods
-				private int checkAddress(String axis, int value){
+				public int checkLoc(String axis, int value){
 					if(axis == "X"){ 
-						if(value >= xsiz){if(xwrap){return value - xsiz;}else{return -1;}}
-						if(value < 0){if(xwrap){return xsiz + value;} else{return -1;}}
+						if(value >= xsiz){if(borpol[2] == 1){return value - xsiz;}else{return -1;}}
+						if(value < 0){if(borpol[6] == 1){return xsiz + value;} else{return -1;}}
 						return value;
 					}
 					
 					if(axis == "Y"){
-						if(value >= ysiz){if(ywrap){return value - ysiz;}else{return -1;}}
-						if(value < 0){if(ywrap){return ysiz + value;}else{return -1;}}
+						if(value >= ysiz){if(borpol[4] == 1){return value - ysiz;}else{return -1;}}
+						if(value < 0){if(borpol[6] == 1){return ysiz + value;}else{return -1;}}
 						return value;
 					}
 					return -1;
