@@ -203,14 +203,21 @@ public void paintComponent( Graphics g){
 							
 							//multicolor rendering
 							if (mode == 4){
-									if(cstate[x][y] <= 0){g.setColor(Color.black);}
-									if(cstate[x][y] == 1){g.setColor(Color.white);}
-									if(cstate[x][y] > 1 && cstate[x][y] < 4){g.setColor(Color.green);}
-									if(cstate[x][y] > 3 && cstate[x][y] < 8){g.setColor(Color.yellow);}
-									if(cstate[x][y] > 7 && cstate[x][y] < 16){g.setColor(Color.orange);}
-									if(cstate[x][y] > 15 && cstate[x][y] < 32){g.setColor(Color.red);}
-									if(cstate[x][y] > 31 && cstate[x][y] < 64){g.setColor(new Color(156,21,7));}
-									if(cstate[x][y] > 63 ){g.setColor(new Color(144,68,21));}
+								
+									switch(cstate[x][y]){
+									case 0: g.setColor(Color.black);break;
+									case 1: g.setColor(Color.white);break;
+									case 2: g.setColor(new Color(127, 255, 127)); break;
+									case 3: g.setColor(Color.green);break;
+									case 4: g.setColor(new Color(84, 167, 0)); break;
+									case 5: g.setColor(new Color(160, 211, 0)); break;  
+									case 6: g.setColor(Color.yellow);break;
+									case 7: g.setColor(Color.orange);break;
+									case 8: g.setColor(Color.red);break;
+									case 9: g.setColor(new Color(156,21,7));break;
+									case 10: g.setColor(new Color(144,68,21));break;
+									default: g.setColor(Color.pink); break;
+									}
 									
 								
 								g.fillRect(x*magnify,y*magnify,magnify,magnify);}
