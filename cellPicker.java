@@ -104,7 +104,7 @@ public cellPicker(){
 	// age and fade options
 	opts[0] = new Checkbox("Ages"); 
 	opts[1] = new Checkbox("Fades");
-	fadeslider = new JSlider(1,512);
+	fadeslider = new JSlider(1,1024);
 	fadelabel = new JLabel();
 	
 	//maturity option
