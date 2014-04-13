@@ -129,8 +129,9 @@ public class cell{
 		
 		public void iterate(){
 			 calculate(); 
-			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} state = age;}
-			 if(fades){ if( age >= fade){ purgeState(); age = 0;}}
+			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} 
+				if(fades){ if( age >= fade){ purgeState(); age = 0;}} 
+				state = agify(age);}
 			}
 		
 		private void calculate(){
@@ -140,6 +141,22 @@ public class cell{
 				case 2: state = neighborstate[0]; if(state < 1){active = false;} else{active = true;}break;
 				default:state = neighborstate[0]; if(state < 1){active = false;} else{active = true;} break;}
 			}
+			
+		protected int agify(int a){
+									if(a <= 0){return 0;}
+									if(a == 1){return 1;}
+									if(a > 1 && a < 4){return 2;}
+									if(a > 3 && a < 8){return 3;}
+									if(a > 7 && a < 16){return 4;}
+									if(a > 15 && a < 32){return 5;}
+									if(a > 31 && a < 64){return 6;}
+									if(a > 63 && a < 128){return 7;}
+									if(a > 127 && a < 256){return 8;}
+									if(a > 255 && a < 512){return 9;}
+									if( a > 511 && a < 1024){return 10;}
+									if( a > 1023){ age = 512; return 10;} 
+									return -1;
+								}
 		
 		public void purgeState(){ active = false; state = 0; age = 0;}
 		
