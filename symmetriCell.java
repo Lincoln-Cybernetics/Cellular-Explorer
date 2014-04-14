@@ -154,7 +154,7 @@ public class symmetriCell extends cell{
 			 calculate(); }
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} 
 				if(fades){ if( age >= fade){ purgeState(); age = 0;}}
-				state = agify(age);}
+				if( age > 1023){ age = 512; }state = agify(age);}
 			 else{if(active){state = 1;}else{state = 0;}}
 			
 			}
@@ -209,7 +209,7 @@ public class symmetriCell extends cell{
 			//System.out.println(neighborstate.length);
 		for(int g = 0; g <= truckdrivin.length-1; g++){
 		switch(inmode){
-			case 0: neighborstate[g] = 0; break;	
+			case 0:  break;	
 			case 1: if(truckdrivin[g] > 0){neighborstate[g] = 1;}
 					else{neighborstate[g] = 0;} break;
 			case 2: neighborstate[g] = truckdrivin[g]; break;
