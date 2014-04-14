@@ -131,7 +131,7 @@ public class cell{
 			 calculate(); 
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} 
 				if(fades){ if( age >= fade){ purgeState(); age = 0;}} 
-				state = agify(age);}
+				if( age > 1023){ age = 512; }state = agify(age);}
 			}
 		
 		private void calculate(){
@@ -154,7 +154,7 @@ public class cell{
 									if(a > 127 && a < 256){return 8;}
 									if(a > 255 && a < 512){return 9;}
 									if( a > 511 && a < 1024){return 10;}
-									if( a > 1023){ age = 512; return 10;} 
+									 
 									return -1;
 								}
 		
