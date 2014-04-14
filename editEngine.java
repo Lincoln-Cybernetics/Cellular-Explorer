@@ -1036,8 +1036,8 @@ public void handleControl(ucEvent e){
 
 //Cell information viewer
 class cicomp extends JComponent{
-JLabel[] fields = new JLabel[11];
-JLabel[] info = new JLabel[11];
+JLabel[] fields = new JLabel[12];
+JLabel[] info = new JLabel[12];
 
 cell xerxes;
 
@@ -1054,6 +1054,7 @@ public cicomp(){
 	fields[8] = new JLabel("Mirror : ");
 	fields[9] = new JLabel("Neighborhood expansion : ");
 	fields[10] = new JLabel("Input Mode : ");
+	fields[11] = new JLabel("Current State : ");
 	//labels to hold the values
 	info[0] = new JLabel("Long-winded Moniker");
 	info[1] = new JLabel("999");
@@ -1066,6 +1067,7 @@ public cicomp(){
 	info[8] = new JLabel("999");
 	info[9] = new JLabel("999");
 	info[10] = new JLabel("Integer");
+	info[11] = new JLabel("999");
 	
 	xerxes = new cell();
 	
@@ -1081,6 +1083,9 @@ public cicomp(){
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[10])
 				.addComponent(info[10]))
+			.addGroup(ccl.createSequentialGroup()
+				.addComponent(fields[11])
+				.addComponent(info[11]))
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[1])
 				.addComponent(info[1]))
@@ -1117,6 +1122,9 @@ public cicomp(){
 			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[10])
 				.addComponent(info[10]))
+			.addGroup(ccl.createParallelGroup()
+				.addComponent(fields[11])
+				.addComponent(info[11]))
 			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[1])
 				.addComponent(info[1]))
@@ -1158,6 +1166,8 @@ public void init(){
 		info[0].setText("");
 		fields[10].setVisible(true); info[10].setVisible(true);
 		info[10].setText("");
+		fields[11].setVisible(true); info[11].setVisible(true);
+		info[11].setText("");
 	}
 	
 public void setCell(cell hammurabi){
@@ -1165,12 +1175,15 @@ public void setCell(cell hammurabi){
 	refCell();}
 	
 public void refCell(){
+	//Cell Name
 	info[0].setText(xerxes.getName());
 	//Input Mode
 	switch(xerxes.getParameter("InMode")){
 	case 0: info[10].setText("No Input"); break;
 	case 1: info[10].setText("Binary"); break;
 	case 2: info[10].setText("Integer"); break;}
+	//Cell's current State
+	info[11].setText(Integer.toString(xerxes.getState()));
 	// set labels for Aging
 	if(xerxes.getOption("Ages")){fields[1].setVisible(true); info[1].setText(Integer.toString(xerxes.getParameter("Age"))); info[1].setVisible(true);}
 	else{fields[1].setVisible(false); info[1].setVisible(false);}
