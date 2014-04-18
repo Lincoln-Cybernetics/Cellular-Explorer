@@ -83,8 +83,8 @@ public class cellularExplorer implements ucListener{
 					case 13: v1.setAutomatonRule(Alice.getRName(), Alice.getRV(),Alice.getRT());  break;//Automaton rules
 					case 14:  v1.setMode(Alice.getDispType()); break;//Mode setting
 					case 15: v1.setParameter("Magnify", Alice.getMag()); break;//Sets the size of cells in the display
-					case 16: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL());
-					npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint(); break;//Create new Board
+					case 16: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL(), whiteRabbit.getXAVAL(), whiteRabbit.getYAVAL());
+					npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint(); whiteRabbit = null; break;//Create new Board
 					
 					//Controls 100 - 199 State Editing
 					case 100: if(v1.getMode() != 2){v1.setMode(2);}else{v1.setMode(0);} break;// enter/exit the state editing mode
@@ -250,6 +250,7 @@ public class cellularExplorer implements ucListener{
 					
 				
 }
+//end of Cellular Explorer
 
 /*GNU GENERAL PUBLIC LICENSE
 
