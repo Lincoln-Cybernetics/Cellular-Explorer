@@ -75,27 +75,29 @@ public automaton( int a, int b){
 		pP();
 	}
 
+	//tells the automaton where it is
 	public void locate(int x, int y){
 		xmin = x; ymin = y;
-		xmax = xmin + xsiz;
-		ymax = ymin + ysiz;
+		xmax = xmin + xsiz-1;
+		ymax = ymin + ysiz-1;
 	} 
 	
 	//initialize the board
 	public void initBoard(){
+		
 		for(int y=0;y<= ysiz-1;y++){
 		for(int x=0;x<= xsiz-1;x++){
-				addCell(new cell(),x,y);
+				culture[x][y] = new cell();
 			
 				}} 
 			}
-	
+	//sets the cell brain that runs the show
 	public void imprint(cellBrain cb){ mothership = cb;}
 	
 // Controls
 
 		//Enables amd disables the automaton
-		public void setEnabled(boolean en){ enabledflag = en;}
+		public void setEnabled(boolean en){ enabledflag = en; if(!en){pause();}}
 		
 		//Interrupts iteration
 		public void Interrupt(int a){ iiflag = true; interOpt = a;}
@@ -207,7 +209,24 @@ public void invokeRule(String rulnam){
 				
 //Add cells
 public void addCell(cell ecoli, int x, int y){
-		culture[x][y] = ecoli; if(ecoli.getOption("Mirror")){}else{ culture[x][y].setLocation(x,y);}}
+	int myx; int myy;
+	if(x >= xmin && x <= xmax){myx = x-xmin;}else{myx = -1;}
+	if(y >= ymin && y <= ymax){myy = y-ymin;}else{myy = -1;}
+	if(myy == -1 || myx == -1){ }
+	else{culture[myx][myy] = null; 
+		culture[myx][myy] = ecoli;
+		 if(ecoli.getOption("Mirror")){}else{ culture[myx][myy].setLocation(x,y);}} 
+	}
+		
+		
+//retrieve cells
+public cell getCell(int x, int y){
+	int myx; int myy;
+	if(x >= xmin && x <= xmax){myx = x-xmin;}else{myx = -1;}
+	if(y >= ymin && y <= ymax){myy = y-ymin;}else{myy = -1;}
+	if(myy == -1 || myx == -1){ return new cell();}
+	else{ return culture[myx][myy];}
+}
 				 
 //General info
 public int getParameter(String pname){
@@ -246,17 +265,17 @@ public boolean convertBin(int s){
 				//edge wrapping does apply for neighborhoods
 				private int checkAddress(String axis, int value){
 					if(axis == "X"){ 
-						if(value >= xsiz){//if(bpol[2] == 1){return value - xsiz;}else{return -1;}
+						if(value >= xmax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[2]){
 								case 0: return -1;
-								case 1: return value - xsiz;
+								case 1: return xmin -1 + (value - xmax);
 								case 2: return mothership.checkLoc("X", value);
 							}
 							}
-						if(value < 0){//if(bpol[6] == 1){return xsiz + value;} else{return -1;}
+						if(value < xmin){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[6]){
 								case 0: return -1;
-								case 1: return xsiz + value;
+								case 1: return xmax + 1-(xmin - value);
 								case 2: return mothership.checkLoc("X", value);
 							}
 							}
@@ -264,17 +283,17 @@ public boolean convertBin(int s){
 					}
 					
 					if(axis == "Y"){
-						if(value >= ysiz){//if(bpol[4] == 1){return value - ysiz;}else{return -1;}
+						if(value >= ymax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[4]){
 								case 0: return -1;
-								case 1: return value - ysiz;
+								case 1: return ymin -1 + (value - ymax);
 								case 2: return mothership.checkLoc("Y", value);
 							}
 							}
-						if(value < 0){//if(bpol[0] == 1){return ysiz + value;}else{return -1;}
+						if(value < ymin){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[0]){
 								case 0: return -1;
-								case 1: return ysiz + value;
+								case 1: return ymax + 1-(ymin - value);
 								case 2: return mothership.checkLoc("Y", value);
 							}
 							}
@@ -298,14 +317,15 @@ public void iterate(){
 		}
 		
 		//Iterate Interrupt
-		if(iiflag){ mothership.recieveInterrupt(interOpt); iiflag = false;}
+		if(iiflag){ mothership.recieveInterrupt(interOpt,this); iiflag = false;}
 		else{//skips the rest of the iteration if interrupted
 		//update all the cells
 		calculateState();
-		//push the results of the cell updates
+		//push the results of the cell updates to the brain
 		advanceState();
+		//tells the brain that iteration is done
 		mothership.iterateReport();
-		}
+		}//System.out.print("*");
 	}
 	}
 //finds the new state of each cell
@@ -324,7 +344,7 @@ private void calculateState(){
 private void advanceState(){
 	for(int y = 0; y <= ysiz-1; y++){
 		for(int x = 0; x <= xsiz-1; x++){
-			mothership.state[x][y] = newstate[x][y];
+			mothership.state[xmin+x][ymin+y] = newstate[x][y];
 		}}
 	}
 
