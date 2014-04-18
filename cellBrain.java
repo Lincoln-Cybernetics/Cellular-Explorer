@@ -18,23 +18,26 @@ import java.util.*;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class cellBrain  { 
+class cellBrain  implements Runnable{ 
 
 	//main variables
-	automaton pete;
+	automaton pete;//main automaton
+	automaton[][] grid;//array of automata
+	int gridx;//x-axis of grid
+	int gridy; //y-axis of grid
 	logicEngine controller;
 	cellComponent display;
 	int myopt = 1;//option for iterate interrupts
-	int xsiz;
-	int ysiz; 
+	int xsiz;//width of the integer array
+	int ysiz; //height of the integer array
 	int[][] state; //current binary state of all cells	
+	boolean paused;//is the brain paused?
 	
 	
-	//keep track of mouse position in edit mode
-	int ztime;
-	
+	int ztime;//length of pause between iterations
+	Thread clock;//thread for running the brain
 
-
+	//operation modes
 	int opmode = 1;
 	/*operation modes:
 	 * 1 = classicly rendered normal running mode
@@ -42,6 +45,9 @@ class cellBrain  {
 	 * 3 = cell editing
 	 * 4 = multicolor rendered normal running mode
 	 * */
+	 
+	 //automaton array mode
+	 int aamode;//1 = single automaton, 2 = multiple automata in a 2-D grid
 	
 	boolean xwrap = false;//edge wrapping x-axis
 	boolean ywrap = false;// edge wrapping y-axis
@@ -81,43 +87,110 @@ class cellBrain  {
 		pete.setEnabled(true);
 		setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
+		aamode = 1;
+		paused = true;
+			}
 			
+		//set size and number of automata
+		public cellBrain(int a, int b, int x, int y){
+			xsiz = a*x;
+			ysiz = b*y;
+			grid = new automaton[x][y];
+			gridx = x; gridy = y;
+			state = new int[xsiz][ysiz];
+			borpol = new int[8];
+			for( int h = 0; h < y; h++){
+				for(int w = 0; w < x; w++){
+					grid[w][h] = new automaton(a,b);
+					grid[w][h].locate(w*a,h*b);
+					grid[w][h].imprint(this);
+				}}
+			setXYwrap(false, false);
+			aamode = 2;
+			controller = new logicEngine();
+			paused = true;
+			ztime = controller.getMasterSpeed();
+			clock = new Thread(this);
+			clock.start();
+		}
+			
+// initialization
+		
+		//initializes the logic engine reference
+		public void imprint( logicEngine sputnik){
+			controller = sputnik;
+			ztime = controller.getMasterSpeed();
 			}
 		
 		//gets the current state
 		public void refreshState(){
 			controller.viewer.setState(state);}
 			
-			//Stubs for new structure
-			//iterate interrupt reciever
-			public void recieveInterrupt(int h){controller.iterateInterrupt(h);}
 			
+			//iterate interrupt reciever
+			public void recieveInterrupt(int h, automaton myaut){
+				switch(aamode){
+				case 1: controller.iterateInterrupt(h); break;
+				case 2: break;
+				}
+			}
+			
+			//updates the main state array from the automata
 			public void setState(int[][] update, automaton gopher){
 				for(int y = gopher.ymin; y <= gopher.ymax-1; y++){
 					for(int x = gopher.xmin; x <= gopher.xmax-1; x++){
 						state[x][y] = update[x][y];}}
 			}
+			
 			//when an automaton iterates, it calls this
-			public void iterateReport(){refreshState();controller.iterateNotify();}
-			//end of stubs
-			public void playPause(){ pete.pP();}
+			public void iterateReport(){
+				switch(aamode){
+				case 1:refreshState();controller.iterateNotify();break;
+				case 2: break;
+				}
+			}
+		
+			// Start/stop the automaton
+			public void playPause(){
+				switch(aamode){
+				 case 1: pete.pP(); break;
+				 case 2: paused = !paused; break;
+				}
+				 
+			 }
+			 
+			 //Pause
+			 public void pause(){
+				 switch(aamode){
+					 case 1: pete.pause();break;
+					 case 2:  paused = true; break;
+				 }
+			 }
 		
 		
 			// sets iteration Speed
 			public void setZT(int z){
-				ztime = z;pete.setParameter("ZT", z);}
+				switch(aamode){
+				case 1: ztime = z;pete.setParameter("ZT", z); break;
+				case 2: break;
+				}
+			}
 			
-		
+			//set an interrupt
+			public void setInterrupt(int a){}
 				
 				// mode setting methods
 				
 				//set operational mode
 				public void setOpMode(int mode){
-					switch(mode){
-						case 1: pete.setEnabled(true); opmode = 1;  break;// normal running
-						case 2: pete.setEnabled(false); pete.pause(); opmode = 2; break;// state editing
-						case 3: pete.setEnabled(false); pete.pause(); opmode = 3; break;// cell editing
-						case 4: pete.setEnabled(true); opmode = 4;  break;// multicolor
+					opmode = mode;
+					boolean[] es = new boolean[]{false, true, false, false, true};
+					switch(aamode){
+						case 1: pete.setEnabled(es[mode]);  break;
+						case 2: for(int y = 0; y < gridy; y++){
+									for(int x = 0; x < gridx; x++){
+										grid[x][y].setEnabled(es[mode]);}} 
+							 break;
 					}
 					}
 					
@@ -131,7 +204,7 @@ class cellBrain  {
 					borpol[0] = ypol; borpol[4] = ypol;
 					if(xwr && ywr){borpol[1] = 1; borpol[3] = 1; borpol[5] = 1; borpol[7] = 1;}
 					else{borpol[1] = 0; borpol[3] = 0; borpol[5] = 0; borpol[7] = 0;}
-				pete.setWrap("X", xwr); pete.setWrap("Y", ywr);
+				if(aamode == 1){pete.setWrap("X", xwr); pete.setWrap("Y", ywr);}
 				}
 				 
 				 // get wrap settings
@@ -175,7 +248,16 @@ class cellBrain  {
 					if(x <= 0){x=0;}
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
-					pete.addCell(wilbur, x, y);}
+					switch(aamode){
+						case 1: pete.addCell(wilbur, x, y); break;
+						case 2:for(int h = 0; h <= gridy-1; h++){
+								for(int w = 0; w <= gridx-1; w++){
+									if(x >= grid[w][h].xmin && y >= grid[w][h].ymin){
+									if(x <= grid[w][h].xmax && y <= grid[w][h].ymax){
+									grid[w][h].addCell(wilbur,x,y);
+									}}}}break;
+						}
+					}
 				
 				
 					
@@ -190,14 +272,37 @@ class cellBrain  {
 					if(x <= 0){x=0;}
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
-					if(b > 0){pete.culture[x][y].activate();} else{pete.culture[x][y].purgeState();}
+					switch(aamode){
+					case 1: if(b > 0){pete.culture[x][y].activate();} else{pete.culture[x][y].purgeState();}break;
+					case 2:for(int h = 0; h <= gridy-1; h++){
+							for(int w = 0; w <= gridx-1; w++){
+								if(x >= grid[w][h].xmin && y >= grid[w][h].ymin){
+									if(x <= grid[w][h].xmax && y >= grid[w][h].ymax){
+										if(b > 0){ grid[w][h].getCell(x,y).activate(); grid[w][h].getCell(x,y).setState(b);}
+										else{grid[w][h].getCell(x,y).purgeState(); grid[w][h].getCell(x,y).setState(b);}
+									}}}}break;
+					}
 					state[x][y] = b;
 					
 				}
 				
 			
-						
-						
+			//returns the specified cell
+			public cell getCell(int x, int y){
+				cell hyperion = new conveyorCell();
+				switch(aamode){
+					case 1: hyperion = pete.culture[x][y];
+					case 2: for(int b = 0; b < gridy; b++){
+										for(int a = 0; a < gridx; a++){
+											if(x >= grid[a][b].xmin && y >= grid[a][b].ymin){
+												if(x <= grid[a][b].xmax && y <= grid[a][b].ymax){
+													hyperion =  grid[a][b].getCell(x,y);}}}}
+													break;
+				}
+				
+				
+				return hyperion; 
+			}		
 		
 					
 				
@@ -211,14 +316,47 @@ class cellBrain  {
 		 * rule 2 = Compass Chaos (randomizes direction parameters)
 		 */
 		public void setRule(String name, boolean rs, int rv ){ 
-			pete.setRule(name, rs, rv);
+			switch(aamode){
+				case 1:pete.setRule(name, rs, rv); break;
+				case 2: break;
 			}
+		}
 		
 		
 	//main logic
-	public void iterate(){ pete.iterate();}
+	public void iterate(){ 
+		switch(aamode){
+		case 1: pete.iterate(); break;
+		case 2: for(int h = 0; h <= gridy-1; h++){
+						for(int w = 0; w <= gridx-1; w++){
+							grid[w][h].iterate();}}	
+							controller.iterateNotify(); 
+							refreshState();
+								break;
+		}
+		//System.out.print("MBI");
+	}
 
-			
+	//runs the brain
+	public void run(){
+		//loops indefinitely
+	while(true){
+		
+			//pauses the automaton
+			try{	while (paused ==true){	
+			  Thread.sleep(1);} 
+			   }  catch(InterruptedException ie) {}
+			   
+			  //main cell logic
+			 iterate();
+			 
+			//timeout between grid-wide iterations
+			try{
+				Thread.sleep(controller.getMasterSpeed());
+			} catch(InterruptedException ie){}
+	}
+		
+	}	
 			
 		
 }
