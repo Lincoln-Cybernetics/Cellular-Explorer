@@ -291,8 +291,10 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 					rulnum = w; rulval = checks[w].getState(); rtval = rtsetter[w].getValue(); cntrl = 13; fireucEvent();}
 				}
 				//Boredom(1) and Boredom(2) are mutually exclusive
-				if(e.getSource() == checks[0]){if(checks[1].getState()){checks[2].setState(false);}}
-				if(e.getSource() == checks[1]){if(checks[0].getState()){checks[1].setState(false);}}
+				if(e.getSource() == checks[0]){if(checks[1].getState()){checks[1].setState(false);
+					rtsetter[1].setVisible(false); rtslab[1].setVisible(false);}}
+				if(e.getSource() == checks[1]){if(checks[0].getState()){checks[0].setState(false);
+					rtsetter[0].setVisible(false); rtslab[0].setVisible(false);}}
 			}
 		}
 		
@@ -340,7 +342,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
 		String noticea = "Cellular Explorer Prototype v. 0.0.7 (Daylight 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
-  String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n Special thanks to:  James Woody, Brian Prentice, and Alexander Viasov\n for the feedback and ideas that have made this program possible. \n\n";
+  String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n Special thanks to: Tarl Carpenter, Brian Prentice, Alexander Viasov, and James Woody\n for the feedback and ideas that have made this program possible. \n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
   String noticee=  "the Free Software Foundation,\neither version 3 of the License, or";
@@ -492,15 +494,22 @@ public controlBox(int a){
 
 //Component to create new Brain/automata
 class newControl extends JComponent implements ActionListener, ChangeListener, ItemListener{
-	JSlider xsli;
-	JSlider ysli;
-	JLabel xlab;
-	JLabel ylab;
-	JButton cre;
-	int xval;
-	int yval;
-	Checkbox sqr;
-	boolean sqrflag;
+	JSlider xsli;//automaton x
+	JSlider ysli;//automaton y
+	JSlider xasli;//# of automata x
+	JSlider yasli;//# of automata y
+	JLabel xlab;//automaton x
+	JLabel ylab;//automaton y
+	JLabel xalab;//# automata x
+	JLabel yalab;//# automata y
+	JButton cre;//Create new
+	int xval;//Width of automaton
+	int yval;//Height od automaton
+	int xaval;//# of automata across
+	int yaval;//# of automata vertical
+	Checkbox sqr;//check for square automata
+	boolean sqrflag;//square flag
+	
 	
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -513,6 +522,10 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 		ylab = new JLabel();
 		cre = new JButton("Create");
 		sqr = new Checkbox("Square");
+		xasli = new JSlider(1,10);
+		yasli = new JSlider(1,10);
+		xalab = new JLabel();
+		yalab = new JLabel();
 		
 		GroupLayout ncLayout = new GroupLayout(this);
 		ncLayout.setAutoCreateGaps(false);
@@ -522,12 +535,16 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 			ncLayout.createSequentialGroup()
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(xsli)
-					.addComponent(ysli))
+					.addComponent(ysli)
+					.addComponent(xasli)
+					.addComponent(yasli))
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(cre))
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(xlab)
-					.addComponent(ylab))
+					.addComponent(ylab)
+					.addComponent(xalab)
+					.addComponent(yalab))
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(sqr))
 					);
@@ -543,6 +560,12 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 						.addComponent(ysli)
 						.addComponent(ylab))
 					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(xasli)
+						.addComponent(xalab))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(yasli)
+						.addComponent(yalab))
+					.addGroup(ncLayout.createParallelGroup()
 						.addComponent(cre))
 						);
 						
@@ -556,6 +579,11 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 				cre.addActionListener(this);
 				sqrflag = sqr.getState();
 				sqr.addItemListener(this);
+				xalab.setText("XAUT :" + Integer.toString(xasli.getValue()));
+				xaval = xasli.getValue();
+				yalab.setText("YAUT :" + Integer.toString(yasli.getValue()));
+				yaval = yasli.getValue();
+				xasli.addChangeListener(this); yasli.addChangeListener(this);
 					}
 					
 		public void actionPerformed(ActionEvent e){
@@ -570,6 +598,10 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 			if(e.getSource() == ysli){
 				if(sqrflag){xsli.setValue(ysli.getValue()); xval = xsli.getValue(); setXLAB();}
 				 setYLAB(); yval = ysli.getValue();}
+			if(e.getSource() == xasli){
+				xalab.setText("XAUT: " + Integer.toString(xasli.getValue())); xaval = xasli.getValue();}
+			if(e.getSource() == yasli){
+				yalab.setText("YAUT: " + Integer.toString(yasli.getValue())); yaval = yasli.getValue();}	
 			}
 			
 		public void itemStateChanged(ItemEvent e){
@@ -583,6 +615,10 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 		public int getXVAL(){ return xval;}
 		
 		public int getYVAL(){ return yval;}
+		
+		public int getXAVAL(){ return xaval;}
+		
+		public int getYAVAL(){ return yaval;}
 		
 		//control event generation
 		//adds listeners for command events
