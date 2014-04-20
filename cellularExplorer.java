@@ -129,6 +129,7 @@ public class cellularExplorer implements ucListener{
 					case 403: v1.sigmund.setOption(Inez.getOPNAM(), Inez.getOPVAL()); break;//Set Brush Options
 					default: break;
 				}
+				e = null;
 		}
 		
 			private void makeWin(int n){
