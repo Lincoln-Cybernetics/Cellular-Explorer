@@ -98,7 +98,7 @@ public void initialize(int xmx, int ymx, int xaut, int yaut){
 	
 	  viewer.addMouseMotionListener(this);	
 		viewer.addMouseListener(this); 
-		sargon = new cell();
+		//sargon = new cell();
 		
 							setEditBrush(1);
 						  disp = new JFrame("Cellular Explorer");
@@ -467,7 +467,7 @@ public void handleControl(ucEvent e){
 								
 								mainBrain.addCell(a,b,ed);
 						viewer.setSpecies(a,b,decider.getCT());
-						
+						ed = null; decider = null;
 						
 					}}
 					
@@ -528,8 +528,8 @@ public void handleControl(ucEvent e){
 							}} 
 						
 					public void cellRandDraw(int x, int y){
+						Random snail = new Random();
 						if(!sedna.getSelected() ||sedna.getSelection(x,y)){
-							Random snail = new Random();
 							if(cellfillflag){
 								int nose = randToolNum(3);
 								switch(cft){
@@ -551,6 +551,7 @@ public void handleControl(ucEvent e){
 									default: populate(x,y,3); break;}
 								}
 								}
+								snail = null;
 					}
 					
 					//calculated draws
@@ -719,6 +720,7 @@ public void handleControl(ucEvent e){
 								}
 							}
 						}
+						foghorn = null;
 					}	
 					
 				//calculated draws
@@ -830,17 +832,17 @@ public void handleControl(ucEvent e){
 													viewer.setSelection(x,y,sedna.getSelection(x,y));}}
 							 viewer.finishRect(xlocal,ylocal); }
 							 
-						 if(mode == 3){//if(sargon == null){}else{
+						 if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							 mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-							}//}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							 sargon.getParameter("MirrY"), 4);
+							}
 						}
-						
+						sargon = null;
 						}
 						
 					public void mouseDragged(MouseEvent e) {
-						//setWorkAut(e);
+						
 						if(e.getX() < 1){xlocal =0;} else{xlocal = e.getX()/viewer.magnify;}
 						if (e.getY() < 1){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
 						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
@@ -853,6 +855,7 @@ public void handleControl(ucEvent e){
 						if(isMouseUsed()){
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
+						sargon = mainBrain.getCell(xlocal,ylocal);
 					}
 					else{
 						 //  rectangle selection
@@ -862,13 +865,13 @@ public void handleControl(ucEvent e){
 								viewer.setSelection(x,y,sedna.getSelection(x,y));}}
 							 viewer.finishRect(xlocal,ylocal); }}
 							 
-							  if(mode == 3){if(sargon == null){}else{
+							  if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-								}}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							sargon.getParameter("MirrY"), 4);
+								}
 							}
-							 
+							 sargon = null;
 							}
 							
 					public void mouseEntered(MouseEvent e){
@@ -883,13 +886,13 @@ public void handleControl(ucEvent e){
 							drawBrush(xlocal,ylocal);
 						}
 						
-						 if(mode == 3){//if(sargon == null){}else{
+						 if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							 mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-							}//}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							 sargon.getParameter("MirrY"), 4);
+							}
 						}
-						
+						sargon = null;
 						}
 					
 					public void mouseExited(MouseEvent e){
@@ -897,7 +900,7 @@ public void handleControl(ucEvent e){
 						}
 					
 					public void mousePressed(MouseEvent e){
-						//setWorkAut(e);
+						
 						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
 						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
 						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
@@ -911,6 +914,7 @@ public void handleControl(ucEvent e){
 							
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
+						sargon = mainBrain.getCell(xlocal,ylocal);
 					}
 					else{
 						
@@ -921,22 +925,22 @@ public void handleControl(ucEvent e){
 						 
 					 }
 					 
-					  if(mode == 3){//if(sargon == null){}else{
+					  if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							 mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-							}//}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							 sargon.getParameter("MirrY"), 4);
+							}
 						}
-						
+						sargon = null;
 						}
 					
 					public void mouseReleased(MouseEvent e){
-						//setWorkAut(e);
 						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
 						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
 						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
 						if (ylocal > mainBrain.ysiz-1){ylocal = mainBrain.ysiz-1;}
 						if(e.isMetaDown()){rcflag = true;}else{rcflag = false;}
+						sargon = mainBrain.getCell(xlocal,ylocal);
 						// send info to cell info display
 						if(mercury != null){mercury.setCell(sargon);}
 						
@@ -958,18 +962,17 @@ public void handleControl(ucEvent e){
 								}
 							}
 							
-							 if(mode == 3){//if(sargon == null){}else{
+							 if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							 mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-							}//}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							 sargon.getParameter("MirrY"), 4);
+							}
 						}
-						
+						sargon = null;
 						}
 						
 					
 					public void mouseClicked(MouseEvent e){
-						//setWorkAut(e);
 						if(e.getX() < 1){xlocal = 0;} else{xlocal = e.getX()/viewer.magnify;}
 						if(e.getY() < 1 ){ylocal = 0;} else{ ylocal = e.getY()/viewer.magnify;}
 						if (xlocal > mainBrain.xsiz-1){xlocal = mainBrain.xsiz-1;}
@@ -983,6 +986,7 @@ public void handleControl(ucEvent e){
 							
 							drawBrush(xlocal,ylocal);
 						applyBrush(xlocal, ylocal);
+						sargon = mainBrain.getCell(xlocal,ylocal);
 						}
 						else{
 						
@@ -1031,13 +1035,13 @@ public void handleControl(ucEvent e){
 						}
 						
 				}
-					 if(mode == 3){//if(sargon == null){}else{
+					 if(mode == 3){
 							 if(sargon.getOption("Mirror")){
-							 viewer.setHiLite(mainBrain.getCell(xlocal, ylocal).getParameter("MirrX"), 
-							 mainBrain.getCell(xlocal, ylocal).getParameter("MirrY"), 4);
-							}//}
+							 viewer.setHiLite(sargon.getParameter("MirrX"), 
+							 sargon.getParameter("MirrY"), 4);
+							}
 						}
-				
+				sargon = null;
 		}
 }
 //End of Edit Engine
@@ -1180,7 +1184,9 @@ public void init(){
 	
 public void setCell(cell hammurabi){
 	xerxes = hammurabi;
-	refCell();}
+	refCell();
+	hammurabi = null;
+	}
 	
 public void refCell(){
 	//Cell Name
@@ -1239,6 +1245,7 @@ public void refCell(){
 	//labels for neighborhood expansion
 	if(xerxes.getControls("Xfact")){fields[9].setVisible(true); info[9].setText(Integer.toString(xerxes.getParameter("Xfact")));info[9].setVisible(true);}
 	else{fields[9].setVisible(false);info[9].setVisible(false);}
+	
 	
 	}
 
