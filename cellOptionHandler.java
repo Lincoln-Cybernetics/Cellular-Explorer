@@ -16,6 +16,7 @@ import java.util.Random;
 */
 public class cellOptionHandler implements ucListener{
 cellPicker source;
+cell tiamat;//the cell
 int celltype = 0;
 String mbotname = "Custom";
 int maturity = 1;// maturity setting 
@@ -42,7 +43,9 @@ public cellOptionHandler(){
 
 //sets the source for the cell info
 public void setCP( cellPicker lorenzo){
-	source = lorenzo;}
+	source = lorenzo;
+	lorenzo = null;
+	}
 
 //handles events from the cell info source
 public void handleControl( ucEvent e){
@@ -50,6 +53,7 @@ public void handleControl( ucEvent e){
 		case 1: setCT(source.getCT()); break;
 		case 2: setMBOT(source.getMBOT()); source.setRULAB(); break;
 	}
+	e = null;
 	}
 
 //option setting methods
@@ -105,18 +109,18 @@ public void setBoola( String a, boolean[] b){
 //option getting methods
 public int getCT(){ return celltype;}
 
-public cell getCell(){ cell marduk = generateCell(); return marduk;}
+public cell getCell(){ return generateCell();}
 
 
 public cell generateCell(){
-	cell tiamat;
+	
 	if(source == null){celltype = 0;}
 	else{setCT(source.getCT());}
 	// makes the right type of cell
 	switch(celltype){
 		case 0: tiamat = new cell();break;
-		case 1: tiamat =new wolfram(); tiamat = setRules(tiamat); break;
-		case 2:	if(mbotname == "Custom"){tiamat = new mbot(); tiamat = setRules(tiamat);}else{tiamat = new mbot(mbotname);}break;
+		case 1: tiamat =new wolfram(); setRules(); break;
+		case 2:	if(mbotname == "Custom"){tiamat = new mbot(); setRules();}else{tiamat = new mbot(mbotname);}break;
 		case 3: tiamat = new randCell(); break;
 		case 4: tiamat = new mbot("OnCell"); break;
 		case 5: tiamat = new mbot("OffCell"); break;
@@ -138,9 +142,9 @@ public cell generateCell(){
  return tiamat;
 }
 
-private cell setRules(cell isis){
+private void setRules(){
 	// sets custom rules for MBOT cells
-	if(isis.getName() == "M.B.O.T."){ for(int n = 0; n<9; n++){ 
+	if(tiamat.getName() == "M.B.O.T."){ for(int n = 0; n<9; n++){ 
 		String bstr = "B0"; String sstr = "S0"; 
 		switch(n){
 			case 0: bstr = "B0"; sstr = "S0"; break;
@@ -153,11 +157,11 @@ private cell setRules(cell isis){
 			case 7: bstr = "B7"; sstr = "S7"; break;
 			case 8: bstr = "B8"; sstr = "S8"; break;
 		}
-	isis.setOption(bstr, bornon[n]);
-	isis.setOption(sstr, surv[n]);}
+	tiamat.setOption(bstr, bornon[n]);
+	tiamat.setOption(sstr, surv[n]);}
 									}
 									
-	if(isis.getName() == "Wolfram"){ for(int n = 0; n < 8; n++){
+	if(tiamat.getName() == "Wolfram"){ for(int n = 0; n < 8; n++){
 		String rst = "WR0"; 
 		switch(n){
 			case 0: rst = "WR0"; break;
@@ -169,10 +173,10 @@ private cell setRules(cell isis){
 			case 6: rst = "WR6"; break;
 			case 7: rst = "WR7"; break;
 		}
-	isis.setOption(rst, rule[n]);}
+	tiamat.setOption(rst, rule[n]);}
 									}
 								
-		return isis;
+		
 	}
 
 }
@@ -180,6 +184,7 @@ private cell setRules(cell isis){
 class randcellOptionHandler extends cellOptionHandler{
 	int xsiz = 1;
 	int ysiz = 1;
+	cell tiamat;
 	String[] MBOTCell = new String[]{"2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
 "Dry Life", "Fredkin", "Gnarl", "High Life", "Life", "Life without Death", "Live Free or Die", "Long Life", "Maze", "Mazectric",
 "Move", "Pseudo-life", "Replicator", "Seeds", "Serviettes", "Stains", "Vote", "Vote 4/5", "Walled Cities"};
@@ -196,7 +201,6 @@ class randcellOptionHandler extends cellOptionHandler{
 		
 	// generate random cells
 	public cell generateCell(){
-	cell tiamat;
 	switch(celltype){
 		case 0: tiamat = new cell(); break;
 		case 1: tiamat = new wolfram(); 
@@ -265,7 +269,7 @@ class randcellOptionHandler extends cellOptionHandler{
 		if(cellgen > 511 && cellgen < 1024){celltype = 2;}//MBOT
 		
 	
-		cell marduk = generateCell(); return marduk;}
+		return generateCell();  }
 	
 
 
