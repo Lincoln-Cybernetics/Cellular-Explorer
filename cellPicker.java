@@ -406,6 +406,7 @@ public void setCOH(cellOptionHandler ned){
 						gate = ned;
 						//initialize starting cell type
 						setCell();
+						ned = null;
 				}
 
 public void actionPerformed(ActionEvent e){
@@ -425,6 +426,7 @@ public void actionPerformed(ActionEvent e){
 	if(e.getSource() == dirs[5]){gate.setInt("Dir", 5);}
 	if(e.getSource() == dirs[6]){gate.setInt("Dir", 6);}
 	if(e.getSource() == dirs[7]){gate.setInt("Dir", 7);}
+	e = null;
 	}
 
 public void itemStateChanged(ItemEvent e){//age, fade, born, survives
@@ -476,6 +478,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			
 		}
 	}
+	e = null;
 }
 
 public void stateChanged(ChangeEvent e){
@@ -485,6 +488,7 @@ public void stateChanged(ChangeEvent e){
 	if(e.getSource() == matslider){gate.setInt("Mat", matslider.getValue()); matlabel.setText("Maturity: "+Integer.toString(matslider.getValue()));}
 	//Expansion Factor
 	if(e.getSource() == xfslider){gate.setInt("Xfact", xfslider.getValue()); xfind.setText(Integer.toString(xfslider.getValue()));}
+	e = null;
 	}
 
 private void setCType(){
@@ -511,6 +515,7 @@ private void setOpts(cell darwin){
 		}
 		toggleControl(concount, visifier);
 	}
+	darwin = null;
 }
 
 private void toggleControl(int a, boolean b){
