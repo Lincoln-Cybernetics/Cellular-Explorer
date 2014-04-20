@@ -76,9 +76,9 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		checks[1] = new Checkbox("Boredom(2)");
 		checks[2] = new Checkbox("Compass Chaos");
 		throttle = new JSlider(0,1000);
-		rtsetter[0] = new JSlider(1,100);
-		rtsetter[1] = new JSlider(1,100);
-		rtsetter[2] = new JSlider(1,100);
+		rtsetter[0] = new JSlider(1,1024);
+		rtsetter[1] = new JSlider(1,1024);
+		rtsetter[2] = new JSlider(1,1024);
 		rtslab[0] = new JLabel("50");
 		rtslab[1] = new JLabel("50");
 		rtslab[2] = new JLabel("50");
@@ -522,8 +522,8 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 		ylab = new JLabel();
 		cre = new JButton("Create");
 		sqr = new Checkbox("Square");
-		xasli = new JSlider(1,10);
-		yasli = new JSlider(1,10);
+		xasli = new JSlider(1,25);
+		yasli = new JSlider(1,25);
 		xalab = new JLabel();
 		yalab = new JLabel();
 		
