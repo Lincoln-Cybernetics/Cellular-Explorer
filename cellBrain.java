@@ -56,6 +56,7 @@ class cellBrain  implements Runnable{
 	//border #s follow the cell direction convention: 0 = top; 1 = top-right; 2 = right; 3 = lower right; 4 = bottom;
 	// 5 = lower-left; 6 = left; 7 = upper-left;
 
+	int interrupt;//used to interrupt the running of the brain 
 	
 	// constructors
 	
@@ -70,7 +71,7 @@ class cellBrain  implements Runnable{
 		//pete.locate(0,0);
 		//setXYwrap(false,false);
 		ztime = controller.getMasterSpeed();
-	
+		interrupt = 0;
 		
 			}
 	
@@ -89,6 +90,7 @@ class cellBrain  implements Runnable{
 		ztime = controller.getMasterSpeed();
 		aamode = 1;
 		paused = true;
+		interrupt = 0;
 			}
 			
 		//set size and number of automata
@@ -113,6 +115,7 @@ class cellBrain  implements Runnable{
 			ztime = controller.getMasterSpeed();
 			clock = new Thread(this);
 			clock.start();
+			interrupt = 0;
 		}
 			
 // initialization
@@ -178,7 +181,12 @@ class cellBrain  implements Runnable{
 			}
 			
 			//set an interrupt
-			public void setInterrupt(int a){}
+			public void setInterrupt(int a){
+				switch(aamode){
+					case 1: pete.Interrupt(a); break;
+					case 2: interrupt = a; break;
+				}
+				}
 				
 				// mode setting methods
 				
@@ -328,6 +336,10 @@ class cellBrain  implements Runnable{
 		
 	//main logic
 	public void iterate(){ 
+		switch(interrupt){
+			case 0: break;
+			default: controller.iterateInterrupt(interrupt); interrupt = 0; break;
+		}
 		switch(aamode){
 		case 1: pete.iterate(); break;
 		case 2: for(int h = 0; h <= gridy-1; h++){
