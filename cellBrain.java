@@ -104,6 +104,7 @@ class cellBrain  implements Runnable{
 					grid[w][h] = new automaton(a,b);
 					grid[w][h].locate(w*a,h*b);
 					grid[w][h].imprint(this);
+					grid[w][h].setUBP(2);
 				}}
 			setXYwrap(false, false);
 			aamode = 2;
@@ -139,7 +140,7 @@ class cellBrain  implements Runnable{
 			public void setState(int[][] update, automaton gopher){
 				for(int y = gopher.ymin; y <= gopher.ymax-1; y++){
 					for(int x = gopher.xmin; x <= gopher.xmax-1; x++){
-						state[x][y] = update[x][y];}}
+						state[x][y] = update[x-gopher.xmin][y-gopher.ymin];}}
 			}
 			
 			//when an automaton iterates, it calls this
@@ -318,7 +319,9 @@ class cellBrain  implements Runnable{
 		public void setRule(String name, boolean rs, int rv ){ 
 			switch(aamode){
 				case 1:pete.setRule(name, rs, rv); break;
-				case 2: break;
+				case 2: for(int h = 0; h <= gridy-1; h++){
+						for(int w = 0; w <= gridx-1; w++){
+							grid[w][h].setRule(name, rs, rv);}}	break;
 			}
 		}
 		
@@ -329,7 +332,11 @@ class cellBrain  implements Runnable{
 		case 1: pete.iterate(); break;
 		case 2: for(int h = 0; h <= gridy-1; h++){
 						for(int w = 0; w <= gridx-1; w++){
-							grid[w][h].iterate();}}	
+							grid[w][h].checkRules();
+							grid[w][h].calculateState();}}	
+				for(int h = 0; h <= gridy-1; h++){
+						for(int w = 0; w <= gridx-1; w++){
+							grid[w][h].advanceState();}}	
 							controller.iterateNotify(); 
 							refreshState();
 								break;
