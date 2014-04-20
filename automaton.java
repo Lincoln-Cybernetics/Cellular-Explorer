@@ -113,6 +113,11 @@ public automaton( int a, int b){
 		
 
 // Automaton options and rules
+				//set universal borderpolicy
+				public void setUBP(int s){
+					for(int q = 0; q < bpol.length; q++){
+						bpol[q] = s;}//border policies: 0-closed 1-wrap 2-open
+					}
 
 				// set edge-wrap settings
 				public void setWrap(String d, boolean e){
@@ -155,6 +160,13 @@ public automaton( int a, int b){
 							case 2: rules[2] = rulact; rulestates[2] = 0; break;
 					}
 				}
+
+//Check Rules
+public void checkRules(){
+	for(int z = 0; z <= rules.length-1; z++){
+			if(rules[z]){invokeRule(rulenames[z]);}
+		}
+}
 				
 //Invoke rules				
 public void invokeRule(String rulnam){
@@ -166,7 +178,7 @@ public void invokeRule(String rulnam){
 		case 0: 
 				for(int y = 0; y <= ysiz-1; y++){ 
 					for(int x = 0; x <= xsiz-1; x++){
-						boolean b = convertBin(mothership.state[x][y]);
+						boolean b = convertBin(mothership.state[x+xmin][y+ymin]);
 						if(b == boredboard[x][y]){}
 						else{excited = true; boredboard[x][y] = b;}
 					}}
@@ -178,7 +190,7 @@ public void invokeRule(String rulnam){
 				if(rulestates[0] == 1){
 				for(int y = 0; y <= ysiz-1; y++){ 
 					for(int x = 0; x <= xsiz-1; x++){
-						boolean b = convertBin(mothership.state[x][y]);
+						boolean b = convertBin(mothership.state[x+xmin][y+ymin]);
 						if(b == boredboard[x][y]){}
 						else{excited = true; boredboard[x][y] = b;}
 					}}
@@ -312,10 +324,7 @@ public void iterate(){
 		int x; int y;
 		
 		//Check and activate Automaton-level rules
-		for(int z = 0; z <= rules.length-1; z++){
-			if(rules[z]){invokeRule(rulenames[z]);}
-		}
-		
+		checkRules();
 		//Iterate Interrupt
 		if(iiflag){ mothership.recieveInterrupt(interOpt,this); iiflag = false;}
 		else{//skips the rest of the iteration if interrupted
@@ -329,7 +338,7 @@ public void iterate(){
 	}
 	}
 //finds the new state of each cell
-private void calculateState(){
+public void calculateState(){
 	for(int y = 0; y <= ysiz-1; y++){
 		for(int x = 0; x <= xsiz-1; x++){
 			getNeighbors(x, y);
@@ -341,7 +350,7 @@ private void calculateState(){
 
 
 //Makes the new state into the current state, sends out info
-private void advanceState(){
+public void advanceState(){
 	for(int y = 0; y <= ysiz-1; y++){
 		for(int x = 0; x <= xsiz-1; x++){
 			mothership.state[xmin+x][ymin+y] = newstate[x][y];
