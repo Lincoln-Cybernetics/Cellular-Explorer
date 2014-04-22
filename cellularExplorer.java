@@ -68,7 +68,7 @@ public class cellularExplorer implements ucListener{
 		public void handleControl(ucEvent e){
 				switch(e.getCommand()){
 					//Controls 1 - 99 Master Control
-					case 1: if(whiteRabbit == null){makeWin(2);}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
+					case 1: if(whiteRabbit == null){makeWin(2); whiteRabbit.init();}else{npanel.setVisible(true);} break; //v1.initialize(400,150); break;// new
 					case 2: v1.playPause();break;// play/pause 
 					case 3: v1.step(1); break;// step
 					case 4: if(winflag[0] == false){makeWin(3);} else{sedit.setVisible(true);}sedit.toFront(); break;// edit state
@@ -83,7 +83,10 @@ public class cellularExplorer implements ucListener{
 					case 13: v1.setAutomatonRule(Alice.getRName(), Alice.getRV(),Alice.getRT());  break;//Automaton rules
 					case 14:  v1.setMode(Alice.getDispType()); break;//Mode setting
 					case 15: v1.setParameter("Magnify", Alice.getMag()); break;//Sets the size of cells in the display
-					case 16: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL(), whiteRabbit.getXAVAL(), whiteRabbit.getYAVAL());
+					case 16: switch(whiteRabbit.getARMOD()){
+								case 1: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL()); break;
+								case 2: v1.initialize(whiteRabbit.getXVAL(), whiteRabbit.getYVAL(), whiteRabbit.getXAVAL(), whiteRabbit.getYAVAL()); break;
+								}
 					npanel.dispose();Alice.setCFLAG(true); Alice.buttons[0].setEnabled(false);Alice.repaint(); whiteRabbit = null; break;//Create new Board
 					
 					//Controls 100 - 199 State Editing
@@ -188,7 +191,7 @@ public class cellularExplorer implements ucListener{
 						  whiteRabbit = new newControl();
 						  npanel.getContentPane().add(whiteRabbit);
 						  npanel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-						  npanel.pack();
+						  npanel.pack(); 
 						  npanel.setResizable(false);
 						  npanel.setVisible(true);
 						  whiteRabbit.setVisible(true);
@@ -196,7 +199,6 @@ public class cellularExplorer implements ucListener{
 						  break;
 						  
 				case 3: 	//State Editor
-							//state editor
 							 sedit = new JFrame("State Editor");
 							Dan = new stateEditor(); 
 							sedit.getContentPane().add(Dan);
