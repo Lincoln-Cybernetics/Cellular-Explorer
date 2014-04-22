@@ -509,7 +509,10 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 	int yaval;//# of automata vertical
 	Checkbox sqr;//check for square automata
 	boolean sqrflag;//square flag
-	
+	int armod;//array mode
+	JLabel amlabel;//"Array Mode"
+	JRadioButton amone;//array mode one
+	JRadioButton amtwo;//array mode two
 	
 	// relate to sending command events
 	private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -526,6 +529,13 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 		yasli = new JSlider(1,25);
 		xalab = new JLabel();
 		yalab = new JLabel();
+		amone = new JRadioButton("Single");
+		amtwo = new JRadioButton("Multi-Automaton");
+		ButtonGroup amselector = new ButtonGroup();
+		amselector.add(amone);
+		amselector.add(amtwo);
+		amlabel = new JLabel("Array Mode: ");
+		
 		
 		GroupLayout ncLayout = new GroupLayout(this);
 		ncLayout.setAutoCreateGaps(false);
@@ -536,13 +546,16 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(xsli)
 					.addComponent(ysli)
+					.addComponent(amlabel)
 					.addComponent(xasli)
 					.addComponent(yasli))
 				.addGroup(ncLayout.createParallelGroup()
+					.addComponent(amone)
 					.addComponent(cre))
 				.addGroup(ncLayout.createParallelGroup()
 					.addComponent(xlab)
 					.addComponent(ylab)
+					.addComponent(amtwo)
 					.addComponent(xalab)
 					.addComponent(yalab))
 				.addGroup(ncLayout.createParallelGroup()
@@ -559,6 +572,10 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 					.addGroup(ncLayout.createParallelGroup()
 						.addComponent(ysli)
 						.addComponent(ylab))
+					.addGroup(ncLayout.createParallelGroup()
+						.addComponent(amlabel)
+						.addComponent(amone)
+						.addComponent(amtwo))
 					.addGroup(ncLayout.createParallelGroup()
 						.addComponent(xasli)
 						.addComponent(xalab))
@@ -579,16 +596,32 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 				cre.addActionListener(this);
 				sqrflag = sqr.getState();
 				sqr.addItemListener(this);
-				xalab.setText("XAUT :" + Integer.toString(xasli.getValue()));
+				xalab.setText("Automata x :" + Integer.toString(xasli.getValue()));
 				xaval = xasli.getValue();
-				yalab.setText("YAUT :" + Integer.toString(yasli.getValue()));
+				yalab.setText("Automata y :" + Integer.toString(yasli.getValue()));
 				yaval = yasli.getValue();
 				xasli.addChangeListener(this); yasli.addChangeListener(this);
+				 amone.addActionListener(this); amtwo.addActionListener(this);
+				 amone.setSelected(true);
 					}
+					
+		public void init(){
+			armod = 1; 
+			xasli.setVisible(false); xalab.setVisible(false);
+			yasli.setVisible(false); yalab.setVisible(false);
+		}
 					
 		public void actionPerformed(ActionEvent e){
 			//control 16 = Make new board
 			if(e.getSource() == cre){cntrl = 16; fireucEvent();}
+			if(e.getSource() == amone){
+			xasli.setVisible(false); xalab.setVisible(false);
+			yasli.setVisible(false); yalab.setVisible(false);
+			armod = 1;}
+			if(e.getSource() == amtwo){
+				xasli.setVisible(true); xalab.setVisible(true);
+				yasli.setVisible(true); yalab.setVisible(true);
+				armod = 2;}
 			}
 		
 		public void stateChanged(ChangeEvent e){
@@ -599,9 +632,9 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 				if(sqrflag){xsli.setValue(ysli.getValue()); xval = xsli.getValue(); setXLAB();}
 				 setYLAB(); yval = ysli.getValue();}
 			if(e.getSource() == xasli){
-				xalab.setText("XAUT: " + Integer.toString(xasli.getValue())); xaval = xasli.getValue();}
+				xalab.setText("Automata x : " + Integer.toString(xasli.getValue())); xaval = xasli.getValue();}
 			if(e.getSource() == yasli){
-				yalab.setText("YAUT: " + Integer.toString(yasli.getValue())); yaval = yasli.getValue();}	
+				yalab.setText("Automata y : " + Integer.toString(yasli.getValue())); yaval = yasli.getValue();}	
 			}
 			
 		public void itemStateChanged(ItemEvent e){
@@ -619,6 +652,8 @@ class newControl extends JComponent implements ActionListener, ChangeListener, I
 		public int getXAVAL(){ return xaval;}
 		
 		public int getYAVAL(){ return yaval;}
+		
+		public int getARMOD(){ return armod;}
 		
 		//control event generation
 		//adds listeners for command events
