@@ -86,6 +86,35 @@ public editEngine(int cbx, int cby){
 	eris = new randcellOptionHandler();
 	sedna = new selector();
 }
+
+public void initialize(int xmx, int ymx){
+		 xasz = 1;  yasz = 1;//number of automata
+	xtop = xmx; ytop = ymx;//size of each automaton
+	xmax = xmx*xasz; ymax = ymx*yasz; //size of the whole int array
+	
+		mainBrain = new cellBrain(xmx,ymx, this);
+		mainBrain.imprint(this);
+	viewer = new cellComponent(xmax,ymax);
+	
+	  viewer.addMouseMotionListener(this);	
+		viewer.addMouseListener(this); 
+		
+		
+							setEditBrush(1);
+						  disp = new JFrame("Cellular Explorer");
+						  mypane = new JScrollPane(viewer);
+						  disp.getContentPane().add(mypane);
+						  disp.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+						  disp.setSize(800,wh);
+						  disp.setLocation(wsx,wsy);
+						  disp.setResizable(true);
+						  disp.setVisible(true);
+						  eris.setInt("Xsiz", xmax);
+						  eris.setInt("Ysiz", ymax);
+						  sedna = new selector(xmax,ymax);
+						  setMode(1);
+						  
+						}
 	
 public void initialize(int xmx, int ymx, int xaut, int yaut){
 	 xasz = xaut;  yasz = yaut;//number of automata
