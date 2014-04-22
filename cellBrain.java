@@ -194,6 +194,7 @@ class cellBrain  implements Runnable{
 				public void setOpMode(int mode){
 					opmode = mode;
 					boolean[] es = new boolean[]{false, true, false, false, true};
+					if(es[mode] == false){pause();}
 					switch(aamode){
 						case 1: pete.setEnabled(es[mode]);  break;
 						case 2: for(int y = 0; y < gridy; y++){
