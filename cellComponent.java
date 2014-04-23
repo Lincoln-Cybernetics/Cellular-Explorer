@@ -176,29 +176,31 @@ public void paintComponent( Graphics g){
 								else{schmagnify = magnify;}
 								switch(species[x][y]){
 									//cell
-									case 0: g.setColor(Color.gray);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 0: g.setColor(Color.gray); break;
 									//Wolfram
-									case 1: g.setColor(Color.red);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 1: g.setColor(Color.red); break;
 									//MBOT
-									case 2: g.setColor(Color.green);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);break;
+									case 2: g.setColor(Color.green); break;
 									//RandCell
-									case 3: g.setColor(Color.orange);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 3: g.setColor(Color.orange); break;
 									//OnCell
-									case 4: g.setColor(Color.white);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 4: g.setColor(Color.white); break;
 									//OffCell
-									case 5: g.setColor(Color.black);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 5: g.setColor(Color.black); break;
 									//BlinkCell
-									case 6: g.setColor(Color.blue);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 6: g.setColor(Color.blue); break;
 									//Symmetric Cell
-									case 7: g.setColor(Color.cyan);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 7: g.setColor(Color.cyan); break;
 									//Conveyor Cell
-									case 8: g.setColor(Color.yellow);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 8: g.setColor(Color.yellow); break;
 									//strobe Cell
-									case 9: g.setColor(Color.pink);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									case 9: g.setColor(Color.pink); break;
+									//Total Cell
+									case 10: g.setColor(new Color(119, 35, 177)); break;
 									
-									default: g.setColor(Color.black);g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify); break;
+									default: g.setColor(Color.black); break;
 								}
-								
+								g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
 							}
 							
 							//multicolor rendering
