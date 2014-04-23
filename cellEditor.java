@@ -238,7 +238,7 @@ public void stateChanged(ChangeEvent e){
 		case 4: if(dslid.getValue() == 1){drawlabel.setText("True");}else{drawlabel.setText("False");}break;
 		case 5: drawlabel.setText(Integer.toString(dslid.getValue())); break;			
 				}
-		dtval = dslid.getValue(); command = 8; fireucEvent();				
+		dtval = dslid.getValue(); command = 208; fireucEvent();				
 	}
 	if(e.getSource() == fslid){
 	switch(ftsel){
@@ -258,7 +258,7 @@ public void stateChanged(ChangeEvent e){
 		case 4: if(fslid.getValue() == 1){filllabel.setText("True");} else{filllabel.setText("False");}break;
 		case 5: filllabel.setText(Integer.toString(fslid.getValue())); break;
 				}
-		ftval = fslid.getValue(); command = 9; fireucEvent();
+		ftval = fslid.getValue(); command = 209; fireucEvent();
 	}
 }
 
