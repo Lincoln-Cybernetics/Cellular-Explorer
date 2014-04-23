@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell", "Total Cell"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -539,10 +539,12 @@ private void toggleControl(int a, boolean b){
 }
 
 public void setRULAB(){
-	cell gonzo = gate.generateCell(); String bst = ""; String sst = ""; String[] brn = new String[]{"B0","B1","B2","B3","B4","B5","B6","B7","B8"};
+	cell gonzo = gate.generateCell();
+	String bst = ""; String sst = ""; String[] brn = new String[]{"B0","B1","B2","B3","B4","B5","B6","B7","B8"};
 	String[] srv = new String[]{"S0","S1","S2","S3","S4","S5","S6","S7","S8"};
 	for(int i = 0; i<9; i++){ if(gonzo.getOption(brn[i])){bst = bst + Integer.toString(i);} if(gonzo.getOption(srv[i])){sst = sst+ Integer.toString(i);}}
 	rulab.setText("B "+bst+"\\"+"S "+sst); 
+	gonzo = null;
 }
 	
 
