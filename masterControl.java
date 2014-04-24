@@ -35,7 +35,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	JButton cidButton;
 	JMenuItem[] winitem = new JMenuItem[7];
 	JMenu winmen;
-	JMenuItem[] disitem = new JMenuItem[4];
+	JMenuItem[] disitem = new JMenuItem[5];
 	JMenu dismen;
 	JMenuBar mainbar;
 	JSlider magsetter;//slider to set cell size in the display
@@ -97,6 +97,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		disitem[1] = new JMenuItem("Multicolor");
 		disitem[2] = new JMenuItem("State Edit");
 		disitem[3] = new JMenuItem("Cell Edit");
+		disitem[4] = new JMenuItem("Gradient");
 		dismen = new JMenu("Display");
 		mainbar = new JMenuBar();
 		magsetter = new JSlider(1,30);
@@ -255,6 +256,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 			 if(e.getSource() == disitem[1]){ disptype = 4;cntrl = 14; fireucEvent();}
 			 if(e.getSource() == disitem[2]){ disptype = 2;cntrl = 14; fireucEvent();}
 			 if(e.getSource() == disitem[3]){ disptype = 3;cntrl = 14; fireucEvent();}
+			 if(e.getSource() == disitem[4]){ disptype = 5;cntrl = 14; fireucEvent();}
 			 
 			for( int cnum = 1; cnum < buttons.length; cnum++){
 				if(e.getSource() == buttons[cnum]){ cntrl = cnum+1; fireucEvent(); break;}
