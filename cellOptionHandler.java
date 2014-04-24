@@ -38,6 +38,7 @@ boolean doesage = false;// sets aging
 boolean doesfade = false;// sets the fade rule
 int fadenum = 0;// maximum age for the fade rule
 boolean mirr = false; // mirror setting for cell
+int inmod;//the cell's input mode
 public cellOptionHandler(){
 }
 
@@ -73,6 +74,7 @@ public void setInt(String a, int b){
 	if(a == "Fade"){fadenum = b;}
 	if(a == "Mat"){maturity = b;}
 	if(a == "Xfact"){xfactor = b;}
+	if(a == "InMode"){inmod = b;}
 }
 
 public void setBool(String a, boolean b){
@@ -140,6 +142,7 @@ public cell generateCell(){
 		if(tiamat.getControls("Any")){ tiamat.setOption("Any", omni);}
 		if(tiamat.getControls("Dir")){ tiamat.setParameter("Dir", dir);}
 		if(tiamat.getControls("Xfact")){ tiamat.setParameter("Xfact", xfactor);}
+		if(tiamat.getControls("InMode")){ tiamat.setParameter("InMode", inmod);}
  return tiamat;
 }
 
