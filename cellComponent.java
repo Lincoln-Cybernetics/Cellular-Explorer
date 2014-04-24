@@ -223,6 +223,17 @@ public void paintComponent( Graphics g){
 									
 								
 								g.fillRect(x*magnify,y*magnify,magnify,magnify);}
+								
+								//gradient mode
+								if(mode == 5){
+									boolean neg = false;
+									int grad = cstate[x][y]/4;
+									if(grad < 1){neg = true; grad = grad * -1;}
+									if(grad > 255){grad = 255;}
+									if(neg){g.setColor(new Color(0,0,grad));}
+									else{g.setColor(new Color(grad, grad, grad));}
+									g.fillRect(x*magnify,y*magnify,magnify,magnify);
+								}
 						
 								//hilite a selection	
 								if(selectionflag){ 
