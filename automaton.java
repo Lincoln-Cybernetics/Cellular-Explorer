@@ -280,14 +280,14 @@ public boolean convertBin(int s){
 						if(value >= xmax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[2]){
 								case 0: return -1;
-								case 1: return xmin -1 + (value - xmax);
+								case 1: return xmin + (value - xmax);
 								case 2: return mothership.checkLoc("X", value);
 							}
 							}
 						if(value < xmin){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[6]){
 								case 0: return -1;
-								case 1: return xmax + 1-(xmin - value);
+								case 1: return xmax - (xmin - value);
 								case 2: return mothership.checkLoc("X", value);
 							}
 							}
@@ -298,14 +298,14 @@ public boolean convertBin(int s){
 						if(value >= ymax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[4]){
 								case 0: return -1;
-								case 1: return ymin -1 + (value - ymax);
+								case 1: return ymin + (value - ymax);
 								case 2: return mothership.checkLoc("Y", value);
 							}
 							}
 						if(value < ymin){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[0]){
 								case 0: return -1;
-								case 1: return ymax + 1-(ymin - value);
+								case 1: return ymax - (ymin - value);
 								case 2: return mothership.checkLoc("Y", value);
 							}
 							}
