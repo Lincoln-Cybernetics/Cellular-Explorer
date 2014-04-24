@@ -193,7 +193,7 @@ class cellBrain  implements Runnable{
 				//set operational mode
 				public void setOpMode(int mode){
 					opmode = mode;
-					boolean[] es = new boolean[]{false, true, false, false, true};
+					boolean[] es = new boolean[]{false, true, false, false, true, true};
 					if(es[mode] == false){pause();}
 					switch(aamode){
 						case 1: pete.setEnabled(es[mode]);  break;
@@ -356,6 +356,18 @@ class cellBrain  implements Runnable{
 		}
 		//System.out.print("MBI");
 	}
+	
+	//advances the state
+	public void advanceState(){
+		switch(aamode){
+			case 1: pete.advanceState(); break;
+			case 2: for(int h = 0; h <= gridy-1; h++){
+						for(int w = 0; w <= gridx-1; w++){
+							grid[w][h].advanceState();}}	break;
+						}
+						refreshState();
+					}
+			
 
 	//runs the brain
 	public void run(){
