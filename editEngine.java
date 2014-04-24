@@ -113,7 +113,7 @@ public void initialize(int xmx, int ymx){
 						  eris.setInt("Ysiz", ymax);
 						  sedna = new selector(xmax,ymax);
 						  setMode(1);
-						  
+						  fillCellinit();
 						}
 	
 public void initialize(int xmx, int ymx, int xaut, int yaut){
@@ -142,7 +142,7 @@ public void initialize(int xmx, int ymx, int xaut, int yaut){
 						  eris.setInt("Ysiz", ymax);
 						  sedna = new selector(xmax,ymax);
 						  setMode(1);
-						  
+						  fillCellinit();
 						}
 
 public void handleControl(ucEvent e){
@@ -282,9 +282,12 @@ public void handleControl(ucEvent e){
 	 //generates random values for parameter tools
 	 private int randToolNum(int a){
 		 Random sprue = new Random();
-		 if(toolstring[a] == "Dir"){ return sprue.nextInt(8);}
-		 if(toolstring[a] == "Fade"){ return sprue.nextInt(1024)+1;}
-		 return sprue.nextInt(512)+1;
+		  int num = sprue.nextInt(512)+1;
+		 if(toolstring[a] == "Dir"){ num = sprue.nextInt(8);}
+		 if(toolstring[a] == "Fade"){ num = sprue.nextInt(1024)+1;} 
+		 if(toolstring[a] == "Xfact"){ num = sprue.nextInt(8)+1;}
+		 sprue = null;
+		 return num;
 	 }
 	 
 	 // show cell info
@@ -319,6 +322,7 @@ public void handleControl(ucEvent e){
 		 * 2 = State Editing
 		 * 3 = Cell Editing
 		 * 4 = Multicolor
+		 * 5 = Gradient
 		 */
 		 switch(m){
 			 case 0: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
@@ -334,6 +338,9 @@ public void handleControl(ucEvent e){
 			 case 4: if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
 						mode = 4; dmode = 4; mainBrain.setOpMode(4); viewer.setDispMode(4);  break;
 						
+			 case 5:  if(maction == "SDraw" && interactflag){}else{setMouseAction("None");}
+						mode = 5; dmode = 5; mainBrain.setOpMode(5); viewer.setDispMode(5);  break;
+						
 			 default:  setMouseAction("None"); mode = dmode; mainBrain.setOpMode(dmode); viewer.setDispMode(dmode);  break;
 		 }
 		}
@@ -345,6 +352,7 @@ public void handleControl(ucEvent e){
 			switch(a){
 				case 1: dmode = 1; break;
 				case 4: dmode = 4; break;
+				case 5: dmode = 5; break;
 				default: dmode = 1; break;
 			}
 		}
@@ -835,8 +843,15 @@ public void handleControl(ucEvent e){
 					for(int y = 0; y<= ymax-1; y++){
 						for(int x=0; x<= xmax-1; x++){
 							if(!sedna.getSelected() ||sedna.getSelection(x,y)){
-								if(mainBrain.state[x][y] == 0){mainBrain.setCellState(x,y,-1);}
-								mainBrain.setCellState(x,y,mainBrain.state[x][y]*-1);}}}
+								// mainBrain.getCell(x, y).invert();
+								//if(mainBrain.state[x][y] == 0){mainBrain.setCellState(x,y,-1);}
+								//mainBrain.setCellState(x,y,mainBrain.state[x][y]*-1);
+								switch(mainBrain.state[x][y]){
+									case 0: mainBrain.setCellState(x,y,1); break;
+									case 1: mainBrain.setCellState(x,y,0); break;
+									default: mainBrain.setCellState(x,y, mainBrain.state[x][y]*-1); break;
+								}
+								}}}
 					if(mode != 3){mainBrain.refreshState();}
 				}		
 			
