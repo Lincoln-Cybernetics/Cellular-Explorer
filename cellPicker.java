@@ -60,6 +60,10 @@ JSlider xfslider;//Neighborhood expansion factor
 JLabel xflabel;//Labels the slider
 JLabel xfind;//displays current value of xfslider
 
+JRadioButton[] inm = new JRadioButton[3];//input mode
+int mymode;//cell's input mode
+ButtonGroup inpmod;//group the buttons
+
 // relate to sending command events
 int ct = 0; //cell-type
 private ArrayList<ucListener> _audience = new ArrayList<ucListener>();
@@ -135,6 +139,12 @@ public cellPicker(){
 	xfslider = new JSlider(1,8);
 	xfind = new JLabel("");
 	xflabel = new JLabel("Expansion Factor");
+	
+	//Input mode
+	inm[0] = new JRadioButton("Void");
+	inm[1] = new JRadioButton("Binary");
+	inm[2] = new JRadioButton("Integer");
+	inpmod = new ButtonGroup(); inpmod.add(inm[0]); inpmod.add(inm[1]); inpmod.add(inm[2]); inm[1].setSelected(true);
 	
 	
 	GroupLayout cpLayout = new GroupLayout(this);
@@ -243,6 +253,11 @@ public cellPicker(){
 				.addComponent(xflabel)
 				.addComponent(xfslider)
 				.addComponent(xfind))
+				//Input Mode
+			.addGroup(cpLayout.createSequentialGroup()
+				.addComponent(inm[0])
+				.addComponent(inm[1])
+				.addComponent(inm[2]))
 				);
 				
 	cpLayout.setVerticalGroup(
@@ -347,6 +362,11 @@ public cellPicker(){
 				.addComponent(xflabel)
 				.addComponent(xfslider)
 				.addComponent(xfind))
+			//Input Mode
+			.addGroup(cpLayout.createParallelGroup()
+				.addComponent(inm[0])
+				.addComponent(inm[1])
+				.addComponent(inm[2]))
 				);	
 		setLayout(cpLayout);
 		setPreferredSize(new Dimension(325,200));
@@ -392,6 +412,10 @@ public cellPicker(){
 		 xfslider.addChangeListener(this);xfslider.setMaximumSize(new Dimension(100,15));
 		xfind.setText("1"); xfind.setVisible(false);
 		
+		//Input Mode
+		inm[0].setVisible(false); inm[0].addActionListener(this);inm[1].setVisible(false); inm[1].addActionListener(this);
+		inm[2].setVisible(false); inm[2].addActionListener(this);
+		
 	//init MBOT picker
 	MBOTPick.setVisible(false);
 	if(ct == 2){MBOTPick.setVisible(true); } else{MBOTPick.setVisible(false); }
@@ -426,6 +450,9 @@ public void actionPerformed(ActionEvent e){
 	if(e.getSource() == dirs[5]){gate.setInt("Dir", 5);}
 	if(e.getSource() == dirs[6]){gate.setInt("Dir", 6);}
 	if(e.getSource() == dirs[7]){gate.setInt("Dir", 7);}
+	if(e.getSource() == inm[0]){gate.setInt("InMode", 0);}
+	if(e.getSource() == inm[1]){gate.setInt("InMode", 1);}
+	if(e.getSource() == inm[2]){gate.setInt("InMode", 2);}
 	e = null;
 	}
 
@@ -505,12 +532,13 @@ private void setCell(){
 
 private void setOpts(cell darwin){
 	boolean visifier = false;
-	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All", "Dir","Xfact"};
+	String[] names = new String[]{"Age", "Fade", "Mat", "Born", "Survives", "WolfRule", "Orient", "Mirror", "Any", "All", "Dir","Xfact", "InMode"};
 	for(int concount = 0; concount< names.length; concount++){
 		 visifier =  darwin.getControls(names[concount]); 
 		switch(concount){
 			case 3: if(darwin.getControls(names[concount]) && MBOTtype == "Custom"){visifier = true;} else{visifier = false;} break;
 			case 4: if(darwin.getControls(names[concount]) && MBOTtype == "Custom"){visifier = true;} else{visifier = false;} break;
+			case 12: mymode = darwin.getParameter("InMode"); break;
 			default: break;
 		}
 		toggleControl(concount, visifier);
@@ -535,6 +563,7 @@ private void toggleControl(int a, boolean b){
 		case 9: opts[30].setVisible(b); opts[30].setEnabled(b); break;
 		case 10: for(int c = 0; c < 8; c++){dirs[c].setVisible(b); dirs[c].setEnabled(b);}dirlabel.setVisible(b); break;
 		case 11: xflabel.setVisible(b); xfslider.setVisible(b);xfslider.setEnabled(b);xfind.setVisible(b);if(b){xfslider.setValue(1);gate.setInt("Xfact",1);xfind.setText("1");} break;
+		case 12: inm[0].setVisible(b); inm[1].setVisible(b); inm[2].setVisible(b); /*if(b){inm[mymode].setSelected(true);}*/ break;
 	}
 }
 
