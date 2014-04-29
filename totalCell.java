@@ -46,7 +46,7 @@ public class totalCell extends cell{
 	//constructor
 	public totalCell(){
 		map = new threebrush();
-		inmode = 2;
+		inmode = 1;
 		
 		state = 0;
 		name = "Total Cell";
@@ -69,6 +69,7 @@ public class totalCell extends cell{
 			if(control == "Xfact"){return true;}
 			if(control == "Mirror"){ return true;}
 			if(control == "Mat"){ return true;}
+			if(control == "InMode"){return true;}
 			 return false;}
 		
 		public boolean getOption(String opname){ 
@@ -145,7 +146,7 @@ public class totalCell extends cell{
 			
 		for(int g = 0; g <= truckdrivin.length-1; g++){
 		switch(inmode){
-			case 0: neighborstate[g] = 0; break;	
+			case 0:  break;	
 			case 1: if(truckdrivin[g] > 0){neighborstate[g] = 1;}
 					else{neighborstate[g] = 0;} break;
 			case 2: neighborstate[g] = truckdrivin[g]; break;
