@@ -137,7 +137,7 @@ public class conveyorCell extends cell{
 			 calculate(); }
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} 
 			  if(fades){ if( age >= fade){ purgeState(); age = 0;}} 
-			  if( age > 1023){ age = 512; } state = agify(age);}
+			  if( age > 1023){ age = 1023; } state = agify(age);}
 			  //else{if(active){state = 1;}else{state = 0;}}
 			}
 		
@@ -170,6 +170,8 @@ public class conveyorCell extends cell{
 					break;
 					default : break;}
 				}
+				
+		
 		
 		public void purgeState(){ active = false; state = 0;age = 0;}
 		
