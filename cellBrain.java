@@ -190,7 +190,7 @@ class cellBrain  implements Runnable{
 				
 				// mode setting methods
 				
-				//set operational mode
+				//set & get operational mode
 				public void setOpMode(int mode){
 					opmode = mode;
 					boolean[] es = new boolean[]{false, true, false, false, true, true};
@@ -204,7 +204,7 @@ class cellBrain  implements Runnable{
 					}
 					}
 					
-			
+				public int getOpMode(){ return opmode;}
 				
 				// set edge-wrapping
 				public void setXYwrap(boolean xwr, boolean ywr){xwrap = xwr; ywrap = ywr; 
