@@ -92,7 +92,7 @@ public class cell{
 		public void setOption(String opname, boolean b){
 			
 			if(inmode != 2){
-			if(opname == "Ages"){ages = b;if(b == false){ fades = false; if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){ fades = false; if(active){age = 1;}else{age = 0;}}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			}
 			
@@ -131,16 +131,18 @@ public class cell{
 			 calculate(); 
 			 if(ages){ if(active){ if(age == 0){age = 1;} else{age += 1;}}else{ age = 0;} 
 				if(fades){ if( age >= fade){ purgeState(); age = 0;}} 
-				if( age > 1023){ age = 512; }state = agify(age);}
+				if( age > 1023){ age = 1023; }state = agify(age);}
 			}
 		
 		private void calculate(){
 			switch(inmode){
 				case 0: break;
-				case 1: if(neighborstate[0] == 1){active = true;state = 1;}else{active = false; state = 0;}break;
+				case 1: if(neighborstate[0] == 1){active = true; state = 1;}else{active = false; state = 0;}break;
 				case 2: state = neighborstate[0]; if(state < 1){active = false;} else{active = true;}break;
 				default:state = neighborstate[0]; if(state < 1){active = false;} else{active = true;} break;}
 			}
+			
+		
 			
 		protected int agify(int a){
 									if(a <= 0){return 0;}
