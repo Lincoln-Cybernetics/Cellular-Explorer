@@ -353,7 +353,10 @@ public void calculateState(){
 public void advanceState(){
 	for(int y = 0; y <= ysiz-1; y++){
 		for(int x = 0; x <= xsiz-1; x++){
-			mothership.state[xmin+x][ymin+y] = newstate[x][y];
+			if(mothership.getOpMode() == 5){
+				if(culture[x][y].getOption("Ages")){mothership.state[xmin+x][ymin+y] = culture[x][y].getParameter("Age");}
+				else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}}
+			else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}
 		}}
 	}
 
