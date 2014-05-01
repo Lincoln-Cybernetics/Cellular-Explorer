@@ -18,7 +18,8 @@
 public class totalCell extends cell{
 	// describe the cell's neighborhood
 	int inmode;//input mode
-	/*Input Modes
+	int outmode;//output mode
+	/*Input/output Modes
 	 * 0 = no input
 	 * 1 = binary
 	 * 2 = Integer
@@ -46,7 +47,8 @@ public class totalCell extends cell{
 	//constructor
 	public totalCell(){
 		map = new threebrush();
-		inmode = 1;
+		inmode = 2;
+		outmode = 2;
 		
 		state = 0;
 		name = "Total Cell";
@@ -89,6 +91,7 @@ public class totalCell extends cell{
 			if(paramname == "MirrX"){ return hoodx;}
 			if(paramname == "MirrY"){ return hoody;}
 			if(paramname == "InMode"){return inmode;}
+			if(paramname == "OutMode"){return outmode;}
 			if(paramname == "Xfact"){return map.getParameter("Xfact");}
 			return -1;}
 		
