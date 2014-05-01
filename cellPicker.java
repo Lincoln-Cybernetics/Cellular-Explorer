@@ -28,7 +28,7 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell", "Total Cell"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell", "Total Cell", "Average Cell"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
