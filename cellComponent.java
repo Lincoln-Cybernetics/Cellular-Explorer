@@ -197,6 +197,8 @@ public void paintComponent( Graphics g){
 									case 9: g.setColor(Color.pink); break;
 									//Total Cell
 									case 10: g.setColor(new Color(119, 35, 177)); break;
+									//Average Cell
+									case 11: g.setColor(new Color(200, 65, 10)); break;
 									
 									default: g.setColor(Color.black); break;
 								}
