@@ -57,8 +57,18 @@ State Editing:
 
 "Clear" : Clears the state of the entire automaton, all cellsare de-activated.
 
-"Invert" : Inverts the state of the entire automaton (or the selected portion).  Active cells are de-activated, and inactive cells are activated.
+"Invert" : Inverts the state of the entire automaton (or the selected portion).  Cells with binary output are switched: active cells(state 1) are deactivated(state 0) and vice-versa.  Cells with an integer output have their states multiplied by -1.
 
+
+
+State Editing tools:  
+State drawing and filling can affect more than the cell's current output state.  The following is a description of the tools available from the state editor.
+
+Binary State:  For Drawing:  activating(left-click) cells sets their current state to 1, and de-activating(right-click) sets their state to zero.  For Filling:  the same as drwing, except the "Random" option randomly sets the states of each cell to a random state between 0 and 1024. This is a temporary arrangement until a Integer State tool is implemented. 
+
+The Age tool sets the current age (for cells with the aging option turned on) to the value of the slider.
+
+The Maturity counter tool sets the cell's internal maturity counter (for cells with a maturity setting) to the value on the slider.  The maturity counter determines how long it will be before a cell calculates its next state.
 
 
 Cell Editing:
@@ -74,6 +84,8 @@ Cell Editing:
     Symmetrical: cyan
     Conveyor: yellow
     Strobe Cell: pink
+    Total Cell: purple
+    Average Cell: burnt orange
     
 "CellDraw":  Sets the mouse action to draw cells into the automaton with the selected brush.  Left clicking places cells selected with the primary cell picker, right clicking places cells from the secondary cell picker.
 
@@ -89,6 +101,23 @@ Cell Editing:
 
 "Random" : This option is the same as the random option for drawing, but for the fill tool.
 
+
+Cell Editing Tools:
+Cell Drawing and filling can do more than change the type of cell in a location, these tools can set a cell's internal options and parameters to alter its behavior. 
+
+The Cell tool: generates and places new cells into the automaton.
+
+The Direction tool is used to alter the direction parameter of cells that have one. The following cells can be edited: Conveyor(direction of motion), Symmetrical(axis of symmetry), and Wolfram(for cell orientation).
+
+The Maturity tool changes a cell's maturity setting(for cells that have a maturity setting). The maturity setting determines how many generations a cell will go through before calculating a new state.
+
+The Ages tool sets (turns on or off) the aging option for cells that have it.  Cells that age have their states gradually increase as they remain active.
+
+The Fade Rule tool sets (turns on or off) the Fade Rule for cells that have it.  Cells with the Fade rule de-activate after a maximum number of generations in the active state.
+
+The Fade tool sets the Fade parameter (maximum number of generations in an active state) of cells with the Fade Rule turned on.
+
+The Neighborhood Expansion tool sets the expansion factor of cells with the Neighborhood Expansion option.  In a normal cell, the expansion factor is one, and the cell determines its state based on the cells directly adjacent to it.  As the expansion factor increases, the cell bases its state on cells farther away. (expansion factor 2 means that a cell's right-hand neighbor (for example), is now the cell that is two cells away from it to the right, at expansion factor 3, the neighbor is three cells away, and so on)
 
 
 
@@ -114,3 +143,6 @@ Conveyor Cell: Takes on the state of one of its neighbors.  In a group they act 
 
 Strobe cell:  Remains inactive for a length of time set by its maturity option, and then becomes active for one generation.
 
+Total Cell:  Adds the states of its neighbors.
+
+Average Cell:  Totals the states of its neighbors, then divides by the size of its neighborhood.
