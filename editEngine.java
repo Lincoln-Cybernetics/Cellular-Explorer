@@ -735,7 +735,7 @@ public void handleControl(ucEvent e){
 						int dunebuggy = randToolNum(1);
 						int twog;
 						boolean twig = foghorn.nextBoolean();
-						if(twig){twog = foghorn.nextInt(256)+1;}else{twog = 0;}
+						if(twig){twog = foghorn.nextInt(1024)+1;}else{twog = 0;}
 						if(statefillflag){
 							switch(sft){
 								case 0: mainBrain.setCellState(x,y,twog);viewer.setAState(x,y,twog); break;
