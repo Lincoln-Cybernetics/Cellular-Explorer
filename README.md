@@ -3,6 +3,9 @@ Cellular-Explorer
 
 Cellular Explorer is a mixed rule cellular automaton editor created in Java. 
 
+Thanks to Tarl Carpenter, Brian Prentice, Alexander Viasov, and James Woody for the feedback and ideas that have made this program possible.  Also thanks to everyone at www.conwaylife.com 
+
+
 This is a basic description of its functionality:
 
 Double click on the .jar file to open it.  The master control panel should appear in the upper-left of the screen.
