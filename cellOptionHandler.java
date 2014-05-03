@@ -38,7 +38,7 @@ boolean doesage = false;// sets aging
 boolean doesfade = false;// sets the fade rule
 int fadenum = 0;// maximum age for the fade rule
 boolean mirr = false; // mirror setting for cell
-int inmod;//the cell's input mode
+int inmod = 1;//the cell's input mode
 public cellOptionHandler(){
 }
 
