@@ -111,14 +111,16 @@ public class randCell extends cell{
 			 matcount += 1;
 			 if(matcount >= mat){matcount = 0;
 			 calculate(); }
-			 if(ages){ if(active){ age = bombadil.nextInt(1024);}else{ age = bombadil.nextInt(1024)*-1;} state = agify(age);}
-			 else{if(active){state = 1;}else{state = 0;}}
+			
 			
 			}
 			
 		
 		
-		private void calculate(){if(bombadil.nextBoolean()){active = true;}else{active = false;}}
+		private void calculate(){if(bombadil.nextBoolean()){active = true;}else{active = false;}
+				if(ages){ if(active){ age = bombadil.nextInt(1024);}else{ age = bombadil.nextInt(1024)*-1;} state = agify(age);}
+				else{if(active){state = 1;}else{state = 0;}}
+			}
 		
 		public void purgeState(){ active = false; state = 0;age = 0;}
 		
