@@ -30,7 +30,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	JSlider throttle;
 	JSlider[] rtsetter = new JSlider[3];
 	JLabel[] rtslab = new JLabel[3];
-	controlBox dispbox;
+	//controlBox dispbox;
 	controlBox wrapbox;
 	JButton cidButton;
 	JMenuItem[] winitem = new JMenuItem[7];
@@ -82,7 +82,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		rtslab[0] = new JLabel("50");
 		rtslab[1] = new JLabel("50");
 		rtslab[2] = new JLabel("50");
-		dispbox = new controlBox(1);
+		//dispbox = new controlBox(1);
 		wrapbox = new controlBox(2);
 		cidButton = new JButton("Cell info");
 		winitem[0] = new JMenuItem("State Editor");
@@ -104,7 +104,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		maglab = new JLabel("Magnification");
 		magvallab = new JLabel("5");
 		
-		setPreferredSize(new Dimension(675,165));
+		//setPreferredSize(new Dimension(675,165));
 		
 		// set layout
 		GroupLayout mclayout = new GroupLayout(this);
@@ -128,7 +128,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(buttons[7]))*/
 			.addGroup(mclayout.createSequentialGroup()
 				//.addComponent(buttons[8])
-				.addComponent(dispbox)
+				//.addComponent(dispbox)
 				.addComponent(wrapbox)
 				.addComponent(maglab)
 				.addComponent(magsetter)
@@ -163,7 +163,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 				.addComponent(buttons[7]))*/
 			.addGroup(mclayout.createParallelGroup()
 				//.addComponent(buttons[8])
-				.addComponent(dispbox)
+				//.addComponent(dispbox)
 				.addComponent(wrapbox)
 				.addComponent(maglab)
 				.addComponent(magsetter)
@@ -198,7 +198,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 	//Misc	
     rtslab[1].setText(Integer.toString(rtsetter[2].getValue()*2));
-	 dispbox.adducListener(this);
+	// dispbox.adducListener(this);
 	 wrapbox.adducListener(this); wrapbox.setMaximumSize(new Dimension(100,50));
 	 cidButton.addActionListener(this);
 	 magsetter.addChangeListener(this); magsetter.setValue(5);
@@ -302,7 +302,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void handleControl(ucEvent e){
 			if(cflag){
-			if(e.getSource() == dispbox){ cntrl = 10; disptype = e.getCommand(); fireucEvent();}
+			//if(e.getSource() == dispbox){ cntrl = 10; disptype = e.getCommand(); fireucEvent();}
 			if(e.getSource() == wrapbox){ cntrl = 11;
 						switch(e.getCommand()){
 							case 0: wraptype -= 1;  if(wraptype < 0){wraptype = 0;} break;
