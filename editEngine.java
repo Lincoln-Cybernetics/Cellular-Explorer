@@ -414,6 +414,8 @@ public void handleControl(ucEvent e){
 						case 4: sigmund = new gliderbrush(); sigmund.setOrientation(0); break;
 							//R-pentomino
 						case 5: sigmund = new rpentbrush(); sigmund.setOrientation(0); break;
+						    //Extended vonNeumann
+						case 6: sigmund = new evbrush(); break;
 						
 						default : sigmund = new onebrush(); break;}
 					}
