@@ -206,8 +206,12 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 	// menu bar
 	for(int s = 0; s < winitem.length; s++){
 		winmen.add(winitem[s]); winitem[s].addActionListener(this);}
-	for(int m = 0; m < disitem.length; m++){
-		dismen.add(disitem[m]); disitem[m].addActionListener(this);}
+	
+		dismen.add(disitem[0]); disitem[0].addActionListener(this);
+		dismen.add(disitem[1]); disitem[1].addActionListener(this);
+		dismen.add(disitem[4]); disitem[4].addActionListener(this);
+		dismen.add(disitem[2]); disitem[2].addActionListener(this);
+		dismen.add(disitem[3]); disitem[3].addActionListener(this);
 	
 	mainbar.add(winmen);
 	mainbar.add(dismen);
