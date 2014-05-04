@@ -27,7 +27,7 @@ public class brushControl extends JComponent implements ActionListener, ItemList
 // controlPanel variables
 //brush selection
 JComboBox brushPicker;
-String[] brushes = new String[]{"1x1", "2x2", "3x3", "Glider", "R- pentomino"};
+String[] brushes = new String[]{"1x1", "2x2", "3x3", "Glider", "R- pentomino","Extended vonNeumann"};
 int bruush = 1;
 //direction
 JLabel bdlabel;
