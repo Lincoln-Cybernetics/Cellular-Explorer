@@ -199,7 +199,9 @@ public void paintComponent( Graphics g){
 									case 10: g.setColor(new Color(119, 35, 177)); break;
 									//Average Cell
 									case 11: g.setColor(new Color(200, 65, 10)); break;
-									
+									//EVBOT
+									case 12: g.setColor(new Color(127, 255, 127)); break;
+									//default
 									default: g.setColor(Color.black); break;
 								}
 								g.fillRect(x*magnify,y*magnify,schmagnify,schmagnify);
