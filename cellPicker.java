@@ -28,7 +28,8 @@ public class cellPicker extends JComponent implements ActionListener, ItemListen
 cellOptionHandler gate;
 // controlPanel variables
 JComboBox cellpick;
-String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", "BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell", "Total Cell", "Average Cell"};
+String[] Cells = new String[]{"Cell", "Wolfram", "MBOT", "Randomly-active cell", "OnCell", "OffCell", 
+	"BlinkCell", "Symmetrical", "Conveyor", "Strobe Cell", "Total Cell", "Average Cell","EVBOT"};
 
 JComboBox  MBOTPick;
 String[] MBOTCells = new String[]{"Custom", "2x2", "3/4 Life", "Amoeba", "Assimilation", "Coagulations", "Coral", "Day and Night", "Diamoeba", "Dot Life",
@@ -72,7 +73,7 @@ int command = 0;
  * 0 = cell
  * 1 = wolfram
  * 2 = MBOT
- * 3 = randCell
+ * 3 = randCell. . . 
  */
 
 
@@ -418,7 +419,7 @@ public cellPicker(){
 		
 	//init MBOT picker
 	MBOTPick.setVisible(false);
-	if(ct == 2){MBOTPick.setVisible(true); } else{MBOTPick.setVisible(false); }
+	if(ct == 2 || ct == 12){MBOTPick.setVisible(true); } else{MBOTPick.setVisible(false); }
 	
 	cellpick.addActionListener(this);
 	MBOTPick.addActionListener(this);
@@ -463,7 +464,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 		switch(i){
 			case 0: gate.setBool("Ages", opts[i].getState()); if(!opts[0].getState() && opts[1].getState()){opts[1].setState(false);} break;
 			case 1: gate.setBool("Fades", opts[i].getState());if(opts[1].getState() && !opts[0].getState()){opts[0].setState(true);} break;
-			// Born on for MBOT
+			// Born on for MBOT & EVBOT
 			case 2: gate.setBool("B0", opts[i].getState()); setRULAB(); break;
 			case 3: gate.setBool("B1", opts[i].getState()); setRULAB();break;
 			case 4: gate.setBool("B2", opts[i].getState()); setRULAB();break;
@@ -473,7 +474,7 @@ public void itemStateChanged(ItemEvent e){//age, fade, born, survives
 			case 8: gate.setBool("B6", opts[i].getState()); setRULAB();break;
 			case 9: gate.setBool("B7", opts[i].getState()); setRULAB();break;
 			case 10: gate.setBool("B8", opts[i].getState());setRULAB();break;
-			// Survives for MBOT
+			// Survives for MBOT & EVBOT
 			case 11: gate.setBool("S0", opts[i].getState());setRULAB();break; 
 			case 12: gate.setBool("S1", opts[i].getState());setRULAB();break;
 			case 13: gate.setBool("S2", opts[i].getState());setRULAB();break;
@@ -527,7 +528,8 @@ private void setCType(){
 private void setCell(){
 	
 		setOpts(gate.generateCell());
-		if(ct == 2){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);setRULAB();rulab.setVisible(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);rulab.setVisible(false);}
+		//MBOT & EVBOT stuff
+		if(ct == 2 || ct == 12){MBOTPick.setVisible(true); MBOTPick.setEnabled(true);setRULAB();rulab.setVisible(true);} else{MBOTPick.setVisible(false); MBOTPick.setEnabled(false);rulab.setVisible(false);}
 }
 
 private void setOpts(cell darwin){
@@ -567,6 +569,7 @@ private void toggleControl(int a, boolean b){
 	}
 }
 
+//set rule label for MBOT & EVBOT
 public void setRULAB(){
 	cell gonzo = gate.generateCell();
 	String bst = ""; String sst = ""; String[] brn = new String[]{"B0","B1","B2","B3","B4","B5","B6","B7","B8"};
