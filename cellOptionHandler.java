@@ -132,6 +132,7 @@ public cell generateCell(){
 		case 9: tiamat = new strobeCell(); break;
 		case 10: tiamat = new totalCell(); break;
 		case 11: tiamat = new averageCell(); break;
+		case 12: if(mbotname == "Custom"){tiamat = new evbot(); setRules();}else{tiamat = new evbot(mbotname);}break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
@@ -149,7 +150,7 @@ public cell generateCell(){
 
 private void setRules(){
 	// sets custom rules for MBOT cells
-	if(tiamat.getName() == "M.B.O.T."){ for(int n = 0; n<9; n++){ 
+	if(tiamat.getName() == "M.B.O.T." || tiamat.getName() == "E.V.B.O.T."){ for(int n = 0; n<9; n++){ 
 		String bstr = "B0"; String sstr = "S0"; 
 		switch(n){
 			case 0: bstr = "B0"; sstr = "S0"; break;
@@ -225,6 +226,11 @@ class randcellOptionHandler extends cellOptionHandler{
 		case 9: tiamat = new strobeCell(); break;
 		case 10: tiamat = new totalCell(); break;
 		case 11: tiamat = new averageCell(); break;
+		case 12: if(shovel.nextInt(10) <= 5){tiamat =new evbot(MBOTCell[shovel.nextInt(MBOTCell.length)]);}
+				else{tiamat = new evbot();
+				for(int ace = 0; ace <= 9; ace++){
+				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}}
+				break;
 		default: tiamat = new cell();break;}
 		
 		// randomly set mirror options
@@ -275,7 +281,8 @@ class randcellOptionHandler extends cellOptionHandler{
 		if(cellgen > 63 && cellgen < 128){celltype = 8;}//conveyorcell
 		if(cellgen > 127 && cellgen < 256){celltype = 1;}//Wolfram
 		if(cellgen > 255 && cellgen < 512){celltype = 7;}//symmetric
-		if(cellgen > 511 && cellgen < 1024){celltype = 2;}//MBOT
+		if(cellgen > 511 && cellgen < 768){celltype = 2;}//MBOT
+		if(cellgen > 767 && cellgen < 1024){celltype = 12;}//EVBOT
 		
 	
 		return generateCell();  }
