@@ -78,8 +78,8 @@ public automaton( int a, int b){
 	//tells the automaton where it is
 	public void locate(int x, int y){
 		xmin = x; ymin = y;
-		xmax = xmin + xsiz-1;
-		ymax = ymin + ysiz-1;
+		xmax = xmin + xsiz;
+		ymax = ymin + ysiz;
 	} 
 	
 	//initialize the board
@@ -266,7 +266,9 @@ public boolean convertBin(int s){
 				int[] info = new int[reps];
 				for(int d = 0; d <= reps-1; d++){
 					int tempx = checkAddress("X", culture[x][y].getParameter("NextX"));
+					tempx = mothership.checkLoc("X", tempx);
 					int tempy = checkAddress("Y", culture[x][y].getParameter("NextY"));
+					tempy = mothership.checkLoc("Y", tempy);
 					if(tempx == -1 || tempy == -1){info[d] = 0;}
 					else{info[d] = mothership.state[tempx][tempy];}
 				}
@@ -277,7 +279,7 @@ public boolean convertBin(int s){
 				//edge wrapping does apply for neighborhoods
 				private int checkAddress(String axis, int value){
 					if(axis == "X"){ 
-						if(value >= xmax){//border policies 0 = closed; 1 = wrap; 2 = open;
+						if(value > xmax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[2]){
 								case 0: return -1;
 								case 1: return xmin + (value - xmax);
@@ -295,7 +297,7 @@ public boolean convertBin(int s){
 					}
 					
 					if(axis == "Y"){
-						if(value >= ymax){//border policies 0 = closed; 1 = wrap; 2 = open;
+						if(value > ymax){//border policies 0 = closed; 1 = wrap; 2 = open;
 							switch(bpol[4]){
 								case 0: return -1;
 								case 1: return ymin + (value - ymax);
