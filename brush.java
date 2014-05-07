@@ -389,3 +389,46 @@ class evbrush extends brush{
 			return yloc + ylocs[ycount][orientation];
 			}
 }
+
+class vonNeumannbrush extends brush{
+	
+	public vonNeumannbrush(){
+		bristles = 5;
+		xlocs = new int[5][1];
+		ylocs = new int[5][1];
+		xlocs[0][0] = 0; xlocs[1][0] = -1; xlocs[2][0] = 0;
+		ylocs[0][0] = -1; ylocs[1][0] = 0;ylocs[2][0] = 0;
+		xlocs[3][0] = 1; xlocs[4][0] = 0;
+		ylocs[3][0] = 0; ylocs[4][0] = 1; 
+		
+		}
+		
+		//used to set parameters
+		public void setParameter(String parnam, int h){
+			if(parnam == "Xfact"){ xf = h; setXF();}
+			}
+		
+		//get parameter values
+		public int getParameter(String pname){
+			if(pname == "Xfact"){return xf;}
+			return -1;
+		}
+			
+		//sets expansion factor
+		private void setXF(){ 
+			xlocs[0][0] = 0; xlocs[1][0] = -1*xf; xlocs[2][0] = 0;
+			ylocs[0][0] = -1*xf; ylocs[1][0] = 0;ylocs[2][0] = 0;
+			xlocs[3][0] = xf; xlocs[4][0] = 0;
+			ylocs[3][0] = 0; ylocs[4][0] = xf; 
+			
+		}
+	
+		//calculates the x-coordinates for each cell the brush affects
+		private int calculateX(){
+				return xloc + xlocs[xcount][orientation];}
+				
+		//calculates the y-coordinates for each cell the brush affects
+		private int calculateY(){
+			return yloc + ylocs[ycount][orientation];
+			}
+}
