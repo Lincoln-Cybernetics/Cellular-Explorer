@@ -416,6 +416,8 @@ public void handleControl(ucEvent e){
 						case 5: sigmund = new rpentbrush(); sigmund.setOrientation(0); break;
 						    //Extended vonNeumann
 						case 6: sigmund = new evbrush(); break;
+						   //vonNeumann Brush
+						case 7: sigmund = new vonNeumannbrush(); break;
 						
 						default : sigmund = new onebrush(); break;}
 					}
