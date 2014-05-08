@@ -150,7 +150,10 @@ class threebrush extends brush{
 		xlocs[6][0] = -1; xlocs[7][0] = 0; xlocs[8][0] = 1;
 		ylocs[6][0] = 1; ylocs[7][0] = 1; ylocs[8][0] = 1;
 		}
-		
+		//get controls
+		public boolean getControls(String a){
+			if(a == "XFact"){return true;}
+			return false;}
 		//used to set parameters
 		public void setParameter(String parnam, int h){
 			if(parnam == "Xfact"){ xf = h; setXF();}
@@ -254,7 +257,11 @@ class spinbrush extends brush{
 		xlocs[0][3] = -1; xlocs[1][3] = 0; xlocs[2][3] = 1;
 		ylocs[0][3] = -1; ylocs[1][3] = 0; ylocs[2][0] = 1;
 		}
-		
+		//get controls
+		public boolean getControls(String a){
+			if(a == "XFact"){return true;}
+			if(a == "Orient"){return true;}
+			return false;}
 		//used to set parameters
 		public void setParameter(String parnam, int h){
 			if(parnam == "Xfact"){ xf = h; setXF();}
@@ -358,7 +365,10 @@ class evbrush extends brush{
 		xlocs[6][0] = 2; xlocs[7][0] = 0; xlocs[8][0] = 0;
 		ylocs[6][0] = 0; ylocs[7][0] = 1; ylocs[8][0] = 2;
 		}
-		
+		//get controls
+		public boolean getControls(String a){
+			if(a == "XFact"){return true;}
+			return false;}
 		//used to set parameters
 		public void setParameter(String parnam, int h){
 			if(parnam == "Xfact"){ xf = h; setXF();}
@@ -402,7 +412,10 @@ class vonNeumannbrush extends brush{
 		ylocs[3][0] = 0; ylocs[4][0] = 1; 
 		
 		}
-		
+		//get controls
+		public boolean getControls(String a){
+			if(a == "XFact"){return true;}
+			return false;}
 		//used to set parameters
 		public void setParameter(String parnam, int h){
 			if(parnam == "Xfact"){ xf = h; setXF();}
