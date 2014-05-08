@@ -130,6 +130,7 @@ public class cellularExplorer implements ucListener{
 					case 401: v1.setEditBrush(Inez.getBrush()); break;//Set Editing Brush type
 					case 402: v1.sigmund.setOrientation(Inez.getBrushDir()); break;//Set Brush Orientation
 					case 403: v1.sigmund.setOption(Inez.getOPNAM(), Inez.getOPVAL()); break;//Set Brush Options
+					case 404: v1.sigmund.setParameter("Xfact", Inez.getParamval()); break;//set edit brush expansion factor
 					default: break;
 				}
 				e = null;
