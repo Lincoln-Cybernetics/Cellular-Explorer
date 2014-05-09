@@ -72,7 +72,6 @@ public class averageCell extends cell{
 			if(control == "Xfact"){return true;}
 			if(control == "Mirror"){ return true;}
 			if(control == "Mat"){ return true;}
-			//if(control == "InMode"){return true;}
 			 return false;}
 		
 		public boolean getOption(String opname){ 
@@ -100,7 +99,6 @@ public class averageCell extends cell{
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "MirrX"){hoodx = a; if(mirror){setLocation(hoodx, hoody);}}
 			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
-			//if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}}
 			if(paramname == "Xfact"){map.setParameter("Xfact", a);}
 			}
 		
