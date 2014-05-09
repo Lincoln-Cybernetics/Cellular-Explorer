@@ -18,6 +18,7 @@
 public class strobeCell extends cell{
 	// describe the cell's neighborhood
 	int inmode;//input mode 0 = no input
+	int outmode;//output mode
 	
 	// describe the current state of the cell
 	boolean active;
@@ -43,6 +44,7 @@ public class strobeCell extends cell{
 	//constructor
 	public strobeCell(){
 		inmode = 0;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "Strobe";
@@ -78,6 +80,7 @@ public class strobeCell extends cell{
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
 			if(paramname == "InMode"){return inmode;}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
