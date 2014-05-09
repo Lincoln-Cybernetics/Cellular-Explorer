@@ -24,6 +24,8 @@ public class cell{
 	 * 2 = Integer
 	 */
 	brush map;
+	int outmode;//output mode
+	
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -53,6 +55,7 @@ public class cell{
 	public cell(){
 		map = new onebrush();
 		inmode = 1;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "Cell";
@@ -92,7 +95,7 @@ public class cell{
 		public void setOption(String opname, boolean b){
 			
 			if(inmode != 2){
-			if(opname == "Ages"){ages = b; if(b == false){ fades = false; if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){outmode = 1; fades = false; if(active){age = 1;}else{age = 0;}}else{outmode = 2;}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			}
 			
@@ -109,6 +112,7 @@ public class cell{
 			if(paramname == "MirrX"){ return hoodx;}
 			if(paramname == "MirrY"){ return hoody;}
 			if(paramname == "InMode"){return inmode;}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
@@ -116,7 +120,7 @@ public class cell{
 			if(paramname == "Fade"){fade = a;}
 			if(paramname == "MirrX"){hoodx = a; if(mirror){setLocation(hoodx, hoody);}}
 			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
-			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}}
+			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;outmode = 2;}if(a == 1){outmode = 1;}}
 			}
 		
 		public void setRule(int a, boolean b){}
