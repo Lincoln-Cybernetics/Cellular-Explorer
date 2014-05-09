@@ -19,6 +19,8 @@ public class conveyorCell extends cell{
 	// describe the cell's neighborhood
 	int inmode; // Input mode: 0 = no input, 1 = binary, 2 = integer
 	brush map;
+	int outmode;//output mode
+	
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -55,6 +57,7 @@ public class conveyorCell extends cell{
 	public conveyorCell(){
 		map = new threebrush();
 		inmode = 1;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "Conveyor";
@@ -94,7 +97,7 @@ public class conveyorCell extends cell{
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
-			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){outmode = 1; fades = false; if(active){age = 1;}else{age = 0;}}else{outmode = 2;}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			}
 		
@@ -110,6 +113,7 @@ public class conveyorCell extends cell{
 			if(paramname == "Matcount"){ return matcount;}
 			if(paramname == "InMode"){return inmode;}
 			if(paramname == "Xfact"){return map.getParameter("Xfact");}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
@@ -118,7 +122,7 @@ public class conveyorCell extends cell{
 			if(paramname == "Dir"){ direction = a; if(direction < 0){ direction = 0;} if(direction > 7){direction %= 8;}}
 			if(paramname == "Mat"){ mat = a;}
 			if(paramname == "Matcount"){ matcount = a;}
-			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}}
+			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;outmode = 2;}if(a == 1){outmode = 1;}}
 			if(paramname == "Xfact"){map.setParameter("Xfact", a);}
 			
 			}
