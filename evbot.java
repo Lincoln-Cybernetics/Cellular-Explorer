@@ -19,6 +19,8 @@ public class evbot extends cell{
 	// describe the cell's neighborhood
 	int inmode;//input mode 0 = no input, 1 = binary, 2 = int;
 	brush map;
+	int outmode;//output mode
+	
 	// describe the current state of the cell
 	boolean active;
 	int state;
@@ -56,6 +58,7 @@ public class evbot extends cell{
 		map = new evbrush();
 		neighbors = new boolean[9];
 		inmode = 1;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "E.V.B.O.T.";
@@ -78,8 +81,9 @@ public class evbot extends cell{
 		public evbot(String type){
 			map = new evbrush();
 			neighbors = new boolean[9];
-		//if(type == "OnCell" || name == "OffCell" || name == "BlinkCell"){inmode = 0;} else{inmode = 1;}
+		
 		inmode = 1;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = type;
@@ -173,7 +177,7 @@ public class evbot extends cell{
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
-			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){outmode = 1; fades = false; if(active){age = 1;}else{age = 0;}}else{outmode = 2;}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			if(opname == "B0"){ born[0]=b;}if(opname == "B1"){ born[1]=b;}
 			if(opname == "B2"){ born[2]=b;}if(opname == "B3"){ born[3]=b;}
@@ -204,6 +208,7 @@ public class evbot extends cell{
 			if(paramname == "MirrY"){ return hoody;}
 			if(paramname == "InMode"){return inmode;}
 			if(paramname == "Xfact"){return map.getParameter("Xfact");}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
