@@ -18,6 +18,7 @@ import java.util.Random;
 public class randCell extends cell{
 	// describe the cell's neighborhood
 	int inmode;//input mode 0 = no input
+	int outmode;//output mode
 	
 	// describe the current state of the cell
 	boolean active;
@@ -49,6 +50,7 @@ public class randCell extends cell{
 	//constructor
 	public randCell(){
 		inmode = 0;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "Random";
@@ -78,7 +80,7 @@ public class randCell extends cell{
 			return false;}
 		
 		public void setOption(String opname, boolean b){
-			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){outmode = 1; fades = false; if(active){age = 1;}else{age = 0;}}else{outmode = 2;}}
 			
 			}
 		
@@ -91,6 +93,7 @@ public class randCell extends cell{
 			if(paramname == "Mat"){ return mat;}
 			if(paramname == "Matcount"){ return matcount;}
 			if(paramname == "InMode"){return inmode;}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		public void setParameter(String paramname, int a){
