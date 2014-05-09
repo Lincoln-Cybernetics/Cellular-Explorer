@@ -19,6 +19,7 @@ public class wolfram extends cell{
 	// describe the cell's neighborhood
 	int inmode; //input mode 1 = binary
 	brush map;
+	int outmode;//output mode
 	
 	// describe the current state of the cell
 	boolean active;
@@ -57,6 +58,7 @@ public class wolfram extends cell{
 	public wolfram(){
 		map = new spinbrush();
 		inmode = 1;
+		outmode = 1;
 		active = false;
 		state = 0;
 		name = "Wolfram";
@@ -107,7 +109,7 @@ public class wolfram extends cell{
 			return false;}
 		
 		@Override public void setOption(String opname, boolean b){
-			if(opname == "Ages"){ages = b;if(b == false){if(active){age = 1;}else{age = 0;}}}
+			if(opname == "Ages"){ages = b; if(b == false){outmode = 1; fades = false; if(active){age = 1;}else{age = 0;}}else{outmode = 2;}}
 			if(opname == "Fades"){fades = b; if(b){ages = true;}}
 			if(opname == "WR0"){rule[0] = b;}
 			if(opname == "WR1"){rule[1] = b;}
@@ -136,6 +138,7 @@ public class wolfram extends cell{
 				if(rule[3]){wn += 8;} if(rule[2]){wn += 4;} if(rule[1]){wn += 2;} if(rule[0]){wn += 1;} return wn;}
 			if(paramname == "InMode"){return inmode;}
 			if(paramname == "Xfact"){return map.getParameter("Xfact");}
+			if(paramname == "OutMode"){return outmode;}
 			return -1;}
 		
 		@Override public void setParameter(String paramname, int a){
