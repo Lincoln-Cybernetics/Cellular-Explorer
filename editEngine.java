@@ -304,6 +304,7 @@ public void handleControl(ucEvent e){
 		 mercury.init();
 		 barnabus.setVisible(true);
 		 barnabus.toFront();
+		 mercury.setMode(mode);
 		 mercury.setVisible(true);}
 		 else{barnabus.toFront();barnabus.setVisible(true);}
 		 
@@ -343,6 +344,7 @@ public void handleControl(ucEvent e){
 						
 			 default:  setMouseAction("None"); mode = dmode; mainBrain.setOpMode(dmode); viewer.setDispMode(dmode);  break;
 		 }
+		 if(mercury != null){mercury.setMode(mode);}
 		}
 		
 		public int getMode(){return mode;}
@@ -847,14 +849,7 @@ public void handleControl(ucEvent e){
 					for(int y = 0; y<= ymax-1; y++){
 						for(int x=0; x<= xmax-1; x++){
 							if(!sedna.getSelected() ||sedna.getSelection(x,y)){
-								// mainBrain.getCell(x, y).invert();
-								//if(mainBrain.state[x][y] == 0){mainBrain.setCellState(x,y,-1);}
-								//mainBrain.setCellState(x,y,mainBrain.state[x][y]*-1);
-								switch(mainBrain.state[x][y]){
-									case 0: mainBrain.setCellState(x,y,1); break;
-									case 1: mainBrain.setCellState(x,y,0); break;
-									default: mainBrain.setCellState(x,y, mainBrain.state[x][y]*-1); break;
-								}
+								mainBrain.invertCellState(x,y);
 								}}}
 					if(mode != 3){mainBrain.refreshState();}
 				}		
@@ -1096,9 +1091,9 @@ public void handleControl(ucEvent e){
 
 //Cell information viewer
 class cicomp extends JComponent{
-JLabel[] fields = new JLabel[12];
-JLabel[] info = new JLabel[12];
-
+JLabel[] fields = new JLabel[13];
+JLabel[] info = new JLabel[13];
+int mode;
 cell xerxes;
 
 public cicomp(){
@@ -1115,6 +1110,7 @@ public cicomp(){
 	fields[9] = new JLabel("Neighborhood expansion : ");
 	fields[10] = new JLabel("Input Mode : ");
 	fields[11] = new JLabel("Current State : ");
+	fields[12] = new JLabel("Output Mode : ");
 	//labels to hold the values
 	info[0] = new JLabel("Long-winded Moniker");
 	info[1] = new JLabel("999");
@@ -1128,6 +1124,7 @@ public cicomp(){
 	info[9] = new JLabel("999");
 	info[10] = new JLabel("Integer");
 	info[11] = new JLabel("999");
+	info[12] = new JLabel("Integer");
 	
 	xerxes = new cell();
 	
@@ -1143,6 +1140,9 @@ public cicomp(){
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[10])
 				.addComponent(info[10]))
+			.addGroup(ccl.createSequentialGroup()
+				.addComponent(fields[12])
+				.addComponent(info[12]))
 			.addGroup(ccl.createSequentialGroup()
 				.addComponent(fields[11])
 				.addComponent(info[11]))
@@ -1182,6 +1182,9 @@ public cicomp(){
 			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[10])
 				.addComponent(info[10]))
+			.addGroup(ccl.createParallelGroup()
+				.addComponent(fields[12])
+				.addComponent(info[12]))
 			.addGroup(ccl.createParallelGroup()
 				.addComponent(fields[11])
 				.addComponent(info[11]))
@@ -1228,6 +1231,8 @@ public void init(){
 		info[10].setText("");
 		fields[11].setVisible(true); info[11].setVisible(true);
 		info[11].setText("");
+		fields[12].setVisible(true); info[12].setVisible(true);
+		info[12].setText("");
 	}
 	
 public void setCell(cell hammurabi){
@@ -1235,6 +1240,9 @@ public void setCell(cell hammurabi){
 	refCell();
 	hammurabi = null;
 	}
+	
+public void setMode(int a){
+	mode = a;}
 	
 public void refCell(){
 	//Cell Name
@@ -1244,10 +1252,18 @@ public void refCell(){
 	case 0: info[10].setText("No Input"); break;
 	case 1: info[10].setText("Binary"); break;
 	case 2: info[10].setText("Integer"); break;}
+	//Output Mode
+	switch(xerxes.getParameter("OutMode")){
+	case 0: info[12].setText("No Input"); break;
+	case 1: info[12].setText("Binary"); break;
+	case 2: info[12].setText("Integer"); break;}
 	//Cell's current State
-	info[11].setText(Integer.toString(xerxes.getState()));
+	if(xerxes.getParameter("OutMode") == 0){info[11].setText("Void");}
+	if(xerxes.getParameter("OutMode") == 1){if(xerxes.getActive()){info[11].setText("On");}else{info[11].setText("Off");}}
+	if(xerxes.getParameter("OutMode") == 2){if(xerxes.getOption("Ages") && mode == 5){info[11].setText(Integer.toString(xerxes.getParameter("Age")));}else{info[11].setText(Integer.toString(xerxes.getState()));}}
+	
 	// set labels for Aging
-	if(xerxes.getOption("Ages")){fields[1].setVisible(true); info[1].setText(Integer.toString(xerxes.getParameter("Age"))); info[1].setVisible(true);}
+	if(xerxes.getOption("Ages")){if(mode == 5){fields[1].setVisible(false);info[1].setVisible(false);}else{fields[1].setVisible(true); info[1].setText(Integer.toString(xerxes.getParameter("Age"))); info[1].setVisible(true);}}
 	else{fields[1].setVisible(false); info[1].setVisible(false);}
 	//set labels for Fade rule
 	if(xerxes.getOption("Fades")){fields[2].setVisible(true); info[2].setText(Integer.toString(xerxes.getParameter("Fade"))); info[2].setVisible(true);}
