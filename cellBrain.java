@@ -283,19 +283,50 @@ class cellBrain  implements Runnable{
 					if(y >= ysiz){y = ysiz-1;}
 					if(y <= 0){y=0;}
 					switch(aamode){
-					case 1: if(b > 0){pete.culture[x][y].activate();} else{pete.culture[x][y].purgeState();}break;
+					case 1: //
+							if(pete.culture[x][y].getParameter("OutMode") == 1){if(b > 0){pete.culture[x][y].activate();} 
+								else{pete.culture[x][y].purgeState();}}
+							if(pete.culture[x][y].getParameter("OutMode") == 2){pete.culture[x][y].setState(b);}
+					break;
 					case 2:for(int h = 0; h <= gridy-1; h++){
 							for(int w = 0; w <= gridx-1; w++){
 								if(x >= grid[w][h].xmin && y >= grid[w][h].ymin){
 									if(x <= grid[w][h].xmax && y >= grid[w][h].ymax){
-										if(b > 0){ grid[w][h].getCell(x,y).activate(); grid[w][h].getCell(x,y).setState(b);}
-										else{grid[w][h].getCell(x,y).purgeState(); grid[w][h].getCell(x,y).setState(b);}
+										if(grid[w][h].getCell(x,y).getParameter("OutMode") == 1){if(b > 0){ grid[w][h].getCell(x,y).activate(); }
+											else{grid[w][h].getCell(x,y).purgeState(); }}
+										if(grid[w][h].getCell(x,y).getParameter("OutMode") == 1){grid[w][h].getCell(x,y).setState(b);}
 									}}}}break;
 					}
 					state[x][y] = b;
 					
 				}
 				
+			public void invertCellState(int x, int y){
+					if(x >= xsiz){x = xsiz-1;}
+					if(x <= 0){x=0;}
+					if(y >= ysiz){y = ysiz-1;}
+					if(y <= 0){y=0;}
+					int b = state[x][y];
+					switch(aamode){
+					case 1: 
+							if(pete.culture[x][y].getParameter("OutMode") == 1){if(b < 1){pete.culture[x][y].activate();
+								if(opmode == 5){b = 1024;} else{b=1;}} 
+								else{pete.culture[x][y].purgeState();b = 0;}}
+							if(pete.culture[x][y].getParameter("OutMode") == 2){b = b*-1;pete.culture[x][y].setState(b);}
+					break;
+					case 2:for(int h = 0; h <= gridy-1; h++){
+							for(int w = 0; w <= gridx-1; w++){
+								if(x >= grid[w][h].xmin && y >= grid[w][h].ymin){
+									if(x <= grid[w][h].xmax && y >= grid[w][h].ymax){
+										if(grid[w][h].getCell(x,y).getParameter("OutMode") == 1){if(b < 1){ grid[w][h].getCell(x,y).activate();
+											if(opmode == 5){b = 1024;} else{b=1;} }
+											else{grid[w][h].getCell(x,y).purgeState();b = 0;}}
+										if(grid[w][h].getCell(x,y).getParameter("OutMode") == 2){b = b*-1; grid[w][h].getCell(x,y).setState(b);}
+									}}}}break;
+					}
+					state[x][y] = b;
+					
+				}
 			
 			//returns the specified cell
 			public cell getCell(int x, int y){
