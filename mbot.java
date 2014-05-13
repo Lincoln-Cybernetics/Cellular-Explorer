@@ -132,9 +132,9 @@ public class mbot extends cell{
 		if( name == "Vote"){ if(n > 4){born[n] = true;} if(n >3){survives[n] = true;}}
 		if( name == "Vote 4/5"){ if(n ==4 || n == 6 || n == 7|| n ==8){born[n] = true;} if( n == 3|| n == 5|| n == 6|| n == 7|| n == 8){survives[n] = true;}}
 		if( name == "Walled Cities"){ if(n > 3){born[n] = true;} if( n == 2|| n == 3|| n == 4|| n == 5){survives[n] = true;}}
-		if( name == "OnCell"){born[n] = true; survives[n] = true;}
-		if( name == "OffCell"){born[n] = false; survives[n] = false;}
-		if( name == "BlinkCell"){born[n] = true; survives[n] = false;}
+		if( name == "OnCell"){born[n] = true; survives[n] = true;inmode = 0;}
+		if( name == "OffCell"){born[n] = false; survives[n] = false;inmode = 0;}
+		if( name == "BlinkCell"){born[n] = true; survives[n] = false;inmode = 0;}
 		}
 		if(name =="Live Free or Die"){name = "L.F.O.D.";}
 		
