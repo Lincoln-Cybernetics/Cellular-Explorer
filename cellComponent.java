@@ -235,7 +235,7 @@ public void paintComponent( Graphics g){
 									if(grad < 1){neg = true; grad = grad * -1;}
 									if(grad > 255){grad = 255;}
 									if(neg){g.setColor(new Color(0,0,grad));}
-									else{g.setColor(new Color(grad, grad, grad));}
+									else{g.setColor(new Color(grad, 0, 0));}
 									g.fillRect(x*magnify,y*magnify,magnify,magnify);
 								}
 						
