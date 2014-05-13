@@ -256,6 +256,10 @@ public void setParameter(String name, int a){
 //converts int states into binary states
 public boolean convertBin(int s){
 	if(s < 1){return false;}else{return true;}}
+	
+public int bintoInt(boolean a){
+	if(a){return 1;}
+	return 0;}
 
 //neighborhood methods
 
@@ -355,10 +359,20 @@ public void calculateState(){
 public void advanceState(){
 	for(int y = 0; y <= ysiz-1; y++){
 		for(int x = 0; x <= xsiz-1; x++){
-			if(mothership.getOpMode() == 5){
-				if(culture[x][y].getOption("Ages")){mothership.state[xmin+x][ymin+y] = culture[x][y].getParameter("Age");}
-				else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}}
-			else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}
+			switch(mothership.getOpMode()){
+				case 1: mothership.state[xmin+x][ymin+y] = bintoInt(convertBin(newstate[x][y])); break;
+				case 4: mothership.state[xmin+x][ymin+y] = newstate[x][y]; break;
+				case 5: if(culture[x][y].getParameter("OutMode") == 1){mothership.state[xmin+x][ymin+y] = bintoInt(convertBin(newstate[x][y]))*1024;}
+						if(culture[x][y].getParameter("OutMode") == 2){
+									if(culture[x][y].getOption("Ages")){mothership.state[xmin+x][ymin+y] = culture[x][y].getParameter("Age");}
+									else{mothership.state[xmin+x][ymin+y] = culture[x][y].getState();}}
+						break;
+				default : mothership.state[xmin+x][ymin+y] = newstate[x][y]; break;
+			}
+			//if(mothership.getOpMode() == 5){
+				//if(culture[x][y].getOption("Ages")){mothership.state[xmin+x][ymin+y] = culture[x][y].getParameter("Age");}
+				//else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}}
+			//else{mothership.state[xmin+x][ymin+y] = newstate[x][y];}
 		}}
 	}
 
