@@ -140,7 +140,7 @@ public class symmetriCell extends cell{
 			if(paramname == "Matcount"){ matcount = a;}
 			if(paramname == "MirrX"){hoodx = a;if(mirror){setLocation(hoodx, hoody);}}
 			if(paramname == "MirrY"){hoody = a;if(mirror){setLocation(hoodx, hoody);}}
-			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;outmode = 2;}if(a == 1){outmode = 1;}}
+			if(paramname == "InMode"){inmode = a; if(a == 2){ages = false; fades = false;}if(a == 1){}}
 			if(paramname == "Xfact"){map.setParameter("Xfact", a);}
 			}
 			
