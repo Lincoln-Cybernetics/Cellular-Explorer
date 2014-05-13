@@ -64,6 +64,7 @@ JLabel xfind;//displays current value of xfslider
 JRadioButton[] inm = new JRadioButton[3];//input mode
 int mymode;//cell's input mode
 ButtonGroup inpmod;//group the buttons
+JLabel inmodlabel;//labels input mode controls
 
 // relate to sending command events
 int ct = 0; //cell-type
@@ -142,6 +143,7 @@ public cellPicker(){
 	xflabel = new JLabel("Expansion Factor");
 	
 	//Input mode
+	inmodlabel = new JLabel("Input Mode:");
 	inm[0] = new JRadioButton("Void");
 	inm[1] = new JRadioButton("Binary");
 	inm[2] = new JRadioButton("Integer");
@@ -255,6 +257,7 @@ public cellPicker(){
 				.addComponent(xfslider)
 				.addComponent(xfind))
 				//Input Mode
+			.addComponent(inmodlabel)
 			.addGroup(cpLayout.createSequentialGroup()
 				.addComponent(inm[0])
 				.addComponent(inm[1])
@@ -364,6 +367,7 @@ public cellPicker(){
 				.addComponent(xfslider)
 				.addComponent(xfind))
 			//Input Mode
+			.addComponent(inmodlabel)
 			.addGroup(cpLayout.createParallelGroup()
 				.addComponent(inm[0])
 				.addComponent(inm[1])
@@ -414,6 +418,7 @@ public cellPicker(){
 		xfind.setText("1"); xfind.setVisible(false);
 		
 		//Input Mode
+		inmodlabel.setVisible(false);
 		inm[0].setVisible(false); inm[0].addActionListener(this);inm[1].setVisible(false); inm[1].addActionListener(this);
 		inm[2].setVisible(false); inm[2].addActionListener(this);
 		
@@ -551,21 +556,33 @@ private void setOpts(cell darwin){
 private void toggleControl(int a, boolean b){
 	
 	switch(a){
+		//Ages
 		case 0: opts[0].setVisible(b); opts[0].setEnabled(b); break;
+		//fades
 		case 1: opts[1].setVisible(b); opts[1].setEnabled(b); fadeslider.setVisible(b); fadeslider.setEnabled(b);if(b){ fadeslider.setValue(256); gate.setInt("Fade", fadeslider.getValue());} fadelabel.setVisible(b);if(b){fadelabel.setText(Integer.toString(fadeslider.getValue()));} break;
+		//maturity
 		case 2: matslider.setVisible(b); matslider.setEnabled(b); matlabel.setVisible(b); if(b){matslider.setValue(1);gate.setInt("Mat", matslider.getValue());matlabel.setText("Maturity: "+ Integer.toString(matslider.getValue()));} break;
+		//Born/Survives
 		case 3: for(int c = 0; c < 9; c++){opts[c+2].setLabel(String.valueOf(c)); opts[c+2].setVisible(b); opts[c+2].setEnabled(b);} jack.setVisible(b);rulab.setVisible(b); break;
 		case 4: for(int c = 0; c < 9; c++){opts[c+11].setLabel(String.valueOf(c)); opts[c+11].setVisible(b); opts[c+11].setEnabled(b);} jill.setVisible(b); rulab.setVisible(b); break;
+		//Wolfram rules
 		case 5: for(int c = 0; c < 8; c++){wlab[c].setVisible(b); opts[c+20].setVisible(b); opts[c+20].setEnabled(b); wrlab.setVisible(b); wrlab.setText("Wolfram Rule : "+Integer.toString(gate.generateCell().getParameter("WolfRule")));} break;
+		//orientation
 		case 6: for(int c = 0; c < 4; c++){wdirs[c].setVisible(b); wdirs[c].setEnabled(b);}orlabel.setVisible(b); break;
+		//Mirror
 		case 7: opts[28].setVisible(b); opts[28].setEnabled(b);if(!b){mirbutt.setVisible(false); mirbutt.setEnabled(false);refsetbutt.setVisible(false); refsetbutt.setEnabled(false);}
 		else{mirbutt.setVisible(opts[28].getState()); mirbutt.setEnabled(opts[28].getState());
 		refsetbutt.setVisible(opts[28].getState());refsetbutt.setEnabled(opts[28].getState());}break;
+		//Any
 		case 8: opts[29].setVisible(b); opts[29].setEnabled(b); break;
+		//All
 		case 9: opts[30].setVisible(b); opts[30].setEnabled(b); break;
+		//Directions
 		case 10: for(int c = 0; c < 8; c++){dirs[c].setVisible(b); dirs[c].setEnabled(b);}dirlabel.setVisible(b); break;
+		//Expansion Factor
 		case 11: xflabel.setVisible(b); xfslider.setVisible(b);xfslider.setEnabled(b);xfind.setVisible(b);if(b){xfslider.setValue(1);gate.setInt("Xfact",1);xfind.setText("1");} break;
-		case 12: inm[0].setVisible(b); inm[1].setVisible(b); inm[2].setVisible(b); /*if(b){inm[mymode].setSelected(true);}*/ break;
+		//Input Mode
+		case 12: inmodlabel.setVisible(b);inm[0].setVisible(b); inm[1].setVisible(b); inm[2].setVisible(b); /*if(b){inm[mymode].setSelected(true);}*/ break;
 	}
 }
 
