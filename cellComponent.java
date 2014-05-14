@@ -201,6 +201,10 @@ public void paintComponent( Graphics g){
 									case 11: g.setColor(new Color(200, 65, 10)); break;
 									//EVBOT
 									case 12: g.setColor(new Color(127, 255, 127)); break;
+									//mincell
+									case 13: g.setColor(new Color(200, 230, 240)); break;
+									//maxcell
+									case 14: g.setColor(new Color(225, 95, 15)); break;
 									//default
 									default: g.setColor(Color.black); break;
 								}
