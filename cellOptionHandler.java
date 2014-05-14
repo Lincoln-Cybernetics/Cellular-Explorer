@@ -133,6 +133,8 @@ public cell generateCell(){
 		case 10: tiamat = new totalCell(); break;
 		case 11: tiamat = new averageCell(); break;
 		case 12: if(mbotname == "Custom"){tiamat = new evbot(); setRules();}else{tiamat = new evbot(mbotname);}break;
+		case 13: tiamat = new minCell(); break;
+		case 14: tiamat = new maxCell(); break;
 		default: tiamat = new cell();break;}
 		// set options and parameters
 		if(tiamat.getControls("Age")){ tiamat.setOption("Ages", doesage);}
@@ -231,6 +233,8 @@ class randcellOptionHandler extends cellOptionHandler{
 				for(int ace = 0; ace <= 9; ace++){
 				tiamat.setRule(ace, shovel.nextBoolean()); tiamat.setRule( ace+9, shovel.nextBoolean());}}
 				break;
+		case 13: tiamat = new minCell(); break;
+		case 14: tiamat = new maxCell(); break;
 		default: tiamat = new cell();break;}
 		
 		// randomly set mirror options
@@ -269,7 +273,7 @@ class randcellOptionHandler extends cellOptionHandler{
 	public int getCT(){ return celltype;}
 	
 	public cell getCell(){
-		int cellgen = shovel.nextInt(1024);
+		int cellgen = shovel.nextInt(1124);
 		if(cellgen == 0 ){celltype = 5;}//offcell
 		if(cellgen == 1){celltype = 4;}//oncell
 		if(cellgen == 2){celltype = 6;}//blinkcell
@@ -283,6 +287,8 @@ class randcellOptionHandler extends cellOptionHandler{
 		if(cellgen > 255 && cellgen < 512){celltype = 7;}//symmetric
 		if(cellgen > 511 && cellgen < 768){celltype = 2;}//MBOT
 		if(cellgen > 767 && cellgen < 1024){celltype = 12;}//EVBOT
+		if(cellgen > 1023 && cellgen < 1074){celltype = 13;}//minCell
+		if(cellgen > 1073 && cellgen < 1124){celltype = 14;}//maxCell
 		
 	
 		return generateCell();  }
