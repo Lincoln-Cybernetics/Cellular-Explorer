@@ -149,3 +149,7 @@ Strobe cell:  Remains inactive for a length of time set by its maturity option, 
 Total Cell:  Adds the states of its neighbors.
 
 Average Cell:  Totals the states of its neighbors, then divides by the size of its neighborhood.
+
+Min Cell: Takes the lowest state of any of its neighbors.
+
+Max Cell: Takes the highest state of any of its neighbors.
