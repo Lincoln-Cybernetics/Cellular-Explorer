@@ -139,7 +139,7 @@ public class cellularExplorer implements ucListener{
 			private void makeWin(int n){
 			switch(n){
 				case 1:    //master control
-							cpanel = new JFrame("Cellular Explorer v0.0.8");
+							cpanel = new JFrame("Cellular Explorer v0.1.0");
 							cpanel.getContentPane().add( Alice ); Alice.setVisible(true); Alice.setEnabled(true);
 							cpanel.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 							cpanel.pack();
