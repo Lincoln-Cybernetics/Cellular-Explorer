@@ -222,8 +222,8 @@ public void invokeRule(String rulnam){
 //Add cells
 public void addCell(cell ecoli, int x, int y){
 	int myx; int myy;
-	if(x >= xmin && x <= xmax){myx = x-xmin;}else{myx = -1;}
-	if(y >= ymin && y <= ymax){myy = y-ymin;}else{myy = -1;}
+	if(x >= xmin && x < xmax){myx = x-xmin;}else{myx = -1;}
+	if(y >= ymin && y < ymax){myy = y-ymin;}else{myy = -1;}
 	if(myy == -1 || myx == -1){ }
 	else{culture[myx][myy] = null; 
 		culture[myx][myy] = ecoli;
@@ -234,8 +234,8 @@ public void addCell(cell ecoli, int x, int y){
 //retrieve cells
 public cell getCell(int x, int y){
 	int myx; int myy;
-	if(x >= xmin && x <= xmax){myx = x-xmin;}else{myx = -1;}
-	if(y >= ymin && y <= ymax){myy = y-ymin;}else{myy = -1;}
+	if(x >= xmin && x < xmax){myx = x-xmin;}else{myx = -1;}
+	if(y >= ymin && y < ymax){myy = y-ymin;}else{myy = -1;}
 	if(myy == -1 || myx == -1){ return new cell();}
 	else{ return culture[myx][myy];}
 }
