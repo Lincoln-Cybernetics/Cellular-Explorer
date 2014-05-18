@@ -347,7 +347,7 @@ public class masterControl extends JComponent implements ActionListener, ChangeL
 		
 		public void aboutMe(){
 				JFrame cpanel = new JFrame("About");
-		String noticea = "Cellular Explorer Prototype v. 0.0.8 (Spring 02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
+		String noticea = "Cellular Explorer Prototype v. 0.1.0 (02014)\nPowered by Lincoln Cybernetics.\n http://lincolncybernetics.com \n";
   String noticeb ="Copyright(C) 02014 Matt Ahlschwede\n\n Special thanks to: Tarl Carpenter, Brian Prentice, Alexander Viasov, and James Woody\n for the feedback and ideas that have made this program possible. \n\n";
   String noticec = " This program is free software: you can redistribute it and/or\nmodify";
   String noticed ="  it under the terms of the GNU General Public\nLicense as published by";
